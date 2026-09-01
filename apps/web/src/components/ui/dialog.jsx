@@ -2,17 +2,23 @@ import React from 'react';
 import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-export function Dialog({ open, onOpenChange, children }) {
+export function Dialog({ open, onOpenChange, children, className, maxWidth = 'max-w-lg' }) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/50 backdrop-blur-sm animate-in fade-in duration-150">
       <div
         className="fixed inset-0"
         onClick={() => onOpenChange?.(false)}
         aria-hidden="true"
       />
-      <div className="relative z-50 w-full max-w-lg bg-card border border-border rounded-2xl shadow-xl p-6 overflow-hidden max-h-[90vh] flex flex-col">
+      <div
+        className={cn(
+          'relative z-50 w-full bg-card border border-border rounded-2xl shadow-2xl p-6 overflow-hidden max-h-[90vh] flex flex-col',
+          maxWidth,
+          className
+        )}
+      >
         {children}
       </div>
     </div>

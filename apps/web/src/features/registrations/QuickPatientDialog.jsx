@@ -190,7 +190,7 @@ export function QuickPatientDialog({ isOpen, onClose, initialName = '', onPatien
   if (!isOpen) return null;
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={onClose} maxWidth="max-w-4xl">
       <DialogClose onClick={onClose} />
       <DialogHeader>
         <div className="flex items-center gap-2.5">

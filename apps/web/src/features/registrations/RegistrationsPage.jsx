@@ -1088,7 +1088,7 @@ export default function RegistrationsPage() {
 
       {/* ─── Modal Detail Registrasi ──────────────────────────────────────── */}
       {selectedReg && (
-        <Dialog open={!!selectedReg} onOpenChange={() => setSelectedReg(null)}>
+        <Dialog open={!!selectedReg} onOpenChange={() => setSelectedReg(null)} maxWidth="max-w-2xl">
           <DialogClose onClick={() => setSelectedReg(null)} />
           <DialogHeader>
             <div className="flex items-center justify-between">

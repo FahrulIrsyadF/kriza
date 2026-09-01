@@ -1071,7 +1071,7 @@ export default function PatientsPage() {
 
       {/* ─── MODAL: DETAIL REKAM MEDIS PASIEN (INSPECTION ONLY) ───────────── */}
       {selectedPatient && (
-        <Dialog open={!!selectedPatient} onOpenChange={() => setSelectedPatient(null)}>
+        <Dialog open={!!selectedPatient} onOpenChange={() => setSelectedPatient(null)} maxWidth="max-w-3xl">
           <DialogClose onClick={() => setSelectedPatient(null)} />
           <DialogHeader>
             <div className="flex items-center justify-between">
