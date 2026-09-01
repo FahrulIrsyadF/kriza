@@ -1,0 +1,6 @@
+{
+  "name": "@kriza/shared",
+  "version": "0.1.0",
+  "description": "Shared utilities dan constants antara web dan api",
+  "main": "index.js"
+}

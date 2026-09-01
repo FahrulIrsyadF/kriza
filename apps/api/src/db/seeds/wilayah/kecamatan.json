@@ -1,0 +1,6017 @@
+[
+  {
+    "id": 2339,
+    "kabupatenId": 348,
+    "name": "AEK SONGSONGAN"
+  },
+  {
+    "id": 1264,
+    "kabupatenId": 258,
+    "name": "AIR TIRIS"
+  },
+  {
+    "id": 2370,
+    "kabupatenId": 234,
+    "name": "AJUNG"
+  },
+  {
+    "id": 1000,
+    "kabupatenId": 167,
+    "name": "ALABIO"
+  },
+  {
+    "id": 947,
+    "kabupatenId": 116,
+    "name": "ALALAK"
+  },
+  {
+    "id": 497,
+    "kabupatenId": 41,
+    "name": "ALIAN"
+  },
+  {
+    "id": 856,
+    "kabupatenId": 169,
+    "name": "ALUH-ALUH"
+  },
+  {
+    "id": 143,
+    "kabupatenId": 17,
+    "name": "AMBARAWA"
+  },
+  {
+    "id": 142,
+    "kabupatenId": 15,
+    "name": "AMBARAWA"
+  },
+  {
+    "id": 2213,
+    "kabupatenId": 234,
+    "name": "AMBULU"
+  },
+  {
+    "id": 1508,
+    "kabupatenId": 243,
+    "name": "AMBUNTEN"
+  },
+  {
+    "id": 992,
+    "kabupatenId": 48,
+    "name": "AMPAH"
+  },
+  {
+    "id": 994,
+    "kabupatenId": 167,
+    "name": "AMUNTAI"
+  },
+  {
+    "id": 848,
+    "kabupatenId": 167,
+    "name": "AMUNTAI SELATAN"
+  },
+  {
+    "id": 850,
+    "kabupatenId": 167,
+    "name": "AMUNTAI TENGAH"
+  },
+  {
+    "id": 849,
+    "kabupatenId": 167,
+    "name": "AMUNTAI UTARA"
+  },
+  {
+    "id": 735,
+    "kabupatenId": 49,
+    "name": "ANDIR"
+  },
+  {
+    "id": 948,
+    "kabupatenId": 116,
+    "name": "ANJIR MUARA KOTA"
+  },
+  {
+    "id": 818,
+    "kabupatenId": 116,
+    "name": "ANJIR PASAR"
+  },
+  {
+    "id": 845,
+    "kabupatenId": 147,
+    "name": "ANJIR SERAPAT"
+  },
+  {
+    "id": 1355,
+    "kabupatenId": 242,
+    "name": "ARJASA"
+  },
+  {
+    "id": 1509,
+    "kabupatenId": 243,
+    "name": "ARJASA"
+  },
+  {
+    "id": 1478,
+    "kabupatenId": 280,
+    "name": "AROSBAYA"
+  },
+  {
+    "id": 1003,
+    "kabupatenId": 143,
+    "name": "ASAM-ASAM"
+  },
+  {
+    "id": 1357,
+    "kabupatenId": 242,
+    "name": "ASEMBAGUS"
+  },
+  {
+    "id": 2002,
+    "kabupatenId": 10,
+    "name": "ASEMROWO"
+  },
+  {
+    "id": 1018,
+    "kabupatenId": 183,
+    "name": "BAAMANG"
+  },
+  {
+    "id": 2223,
+    "kabupatenId": 313,
+    "name": "BABALAN"
+  },
+  {
+    "id": 171,
+    "kabupatenId": 19,
+    "name": "BAE"
+  },
+  {
+    "id": 1296,
+    "kabupatenId": 261,
+    "name": "BAGAN SIAPI API"
+  },
+  {
+    "id": 1042,
+    "kabupatenId": 138,
+    "name": "BAHARU SELATAN"
+  },
+  {
+    "id": 1019,
+    "kabupatenId": 165,
+    "name": "BAKARANGAN"
+  },
+  {
+    "id": 716,
+    "kabupatenId": 116,
+    "name": "BAKUMPAI"
+  },
+  {
+    "id": 785,
+    "kabupatenId": 3,
+    "name": "BALARAJA"
+  },
+  {
+    "id": 2316,
+    "kabupatenId": 110,
+    "name": "BALEENDAH"
+  },
+  {
+    "id": 2192,
+    "kabupatenId": 66,
+    "name": "BALEREJO"
+  },
+  {
+    "id": 2138,
+    "kabupatenId": 253,
+    "name": "BALIKPAPAN"
+  },
+  {
+    "id": 2231,
+    "kabupatenId": 317,
+    "name": "BALIK PAPAN KOTA"
+  },
+  {
+    "id": 2083,
+    "kabupatenId": 184,
+    "name": "BALIKPAPAN SELATAN"
+  },
+  {
+    "id": 2216,
+    "kabupatenId": 184,
+    "name": "BALIKPAPAN TENGAH"
+  },
+  {
+    "id": 2335,
+    "kabupatenId": 347,
+    "name": "BALLEANGING"
+  },
+  {
+    "id": 24,
+    "kabupatenId": 11,
+    "name": "BALONG BENDO"
+  },
+  {
+    "id": 1982,
+    "kabupatenId": 14,
+    "name": "BALONGPANGGANG"
+  },
+  {
+    "id": 2135,
+    "kabupatenId": 234,
+    "name": "BALUNG"
+  },
+  {
+    "id": 532,
+    "kabupatenId": 52,
+    "name": "BANCAR"
+  },
+  {
+    "id": 2032,
+    "kabupatenId": 38,
+    "name": "BANDAR KEDUNGMULYO"
+  },
+  {
+    "id": 629,
+    "kabupatenId": 30,
+    "name": "BANDONG"
+  },
+  {
+    "id": 1274,
+    "kabupatenId": 262,
+    "name": "BANGAUN PURBA"
+  },
+  {
+    "id": 1934,
+    "kabupatenId": 252,
+    "name": "BANGIL"
+  },
+  {
+    "id": 2224,
+    "kabupatenId": 253,
+    "name": "BANGIL"
+  },
+  {
+    "id": 525,
+    "kabupatenId": 52,
+    "name": "BANGILAN"
+  },
+  {
+    "id": 1479,
+    "kabupatenId": 280,
+    "name": "BANGKALAN"
+  },
+  {
+    "id": 569,
+    "kabupatenId": 75,
+    "name": "BANGKALAN (madura)"
+  },
+  {
+    "id": 1041,
+    "kabupatenId": 139,
+    "name": "BANGKAU"
+  },
+  {
+    "id": 1139,
+    "kabupatenId": 258,
+    "name": "BANGKINANG BARAT "
+  },
+  {
+    "id": 1241,
+    "kabupatenId": 261,
+    "name": "BANGKO"
+  },
+  {
+    "id": 1158,
+    "kabupatenId": 261,
+    "name": "BANGKO PUSAKO"
+  },
+  {
+    "id": 1322,
+    "kabupatenId": 82,
+    "name": "BANGOREJO"
+  },
+  {
+    "id": 1391,
+    "kabupatenId": 236,
+    "name": "BANGOREJO"
+  },
+  {
+    "id": 1968,
+    "kabupatenId": 251,
+    "name": "BANGSAL "
+  },
+  {
+    "id": 2309,
+    "kabupatenId": 234,
+    "name": "BANGSALSARI"
+  },
+  {
+    "id": 1394,
+    "kabupatenId": 247,
+    "name": "BANGUREJO"
+  },
+  {
+    "id": 943,
+    "kabupatenId": 167,
+    "name": "BANJANG"
+  },
+  {
+    "id": 890,
+    "kabupatenId": 137,
+    "name": "BANJARBARU"
+  },
+  {
+    "id": 2081,
+    "kabupatenId": 141,
+    "name": "BANJARMASIN BARAT"
+  },
+  {
+    "id": 2139,
+    "kabupatenId": 141,
+    "name": "BANJARMASIN TENGAH"
+  },
+  {
+    "id": 2321,
+    "kabupatenId": 141,
+    "name": "BANJARMASIN UTARA"
+  },
+  {
+    "id": 1102,
+    "kabupatenId": 275,
+    "name": "BANTAN"
+  },
+  {
+    "id": 2110,
+    "kabupatenId": 253,
+    "name": "BANTARAN"
+  },
+  {
+    "id": 2392,
+    "kabupatenId": 375,
+    "name": "BANTOSIKUYU"
+  },
+  {
+    "id": 1360,
+    "kabupatenId": 236,
+    "name": "BANYUANGI"
+  },
+  {
+    "id": 2111,
+    "kabupatenId": 253,
+    "name": "BANYUANYAR"
+  },
+  {
+    "id": 1422,
+    "kabupatenId": 233,
+    "name": "BANYUATES"
+  },
+  {
+    "id": 2297,
+    "kabupatenId": 15,
+    "name": "BANYUBIRU"
+  },
+  {
+    "id": 1344,
+    "kabupatenId": 242,
+    "name": "BANYUGLUGUR"
+  },
+  {
+    "id": 1358,
+    "kabupatenId": 242,
+    "name": "BANYUPUTIH"
+  },
+  {
+    "id": 2220,
+    "kabupatenId": 37,
+    "name": "BANYU URIP"
+  },
+  {
+    "id": 2288,
+    "kabupatenId": 10,
+    "name": "BANYU URIP"
+  },
+  {
+    "id": 1338,
+    "kabupatenId": 82,
+    "name": "BANYUWANGI"
+  },
+  {
+    "id": 846,
+    "kabupatenId": 166,
+    "name": "BARABAI"
+  },
+  {
+    "id": 865,
+    "kabupatenId": 116,
+    "name": "BARAMBAI"
+  },
+  {
+    "id": 1053,
+    "kabupatenId": 70,
+    "name": "BARAT"
+  },
+  {
+    "id": 2033,
+    "kabupatenId": 38,
+    "name": "BARENG"
+  },
+  {
+    "id": 923,
+    "kabupatenId": 147,
+    "name": "BASARANG"
+  },
+  {
+    "id": 1173,
+    "kabupatenId": 271,
+    "name": "BASERAH"
+  },
+  {
+    "id": 1510,
+    "kabupatenId": 243,
+    "name": "BATANG BATANG"
+  },
+  {
+    "id": 1137,
+    "kabupatenId": 257,
+    "name": "BATANG CENAKU"
+  },
+  {
+    "id": 1136,
+    "kabupatenId": 257,
+    "name": "BATANG GANSAL "
+  },
+  {
+    "id": 1120,
+    "kabupatenId": 256,
+    "name": "BATANG TUAKA"
+  },
+  {
+    "id": 863,
+    "kabupatenId": 143,
+    "name": "BATI-BATI"
+  },
+  {
+    "id": 2074,
+    "kabupatenId": 238,
+    "name": "Batu"
+  },
+  {
+    "id": 962,
+    "kabupatenId": 143,
+    "name": "BATU AMPAR"
+  },
+  {
+    "id": 1511,
+    "kabupatenId": 243,
+    "name": "BATUAN"
+  },
+  {
+    "id": 1162,
+    "kabupatenId": 261,
+    "name": "BATU HAMPAR"
+  },
+  {
+    "id": 2360,
+    "kabupatenId": 164,
+    "name": "BATU LICIN"
+  },
+  {
+    "id": 957,
+    "kabupatenId": 164,
+    "name": "BATULICIN"
+  },
+  {
+    "id": 941,
+    "kabupatenId": 176,
+    "name": "BATU MANDI"
+  },
+  {
+    "id": 1370,
+    "kabupatenId": 240,
+    "name": "BATUMARMAR"
+  },
+  {
+    "id": 2351,
+    "kabupatenId": 49,
+    "name": "BATUNUGGAL"
+  },
+  {
+    "id": 1512,
+    "kabupatenId": 243,
+    "name": "BATU PUTIH"
+  },
+  {
+    "id": 168,
+    "kabupatenId": 15,
+    "name": "BAYUMANIK"
+  },
+  {
+    "id": 1935,
+    "kabupatenId": 252,
+    "name": "BEJI"
+  },
+  {
+    "id": 674,
+    "kabupatenId": 102,
+    "name": "BEKASI"
+  },
+  {
+    "id": 2077,
+    "kabupatenId": 102,
+    "name": "BEKASI BARAT"
+  },
+  {
+    "id": 2295,
+    "kabupatenId": 221,
+    "name": "BEKASI UTARA"
+  },
+  {
+    "id": 866,
+    "kabupatenId": 116,
+    "name": "BELAWANG"
+  },
+  {
+    "id": 1286,
+    "kabupatenId": 257,
+    "name": "BELILAS"
+  },
+  {
+    "id": 1275,
+    "kabupatenId": 271,
+    "name": "BENAI"
+  },
+  {
+    "id": 781,
+    "kabupatenId": 3,
+    "name": "BENDA"
+  },
+  {
+    "id": 1058,
+    "kabupatenId": 70,
+    "name": "BENDO"
+  },
+  {
+    "id": 1099,
+    "kabupatenId": 275,
+    "name": "BENGKALIS"
+  },
+  {
+    "id": 1983,
+    "kabupatenId": 14,
+    "name": "BENJENG"
+  },
+  {
+    "id": 2003,
+    "kabupatenId": 10,
+    "name": "BENOWO"
+  },
+  {
+    "id": 945,
+    "kabupatenId": 116,
+    "name": "BERANGAS TENGAH"
+  },
+  {
+    "id": 889,
+    "kabupatenId": 116,
+    "name": "BERANGAS TIMUR"
+  },
+  {
+    "id": 2257,
+    "kabupatenId": 13,
+    "name": "BERBEK"
+  },
+  {
+    "id": 717,
+    "kabupatenId": 117,
+    "name": "BERENG BENGKEL"
+  },
+  {
+    "id": 2109,
+    "kabupatenId": 253,
+    "name": "BESUK"
+  },
+  {
+    "id": 1345,
+    "kabupatenId": 242,
+    "name": "BESUKI"
+  },
+  {
+    "id": 2376,
+    "kabupatenId": 253,
+    "name": "BHAYANGKARA"
+  },
+  {
+    "id": 1402,
+    "kabupatenId": 235,
+    "name": "BINAKAL"
+  },
+  {
+    "id": 991,
+    "kabupatenId": 179,
+    "name": "BINGKUANG"
+  },
+  {
+    "id": 599,
+    "kabupatenId": 17,
+    "name": "BINTORO"
+  },
+  {
+    "id": 2353,
+    "kabupatenId": 165,
+    "name": "BINUANG"
+  },
+  {
+    "id": 810,
+    "kabupatenId": 141,
+    "name": "BJM. BARAT"
+  },
+  {
+    "id": 811,
+    "kabupatenId": 141,
+    "name": "BJM. SELATAN"
+  },
+  {
+    "id": 813,
+    "kabupatenId": 141,
+    "name": "BJM. TENGAH"
+  },
+  {
+    "id": 812,
+    "kabupatenId": 141,
+    "name": "BJM. TIMUR"
+  },
+  {
+    "id": 913,
+    "kabupatenId": 141,
+    "name": "BJM. UTARA"
+  },
+  {
+    "id": 1480,
+    "kabupatenId": 280,
+    "name": "BLEGA"
+  },
+  {
+    "id": 2340,
+    "kabupatenId": 238,
+    "name": "BLIMBING"
+  },
+  {
+    "id": 2287,
+    "kabupatenId": 289,
+    "name": "BLITAR"
+  },
+  {
+    "id": 1513,
+    "kabupatenId": 243,
+    "name": "BLUTO"
+  },
+  {
+    "id": 757,
+    "kabupatenId": 3,
+    "name": "BOGOR"
+  },
+  {
+    "id": 617,
+    "kabupatenId": 20,
+    "name": "BOJA"
+  },
+  {
+    "id": 2127,
+    "kabupatenId": 2,
+    "name": "BOJONEGARA"
+  },
+  {
+    "id": 2076,
+    "kabupatenId": 285,
+    "name": "BOJONEGORO"
+  },
+  {
+    "id": 2385,
+    "kabupatenId": 6,
+    "name": "BOJONG GEDE"
+  },
+  {
+    "id": 598,
+    "kabupatenId": 17,
+    "name": "BONANG"
+  },
+  {
+    "id": 1311,
+    "kabupatenId": 235,
+    "name": "BONDOWOSO"
+  },
+  {
+    "id": 2362,
+    "kabupatenId": 361,
+    "name": "BONE POSI"
+  },
+  {
+    "id": 1366,
+    "kabupatenId": 235,
+    "name": "BOTOLINGGO"
+  },
+  {
+    "id": 643,
+    "kabupatenId": 20,
+    "name": "BRANSONG"
+  },
+  {
+    "id": 147,
+    "kabupatenId": 22,
+    "name": "BUBULAN"
+  },
+  {
+    "id": 2004,
+    "kabupatenId": 10,
+    "name": "BUBUTAN"
+  },
+  {
+    "id": 18,
+    "kabupatenId": 11,
+    "name": "BUDURAN"
+  },
+  {
+    "id": 1958,
+    "kabupatenId": 12,
+    "name": "BUGUL KIDUL"
+  },
+  {
+    "id": 1101,
+    "kabupatenId": 275,
+    "name": "BUKIT BATU"
+  },
+  {
+    "id": 905,
+    "kabupatenId": 117,
+    "name": "BUKIT HINDU"
+  },
+  {
+    "id": 1292,
+    "kabupatenId": 256,
+    "name": "BUKIT KAPUR"
+  },
+  {
+    "id": 1226,
+    "kabupatenId": 265,
+    "name": "BUKIT RAYA"
+  },
+  {
+    "id": 970,
+    "kabupatenId": 117,
+    "name": "BUKIT TUNGGAL"
+  },
+  {
+    "id": 2005,
+    "kabupatenId": 10,
+    "name": "BULAK"
+  },
+  {
+    "id": 2168,
+    "kabupatenId": 302,
+    "name": "BULELENG"
+  },
+  {
+    "id": 489,
+    "kabupatenId": 36,
+    "name": "BULU"
+  },
+  {
+    "id": 2282,
+    "kabupatenId": 250,
+    "name": "BULULAWANG"
+  },
+  {
+    "id": 1984,
+    "kabupatenId": 14,
+    "name": "BUNGAH"
+  },
+  {
+    "id": 1086,
+    "kabupatenId": 263,
+    "name": "BUNGA RAYA"
+  },
+  {
+    "id": 1348,
+    "kabupatenId": 242,
+    "name": "BUNGATAN"
+  },
+  {
+    "id": 973,
+    "kabupatenId": 179,
+    "name": "BUNTOK KOTA"
+  },
+  {
+    "id": 1481,
+    "kabupatenId": 280,
+    "name": "BURNEH"
+  },
+  {
+    "id": 1073,
+    "kabupatenId": 77,
+    "name": "BURU "
+  },
+  {
+    "id": 619,
+    "kabupatenId": 17,
+    "name": "CABEAN"
+  },
+  {
+    "id": 773,
+    "kabupatenId": 90,
+    "name": "CAKUNG"
+  },
+  {
+    "id": 2203,
+    "kabupatenId": 309,
+    "name": "CAKUNG"
+  },
+  {
+    "id": 1465,
+    "kabupatenId": 233,
+    "name": "CAMPLONG"
+  },
+  {
+    "id": 17,
+    "kabupatenId": 11,
+    "name": "CANDI"
+  },
+  {
+    "id": 293,
+    "kabupatenId": 30,
+    "name": "CANDI MULYO"
+  },
+  {
+    "id": 641,
+    "kabupatenId": 15,
+    "name": "CANDI SARI"
+  },
+  {
+    "id": 2147,
+    "kabupatenId": 6,
+    "name": "CARINGIN"
+  },
+  {
+    "id": 790,
+    "kabupatenId": 137,
+    "name": "CEMPAKA"
+  },
+  {
+    "id": 744,
+    "kabupatenId": 3,
+    "name": "CENGKARENG"
+  },
+  {
+    "id": 746,
+    "kabupatenId": 89,
+    "name": "CENGKARENG"
+  },
+  {
+    "id": 2202,
+    "kabupatenId": 308,
+    "name": "CENGKARENG"
+  },
+  {
+    "id": 609,
+    "kabupatenId": 20,
+    "name": "CEPIRING"
+  },
+  {
+    "id": 974,
+    "kabupatenId": 116,
+    "name": "CERBON"
+  },
+  {
+    "id": 1170,
+    "kabupatenId": 271,
+    "name": "CERENTI"
+  },
+  {
+    "id": 1985,
+    "kabupatenId": 14,
+    "name": "CERME"
+  },
+  {
+    "id": 1320,
+    "kabupatenId": 235,
+    "name": "CERMEE"
+  },
+  {
+    "id": 765,
+    "kabupatenId": 6,
+    "name": "CIBINONG"
+  },
+  {
+    "id": 2193,
+    "kabupatenId": 102,
+    "name": "CIBITUNG"
+  },
+  {
+    "id": 788,
+    "kabupatenId": 3,
+    "name": "CIBITUNG"
+  },
+  {
+    "id": 771,
+    "kabupatenId": 3,
+    "name": "CIBODAS"
+  },
+  {
+    "id": 2318,
+    "kabupatenId": 49,
+    "name": "CICENDO"
+  },
+  {
+    "id": 777,
+    "kabupatenId": 3,
+    "name": "CIGUDEG"
+  },
+  {
+    "id": 783,
+    "kabupatenId": 6,
+    "name": "CIGUDEG."
+  },
+  {
+    "id": 1183,
+    "kabupatenId": 110,
+    "name": "CIJERAH"
+  },
+  {
+    "id": 760,
+    "kabupatenId": 6,
+    "name": "CIJERUK"
+  },
+  {
+    "id": 1380,
+    "kabupatenId": 226,
+    "name": "CIKALONG"
+  },
+  {
+    "id": 779,
+    "kabupatenId": 2,
+    "name": "CIKANDE"
+  },
+  {
+    "id": 2232,
+    "kabupatenId": 102,
+    "name": "CIKARANG UTARA"
+  },
+  {
+    "id": 2245,
+    "kabupatenId": 106,
+    "name": "CIKEMBAR"
+  },
+  {
+    "id": 743,
+    "kabupatenId": 3,
+    "name": "CIKUPA"
+  },
+  {
+    "id": 2191,
+    "kabupatenId": 40,
+    "name": "CILACAP TENGAH"
+  },
+  {
+    "id": 755,
+    "kabupatenId": 3,
+    "name": "CILEDUG"
+  },
+  {
+    "id": 2333,
+    "kabupatenId": 93,
+    "name": "CILEGON"
+  },
+  {
+    "id": 782,
+    "kabupatenId": 90,
+    "name": "CIPAYUNG"
+  },
+  {
+    "id": 750,
+    "kabupatenId": 3,
+    "name": "CIPONDOH"
+  },
+  {
+    "id": 758,
+    "kabupatenId": 5,
+    "name": "CIPUTAT"
+  },
+  {
+    "id": 2197,
+    "kabupatenId": 2,
+    "name": "CIRUAS"
+  },
+  {
+    "id": 739,
+    "kabupatenId": 3,
+    "name": "CISAUK"
+  },
+  {
+    "id": 700,
+    "kabupatenId": 3,
+    "name": "CISOKA"
+  },
+  {
+    "id": 2290,
+    "kabupatenId": 6,
+    "name": "CITEUREUP"
+  },
+  {
+    "id": 2154,
+    "kabupatenId": 93,
+    "name": "CIWANDAN"
+  },
+  {
+    "id": 1401,
+    "kabupatenId": 236,
+    "name": "CLURING"
+  },
+  {
+    "id": 1326,
+    "kabupatenId": 82,
+    "name": "CLURING"
+  },
+  {
+    "id": 1312,
+    "kabupatenId": 235,
+    "name": "CURAHDAMI"
+  },
+  {
+    "id": 695,
+    "kabupatenId": 3,
+    "name": "CURUG"
+  },
+  {
+    "id": 1299,
+    "kabupatenId": 277,
+    "name": "DABO SINGKEP"
+  },
+  {
+    "id": 1023,
+    "kabupatenId": 139,
+    "name": "DAHA SELATAN"
+  },
+  {
+    "id": 791,
+    "kabupatenId": 139,
+    "name": "DAHA UTARA"
+  },
+  {
+    "id": 1362,
+    "kabupatenId": 250,
+    "name": "DAMPIT"
+  },
+  {
+    "id": 1236,
+    "kabupatenId": 258,
+    "name": "DANAU BINGKUANG"
+  },
+  {
+    "id": 1040,
+    "kabupatenId": 169,
+    "name": "DANAU SALAK"
+  },
+  {
+    "id": 2188,
+    "kabupatenId": 285,
+    "name": "DANDER"
+  },
+  {
+    "id": 1514,
+    "kabupatenId": 243,
+    "name": "DASUK"
+  },
+  {
+    "id": 2389,
+    "kabupatenId": 250,
+    "name": "DAU"
+  },
+  {
+    "id": 1962,
+    "kabupatenId": 251,
+    "name": "DAWARBLANDONG"
+  },
+  {
+    "id": 591,
+    "kabupatenId": 19,
+    "name": "DAWE"
+  },
+  {
+    "id": 2337,
+    "kabupatenId": 110,
+    "name": "DAYEUHKOLOT"
+  },
+  {
+    "id": 1087,
+    "kabupatenId": 263,
+    "name": "DAYUN"
+  },
+  {
+    "id": 2065,
+    "kabupatenId": 14,
+    "name": "Default"
+  },
+  {
+    "id": 2062,
+    "kabupatenId": 11,
+    "name": "Default"
+  },
+  {
+    "id": 2061,
+    "kabupatenId": 10,
+    "name": "Default"
+  },
+  {
+    "id": 2060,
+    "kabupatenId": 9,
+    "name": "Default"
+  },
+  {
+    "id": 2059,
+    "kabupatenId": 8,
+    "name": "Default"
+  },
+  {
+    "id": 2057,
+    "kabupatenId": 6,
+    "name": "Default"
+  },
+  {
+    "id": 2064,
+    "kabupatenId": 13,
+    "name": "Default"
+  },
+  {
+    "id": 2054,
+    "kabupatenId": 2,
+    "name": "Default"
+  },
+  {
+    "id": 2055,
+    "kabupatenId": 3,
+    "name": "Default"
+  },
+  {
+    "id": 2053,
+    "kabupatenId": 1,
+    "name": "Default"
+  },
+  {
+    "id": 2068,
+    "kabupatenId": 16,
+    "name": "Default"
+  },
+  {
+    "id": 2067,
+    "kabupatenId": 15,
+    "name": "Default"
+  },
+  {
+    "id": 2063,
+    "kabupatenId": 12,
+    "name": "Default"
+  },
+  {
+    "id": 625,
+    "kabupatenId": 83,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 631,
+    "kabupatenId": 84,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 651,
+    "kabupatenId": 5,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 658,
+    "kabupatenId": 92,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 659,
+    "kabupatenId": 93,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 667,
+    "kabupatenId": 32,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 668,
+    "kabupatenId": 79,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 676,
+    "kabupatenId": 104,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 677,
+    "kabupatenId": 105,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 678,
+    "kabupatenId": 106,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 679,
+    "kabupatenId": 107,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 680,
+    "kabupatenId": 108,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 681,
+    "kabupatenId": 109,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 683,
+    "kabupatenId": 112,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 684,
+    "kabupatenId": 111,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 522,
+    "kabupatenId": 53,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 513,
+    "kabupatenId": 50,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 505,
+    "kabupatenId": 46,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1403,
+    "kabupatenId": 239,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1396,
+    "kabupatenId": 244,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 495,
+    "kabupatenId": 40,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1393,
+    "kabupatenId": 278,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1392,
+    "kabupatenId": 234,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 490,
+    "kabupatenId": 37,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 423,
+    "kabupatenId": 33,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1385,
+    "kabupatenId": 279,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1383,
+    "kabupatenId": 195,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 952,
+    "kabupatenId": 155,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1378,
+    "kabupatenId": 231,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 322,
+    "kabupatenId": 25,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1377,
+    "kabupatenId": 248,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1373,
+    "kabupatenId": 237,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1372,
+    "kabupatenId": 230,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 965,
+    "kabupatenId": 177,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1368,
+    "kabupatenId": 245,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 271,
+    "kabupatenId": 27,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1006,
+    "kabupatenId": 182,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1013,
+    "kabupatenId": 150,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1016,
+    "kabupatenId": 158,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1021,
+    "kabupatenId": 184,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1029,
+    "kabupatenId": 178,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1033,
+    "kabupatenId": 181,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 172,
+    "kabupatenId": 21,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 1166,
+    "kabupatenId": 271,
+    "name": "DEFAULT"
+  },
+  {
+    "id": 2153,
+    "kabupatenId": 63,
+    "name": "DELANGGU"
+  },
+  {
+    "id": 1293,
+    "kabupatenId": 265,
+    "name": "DELIMA"
+  },
+  {
+    "id": 1163,
+    "kabupatenId": 67,
+    "name": "DELI SERDANG"
+  },
+  {
+    "id": 613,
+    "kabupatenId": 17,
+    "name": "DEMAK KOTA"
+  },
+  {
+    "id": 642,
+    "kabupatenId": 17,
+    "name": "DEMPET"
+  },
+  {
+    "id": 2342,
+    "kabupatenId": 82,
+    "name": "DENPASAR SELATAN"
+  },
+  {
+    "id": 2162,
+    "kabupatenId": 82,
+    "name": "DENPASAR TIMUR"
+  },
+  {
+    "id": 752,
+    "kabupatenId": 94,
+    "name": "DEPOK"
+  },
+  {
+    "id": 2291,
+    "kabupatenId": 59,
+    "name": "DEPOK"
+  },
+  {
+    "id": 963,
+    "kabupatenId": 138,
+    "name": "DESA HILIR MUARA"
+  },
+  {
+    "id": 2174,
+    "kabupatenId": 39,
+    "name": "DIKAUM"
+  },
+  {
+    "id": 2034,
+    "kabupatenId": 38,
+    "name": "DIWEK"
+  },
+  {
+    "id": 1972,
+    "kabupatenId": 251,
+    "name": "DLANGGU"
+  },
+  {
+    "id": 2279,
+    "kabupatenId": 66,
+    "name": "DOLOPO"
+  },
+  {
+    "id": 2069,
+    "kabupatenId": 249,
+    "name": "DOLOPO"
+  },
+  {
+    "id": 2108,
+    "kabupatenId": 253,
+    "name": "DRINGU"
+  },
+  {
+    "id": 1986,
+    "kabupatenId": 14,
+    "name": "DRIYOREJO"
+  },
+  {
+    "id": 2185,
+    "kabupatenId": 71,
+    "name": "DUDUKLOR"
+  },
+  {
+    "id": 1987,
+    "kabupatenId": 14,
+    "name": "DUDUK SAMPEYAN"
+  },
+  {
+    "id": 2006,
+    "kabupatenId": 10,
+    "name": "DUKUH PAKIS"
+  },
+  {
+    "id": 603,
+    "kabupatenId": 31,
+    "name": "DUKUH WARU"
+  },
+  {
+    "id": 1988,
+    "kabupatenId": 14,
+    "name": "DUKUN"
+  },
+  {
+    "id": 1180,
+    "kabupatenId": 256,
+    "name": "DUMAI BARAT"
+  },
+  {
+    "id": 1181,
+    "kabupatenId": 256,
+    "name": "DUMAI TIMUR"
+  },
+  {
+    "id": 1515,
+    "kabupatenId": 243,
+    "name": "DUNGKEK"
+  },
+  {
+    "id": 2359,
+    "kabupatenId": 244,
+    "name": "DURENAN"
+  },
+  {
+    "id": 2400,
+    "kabupatenId": 90,
+    "name": "DUREN SAWIT"
+  },
+  {
+    "id": 1272,
+    "kabupatenId": 275,
+    "name": "DURI"
+  },
+  {
+    "id": 1117,
+    "kabupatenId": 276,
+    "name": "ENOK       "
+  },
+  {
+    "id": 2107,
+    "kabupatenId": 253,
+    "name": "GADING"
+  },
+  {
+    "id": 2080,
+    "kabupatenId": 252,
+    "name": "GADINGREJO"
+  },
+  {
+    "id": 1961,
+    "kabupatenId": 12,
+    "name": "GADINGREJO"
+  },
+  {
+    "id": 199,
+    "kabupatenId": 15,
+    "name": "GAJAH MUNGKUR"
+  },
+  {
+    "id": 1482,
+    "kabupatenId": 280,
+    "name": "GALIS"
+  },
+  {
+    "id": 1496,
+    "kabupatenId": 240,
+    "name": "GALIS"
+  },
+  {
+    "id": 1327,
+    "kabupatenId": 82,
+    "name": "GAMBIRAN"
+  },
+  {
+    "id": 1382,
+    "kabupatenId": 236,
+    "name": "GAMBIRAN"
+  },
+  {
+    "id": 855,
+    "kabupatenId": 169,
+    "name": "GAMBUT"
+  },
+  {
+    "id": 1516,
+    "kabupatenId": 243,
+    "name": "GANDING"
+  },
+  {
+    "id": 1617,
+    "kabupatenId": 243,
+    "name": "GAPURA"
+  },
+  {
+    "id": 1119,
+    "kabupatenId": 256,
+    "name": "GAS      "
+  },
+  {
+    "id": 1118,
+    "kabupatenId": 276,
+    "name": "GAUNG       "
+  },
+  {
+    "id": 2248,
+    "kabupatenId": 285,
+    "name": "GAYAM"
+  },
+  {
+    "id": 1618,
+    "kabupatenId": 243,
+    "name": "GAYAM"
+  },
+  {
+    "id": 259,
+    "kabupatenId": 15,
+    "name": "GAYAMSARI"
+  },
+  {
+    "id": 2007,
+    "kabupatenId": 10,
+    "name": "GAYUNGAN"
+  },
+  {
+    "id": 768,
+    "kabupatenId": 3,
+    "name": "GEBANG RAYA"
+  },
+  {
+    "id": 302,
+    "kabupatenId": 19,
+    "name": "GEBOG"
+  },
+  {
+    "id": 31,
+    "kabupatenId": 11,
+    "name": "GEDANGAN"
+  },
+  {
+    "id": 1965,
+    "kabupatenId": 251,
+    "name": "GEDEG"
+  },
+  {
+    "id": 1483,
+    "kabupatenId": 280,
+    "name": "GEGER"
+  },
+  {
+    "id": 2285,
+    "kabupatenId": 66,
+    "name": "GEGER"
+  },
+  {
+    "id": 2181,
+    "kabupatenId": 66,
+    "name": "GEMARANG"
+  },
+  {
+    "id": 1936,
+    "kabupatenId": 252,
+    "name": "GEMPOL "
+  },
+  {
+    "id": 623,
+    "kabupatenId": 20,
+    "name": "GEMUH"
+  },
+  {
+    "id": 2106,
+    "kabupatenId": 253,
+    "name": "GENDING"
+  },
+  {
+    "id": 1067,
+    "kabupatenId": 72,
+    "name": "GENENG"
+  },
+  {
+    "id": 1359,
+    "kabupatenId": 236,
+    "name": "GENTENG"
+  },
+  {
+    "id": 1400,
+    "kabupatenId": 235,
+    "name": "GENTENG"
+  },
+  {
+    "id": 1330,
+    "kabupatenId": 82,
+    "name": "GENTENG"
+  },
+  {
+    "id": 2008,
+    "kabupatenId": 10,
+    "name": "GENTENG "
+  },
+  {
+    "id": 119,
+    "kabupatenId": 15,
+    "name": "GENUK"
+  },
+  {
+    "id": 622,
+    "kabupatenId": 24,
+    "name": "GEYER"
+  },
+  {
+    "id": 1619,
+    "kabupatenId": 243,
+    "name": "GILI GENTENG"
+  },
+  {
+    "id": 1405,
+    "kabupatenId": 236,
+    "name": "GIRI"
+  },
+  {
+    "id": 1339,
+    "kabupatenId": 82,
+    "name": "GIRI"
+  },
+  {
+    "id": 2186,
+    "kabupatenId": 71,
+    "name": "GLAGAH"
+  },
+  {
+    "id": 2293,
+    "kabupatenId": 253,
+    "name": "GLAGAH"
+  },
+  {
+    "id": 1390,
+    "kabupatenId": 236,
+    "name": "GLAGAH"
+  },
+  {
+    "id": 1337,
+    "kabupatenId": 82,
+    "name": "GLAGAH"
+  },
+  {
+    "id": 1398,
+    "kabupatenId": 236,
+    "name": "GLENMORE"
+  },
+  {
+    "id": 1328,
+    "kabupatenId": 82,
+    "name": "GLENMORE"
+  },
+  {
+    "id": 2357,
+    "kabupatenId": 24,
+    "name": "GODONG"
+  },
+  {
+    "id": 593,
+    "kabupatenId": 43,
+    "name": "GODONG"
+  },
+  {
+    "id": 2161,
+    "kabupatenId": 245,
+    "name": "GONDANG"
+  },
+  {
+    "id": 1977,
+    "kabupatenId": 251,
+    "name": "GONDANG"
+  },
+  {
+    "id": 1937,
+    "kabupatenId": 252,
+    "name": "GONDANG WETAN"
+  },
+  {
+    "id": 1938,
+    "kabupatenId": 252,
+    "name": "GRATI"
+  },
+  {
+    "id": 1989,
+    "kabupatenId": 14,
+    "name": "GRESIK"
+  },
+  {
+    "id": 1302,
+    "kabupatenId": 235,
+    "name": "GRUJUGAN"
+  },
+  {
+    "id": 2009,
+    "kabupatenId": 10,
+    "name": "GUBENG"
+  },
+  {
+    "id": 184,
+    "kabupatenId": 24,
+    "name": "GUBUG"
+  },
+  {
+    "id": 2035,
+    "kabupatenId": 38,
+    "name": "GUDO"
+  },
+  {
+    "id": 1620,
+    "kabupatenId": 243,
+    "name": "GULUK GULUK"
+  },
+  {
+    "id": 2250,
+    "kabupatenId": 234,
+    "name": "GUMUKMAS"
+  },
+  {
+    "id": 971,
+    "kabupatenId": 137,
+    "name": "GUNTUNG PAYUNG"
+  },
+  {
+    "id": 187,
+    "kabupatenId": 17,
+    "name": "GUNTUR"
+  },
+  {
+    "id": 2010,
+    "kabupatenId": 10,
+    "name": "GUNUNGANYAR"
+  },
+  {
+    "id": 989,
+    "kabupatenId": 179,
+    "name": "GUNUNG BINTANG AWAI"
+  },
+  {
+    "id": 313,
+    "kabupatenId": 30,
+    "name": "GUNUNG PRING"
+  },
+  {
+    "id": 1193,
+    "kabupatenId": 258,
+    "name": "GUNUNG SAHILAN"
+  },
+  {
+    "id": 488,
+    "kabupatenId": 6,
+    "name": "GUNUNG SINDUR"
+  },
+  {
+    "id": 745,
+    "kabupatenId": 134,
+    "name": "GUNUNG SINDUR"
+  },
+  {
+    "id": 747,
+    "kabupatenId": 3,
+    "name": "GUNUNG SINDUR"
+  },
+  {
+    "id": 1220,
+    "kabupatenId": 271,
+    "name": "GUNUNG TOAR"
+  },
+  {
+    "id": 2338,
+    "kabupatenId": 248,
+    "name": "GURAH"
+  },
+  {
+    "id": 942,
+    "kabupatenId": 176,
+    "name": "HALONG"
+  },
+  {
+    "id": 854,
+    "kabupatenId": 167,
+    "name": "HAMBUKU"
+  },
+  {
+    "id": 976,
+    "kabupatenId": 116,
+    "name": "HANDIL BAKTI"
+  },
+  {
+    "id": 980,
+    "kabupatenId": 48,
+    "name": "HAYAPING"
+  },
+  {
+    "id": 1233,
+    "kabupatenId": 271,
+    "name": "HULU KUANTAN"
+  },
+  {
+    "id": 1268,
+    "kabupatenId": 271,
+    "name": "INUMAN"
+  },
+  {
+    "id": 986,
+    "kabupatenId": 171,
+    "name": "JABIREN"
+  },
+  {
+    "id": 23,
+    "kabupatenId": 11,
+    "name": "JABON"
+  },
+  {
+    "id": 770,
+    "kabupatenId": 47,
+    "name": "JAGA KARSA"
+  },
+  {
+    "id": 2280,
+    "kabupatenId": 23,
+    "name": "JAKEN"
+  },
+  {
+    "id": 2011,
+    "kabupatenId": 10,
+    "name": "JAMBANGAN"
+  },
+  {
+    "id": 1367,
+    "kabupatenId": 235,
+    "name": "JAMBESARI"
+  },
+  {
+    "id": 1,
+    "kabupatenId": 3,
+    "name": "JAMBI"
+  },
+  {
+    "id": 967,
+    "kabupatenId": 169,
+    "name": "JAMBU BURUNG "
+  },
+  {
+    "id": 1356,
+    "kabupatenId": 242,
+    "name": "JANGKAR"
+  },
+  {
+    "id": 579,
+    "kabupatenId": 17,
+    "name": "JATI"
+  },
+  {
+    "id": 581,
+    "kabupatenId": 19,
+    "name": "JATI"
+  },
+  {
+    "id": 1343,
+    "kabupatenId": 242,
+    "name": "JATIBANTENG"
+  },
+  {
+    "id": 2314,
+    "kabupatenId": 13,
+    "name": "JATIKALEN"
+  },
+  {
+    "id": 2397,
+    "kabupatenId": 53,
+    "name": "JATILAWANG"
+  },
+  {
+    "id": 2303,
+    "kabupatenId": 90,
+    "name": "JATINEGARA"
+  },
+  {
+    "id": 1971,
+    "kabupatenId": 251,
+    "name": "JATIREJO"
+  },
+  {
+    "id": 2116,
+    "kabupatenId": 57,
+    "name": "JATIROTO"
+  },
+  {
+    "id": 710,
+    "kabupatenId": 3,
+    "name": "JATI UWUNG"
+  },
+  {
+    "id": 2200,
+    "kabupatenId": 2,
+    "name": "JAWILAN"
+  },
+  {
+    "id": 2375,
+    "kabupatenId": 253,
+    "name": "JAYAPURA UTARA"
+  },
+  {
+    "id": 840,
+    "kabupatenId": 116,
+    "name": "JELAPAT"
+  },
+  {
+    "id": 988,
+    "kabupatenId": 179,
+    "name": "JENAMAS"
+  },
+  {
+    "id": 1964,
+    "kabupatenId": 251,
+    "name": "JETIS"
+  },
+  {
+    "id": 2221,
+    "kabupatenId": 111,
+    "name": "JETIS"
+  },
+  {
+    "id": 2071,
+    "kabupatenId": 282,
+    "name": "JIMBARAN"
+  },
+  {
+    "id": 1059,
+    "kabupatenId": 72,
+    "name": "JOGOROGO"
+  },
+  {
+    "id": 2036,
+    "kabupatenId": 38,
+    "name": "JOGOROTO"
+  },
+  {
+    "id": 2319,
+    "kabupatenId": 93,
+    "name": "JOMBANG"
+  },
+  {
+    "id": 2215,
+    "kabupatenId": 234,
+    "name": "JOMBANG"
+  },
+  {
+    "id": 748,
+    "kabupatenId": 3,
+    "name": "JOMBANG"
+  },
+  {
+    "id": 2037,
+    "kabupatenId": 38,
+    "name": "JOMBANG"
+  },
+  {
+    "id": 1466,
+    "kabupatenId": 233,
+    "name": "JRENGIK"
+  },
+  {
+    "id": 944,
+    "kabupatenId": 176,
+    "name": "JUAI"
+  },
+  {
+    "id": 2352,
+    "kabupatenId": 354,
+    "name": "JUNREJO"
+  },
+  {
+    "id": 635,
+    "kabupatenId": 23,
+    "name": "JUWANA"
+  },
+  {
+    "id": 1333,
+    "kabupatenId": 82,
+    "name": "KABAT"
+  },
+  {
+    "id": 1397,
+    "kabupatenId": 236,
+    "name": "KABAT"
+  },
+  {
+    "id": 2038,
+    "kabupatenId": 38,
+    "name": "KABUH"
+  },
+  {
+    "id": 2085,
+    "kabupatenId": 78,
+    "name": "KADEMANGAN"
+  },
+  {
+    "id": 1384,
+    "kabupatenId": 235,
+    "name": "KADEMANGAN"
+  },
+  {
+    "id": 1497,
+    "kabupatenId": 240,
+    "name": "KADUR"
+  },
+  {
+    "id": 1038,
+    "kabupatenId": 185,
+    "name": "KAHAYAN HILIR"
+  },
+  {
+    "id": 894,
+    "kabupatenId": 171,
+    "name": "KAHAYAN KUALA "
+  },
+  {
+    "id": 1621,
+    "kabupatenId": 243,
+    "name": "KALIANGET"
+  },
+  {
+    "id": 1329,
+    "kabupatenId": 82,
+    "name": "KALIBARU"
+  },
+  {
+    "id": 1361,
+    "kabupatenId": 236,
+    "name": "KALIBARU"
+  },
+  {
+    "id": 775,
+    "kabupatenId": 89,
+    "name": "KALI DERES"
+  },
+  {
+    "id": 712,
+    "kabupatenId": 3,
+    "name": "KALIDERES"
+  },
+  {
+    "id": 2328,
+    "kabupatenId": 253,
+    "name": "KALIDONI"
+  },
+  {
+    "id": 2302,
+    "kabupatenId": 84,
+    "name": "KALIDONI"
+  },
+  {
+    "id": 2368,
+    "kabupatenId": 18,
+    "name": "KALINYAMATAN"
+  },
+  {
+    "id": 1340,
+    "kabupatenId": 82,
+    "name": "KALIPURO"
+  },
+  {
+    "id": 1388,
+    "kabupatenId": 236,
+    "name": "KALIPURO"
+  },
+  {
+    "id": 1371,
+    "kabupatenId": 235,
+    "name": "KALIPURO"
+  },
+  {
+    "id": 2326,
+    "kabupatenId": 234,
+    "name": "KALISAT"
+  },
+  {
+    "id": 2289,
+    "kabupatenId": 234,
+    "name": "KALIWATES"
+  },
+  {
+    "id": 318,
+    "kabupatenId": 19,
+    "name": "KALI WUNGU"
+  },
+  {
+    "id": 607,
+    "kabupatenId": 20,
+    "name": "KALI WUNGU"
+  },
+  {
+    "id": 2198,
+    "kabupatenId": 15,
+    "name": "KALIWUNGU"
+  },
+  {
+    "id": 1484,
+    "kabupatenId": 280,
+    "name": "KAMAL"
+  },
+  {
+    "id": 1140,
+    "kabupatenId": 258,
+    "name": "KAMPAR "
+  },
+  {
+    "id": 2256,
+    "kabupatenId": 248,
+    "name": "KANDANGAN"
+  },
+  {
+    "id": 907,
+    "kabupatenId": 139,
+    "name": "KANDANGAN KOTA"
+  },
+  {
+    "id": 1089,
+    "kabupatenId": 263,
+    "name": "KANDIS"
+  },
+  {
+    "id": 1622,
+    "kabupatenId": 243,
+    "name": "KANGAYAN"
+  },
+  {
+    "id": 2086,
+    "kabupatenId": 78,
+    "name": "KANIGARAN"
+  },
+  {
+    "id": 2182,
+    "kabupatenId": 253,
+    "name": "KANIGARAN"
+  },
+  {
+    "id": 2150,
+    "kabupatenId": 285,
+    "name": "KANOR"
+  },
+  {
+    "id": 1354,
+    "kabupatenId": 242,
+    "name": "KAPONGAN"
+  },
+  {
+    "id": 928,
+    "kabupatenId": 147,
+    "name": "KAPUAS KOTA"
+  },
+  {
+    "id": 832,
+    "kabupatenId": 147,
+    "name": "KAPUAS KUALA"
+  },
+  {
+    "id": 924,
+    "kabupatenId": 147,
+    "name": "KAPUAS MURUNG"
+  },
+  {
+    "id": 1165,
+    "kabupatenId": 266,
+    "name": "KAPUR IX"
+  },
+  {
+    "id": 644,
+    "kabupatenId": 17,
+    "name": "KARANG AWEN"
+  },
+  {
+    "id": 2301,
+    "kabupatenId": 71,
+    "name": "KARANGBINANGUN"
+  },
+  {
+    "id": 1026,
+    "kabupatenId": 169,
+    "name": "KARANG INTAN "
+  },
+  {
+    "id": 597,
+    "kabupatenId": 15,
+    "name": "KARANG JATI"
+  },
+  {
+    "id": 2079,
+    "kabupatenId": 252,
+    "name": "KARANGKETUG"
+  },
+  {
+    "id": 1467,
+    "kabupatenId": 233,
+    "name": "KARANG PENANG"
+  },
+  {
+    "id": 2214,
+    "kabupatenId": 10,
+    "name": "KARANG PILANG"
+  },
+  {
+    "id": 2012,
+    "kabupatenId": 10,
+    "name": "KARANGPILANG"
+  },
+  {
+    "id": 2179,
+    "kabupatenId": 250,
+    "name": "KARANGPLOSO"
+  },
+  {
+    "id": 2178,
+    "kabupatenId": 249,
+    "name": "KARANGPLOSO"
+  },
+  {
+    "id": 564,
+    "kabupatenId": 72,
+    "name": "KARANGREJO"
+  },
+  {
+    "id": 1054,
+    "kabupatenId": 70,
+    "name": "KARANGREJO"
+  },
+  {
+    "id": 753,
+    "kabupatenId": 3,
+    "name": "KARANG TENAGAH"
+  },
+  {
+    "id": 496,
+    "kabupatenId": 26,
+    "name": "KARANG TENGAH"
+  },
+  {
+    "id": 113,
+    "kabupatenId": 17,
+    "name": "KARANG TENGAH"
+  },
+  {
+    "id": 1051,
+    "kabupatenId": 70,
+    "name": "KARAS"
+  },
+  {
+    "id": 698,
+    "kabupatenId": 3,
+    "name": "KARAWACI"
+  },
+  {
+    "id": 1070,
+    "kabupatenId": 77,
+    "name": "KARIMUN"
+  },
+  {
+    "id": 2073,
+    "kabupatenId": 248,
+    "name": "KAROKAN"
+  },
+  {
+    "id": 1055,
+    "kabupatenId": 70,
+    "name": "KARTOHARJO"
+  },
+  {
+    "id": 2225,
+    "kabupatenId": 285,
+    "name": "KASIMAN"
+  },
+  {
+    "id": 1122,
+    "kabupatenId": 276,
+    "name": "KATEMAN"
+  },
+  {
+    "id": 2317,
+    "kabupatenId": 341,
+    "name": "KATIBUNG"
+  },
+  {
+    "id": 1030,
+    "kabupatenId": 180,
+    "name": "KATINGAN TENGAH "
+  },
+  {
+    "id": 1047,
+    "kabupatenId": 70,
+    "name": "KAWEDANAN"
+  },
+  {
+    "id": 879,
+    "kabupatenId": 169,
+    "name": "KAYU BAWANG "
+  },
+  {
+    "id": 772,
+    "kabupatenId": 47,
+    "name": "KEBAYORAN"
+  },
+  {
+    "id": 2258,
+    "kabupatenId": 253,
+    "name": "KEBOMAS"
+  },
+  {
+    "id": 1990,
+    "kabupatenId": 14,
+    "name": "KEBOMAS"
+  },
+  {
+    "id": 601,
+    "kabupatenId": 17,
+    "name": "KEBONAGUNG"
+  },
+  {
+    "id": 2112,
+    "kabupatenId": 253,
+    "name": "KECIK"
+  },
+  {
+    "id": 2000,
+    "kabupatenId": 14,
+    "name": "KEDAMEAN"
+  },
+  {
+    "id": 2087,
+    "kabupatenId": 78,
+    "name": "KEDOPOK"
+  },
+  {
+    "id": 2189,
+    "kabupatenId": 285,
+    "name": "KEDUNG ADEM"
+  },
+  {
+    "id": 1468,
+    "kabupatenId": 233,
+    "name": "KEDUNGDUNG"
+  },
+  {
+    "id": 2176,
+    "kabupatenId": 57,
+    "name": "KEDUNGJAJANG"
+  },
+  {
+    "id": 2249,
+    "kabupatenId": 238,
+    "name": "KEDUNGKANDANG"
+  },
+  {
+    "id": 2380,
+    "kabupatenId": 25,
+    "name": "KEDUNGTUBAN"
+  },
+  {
+    "id": 2379,
+    "kabupatenId": 245,
+    "name": "KEDUNGWARU"
+  },
+  {
+    "id": 1939,
+    "kabupatenId": 252,
+    "name": "KEJAYAN"
+  },
+  {
+    "id": 2199,
+    "kabupatenId": 250,
+    "name": "KELAPADUA"
+  },
+  {
+    "id": 1020,
+    "kabupatenId": 91,
+    "name": "KELAPA GADING"
+  },
+  {
+    "id": 1134,
+    "kabupatenId": 257,
+    "name": "KELAYANG "
+  },
+  {
+    "id": 2126,
+    "kabupatenId": 294,
+    "name": "KELILING DANAU"
+  },
+  {
+    "id": 611,
+    "kabupatenId": 18,
+    "name": "KELING"
+  },
+  {
+    "id": 2195,
+    "kabupatenId": 18,
+    "name": "KEMBANG"
+  },
+  {
+    "id": 756,
+    "kabupatenId": 89,
+    "name": "KEMBANGAN"
+  },
+  {
+    "id": 2253,
+    "kabupatenId": 71,
+    "name": "KEMBANGBAHU"
+  },
+  {
+    "id": 409,
+    "kabupatenId": 15,
+    "name": "KEMIJEN"
+  },
+  {
+    "id": 1963,
+    "kabupatenId": 251,
+    "name": "KEMLAGI"
+  },
+  {
+    "id": 1128,
+    "kabupatenId": 256,
+    "name": "KEMUNIG"
+  },
+  {
+    "id": 2241,
+    "kabupatenId": 234,
+    "name": "KENCONG"
+  },
+  {
+    "id": 595,
+    "kabupatenId": 20,
+    "name": "KENDAL"
+  },
+  {
+    "id": 1060,
+    "kabupatenId": 72,
+    "name": "KENDAL"
+  },
+  {
+    "id": 1349,
+    "kabupatenId": 242,
+    "name": "KENDIT"
+  },
+  {
+    "id": 2013,
+    "kabupatenId": 10,
+    "name": "KENJERAN"
+  },
+  {
+    "id": 2208,
+    "kabupatenId": 250,
+    "name": "KEPANJEN"
+  },
+  {
+    "id": 1203,
+    "kabupatenId": 261,
+    "name": "KEPENUHAN"
+  },
+  {
+    "id": 1242,
+    "kabupatenId": 260,
+    "name": "KERINCI"
+  },
+  {
+    "id": 1090,
+    "kabupatenId": 263,
+    "name": "KERINCI KANAN"
+  },
+  {
+    "id": 1252,
+    "kabupatenId": 276,
+    "name": "KERITANG"
+  },
+  {
+    "id": 857,
+    "kabupatenId": 169,
+    "name": "KERTAK HANYAR"
+  },
+  {
+    "id": 2144,
+    "kabupatenId": 13,
+    "name": "KERTOSONO"
+  },
+  {
+    "id": 2039,
+    "kabupatenId": 38,
+    "name": "KESAMBEN"
+  },
+  {
+    "id": 1469,
+    "kabupatenId": 233,
+    "name": "KETAPANG"
+  },
+  {
+    "id": 1317,
+    "kabupatenId": 235,
+    "name": "KLABANG"
+  },
+  {
+    "id": 2369,
+    "kabupatenId": 57,
+    "name": "KLAKAH"
+  },
+  {
+    "id": 1485,
+    "kabupatenId": 280,
+    "name": "KLAMPIS"
+  },
+  {
+    "id": 2399,
+    "kabupatenId": 381,
+    "name": "KLENDER"
+  },
+  {
+    "id": 1374,
+    "kabupatenId": 238,
+    "name": "KLOJEN"
+  },
+  {
+    "id": 1141,
+    "kabupatenId": 258,
+    "name": "KMPR KIRI "
+  },
+  {
+    "id": 1142,
+    "kabupatenId": 258,
+    "name": "KMPR KIRI HILIR "
+  },
+  {
+    "id": 1143,
+    "kabupatenId": 258,
+    "name": "KMPR KIRI HULU "
+  },
+  {
+    "id": 2272,
+    "kabupatenId": 91,
+    "name": "KOJA"
+  },
+  {
+    "id": 2349,
+    "kabupatenId": 353,
+    "name": "KOJA"
+  },
+  {
+    "id": 1486,
+    "kabupatenId": 280,
+    "name": "KOKOP"
+  },
+  {
+    "id": 1487,
+    "kabupatenId": 280,
+    "name": "KONANG"
+  },
+  {
+    "id": 703,
+    "kabupatenId": 3,
+    "name": "KOSAMBI"
+  },
+  {
+    "id": 2261,
+    "kabupatenId": 237,
+    "name": "KOTA"
+  },
+  {
+    "id": 1404,
+    "kabupatenId": 253,
+    "name": "KOTA ANYAR"
+  },
+  {
+    "id": 966,
+    "kabupatenId": 138,
+    "name": "KOTABARU"
+  },
+  {
+    "id": 960,
+    "kabupatenId": 149,
+    "name": "KOTA BESI HILIR"
+  },
+  {
+    "id": 2205,
+    "kabupatenId": 37,
+    "name": "KOTOARJO"
+  },
+  {
+    "id": 1088,
+    "kabupatenId": 263,
+    "name": "KOTO GASIB"
+  },
+  {
+    "id": 2125,
+    "kabupatenId": 294,
+    "name": "KOTO PATAH"
+  },
+  {
+    "id": 2166,
+    "kabupatenId": 24,
+    "name": "KRADENAN"
+  },
+  {
+    "id": 2105,
+    "kabupatenId": 253,
+    "name": "KRAKSAAN"
+  },
+  {
+    "id": 2228,
+    "kabupatenId": 232,
+    "name": "KRAMAT"
+  },
+  {
+    "id": 2155,
+    "kabupatenId": 2,
+    "name": "KRAMATWATU"
+  },
+  {
+    "id": 1940,
+    "kabupatenId": 252,
+    "name": "KRATON"
+  },
+  {
+    "id": 2381,
+    "kabupatenId": 58,
+    "name": "KRATON"
+  },
+  {
+    "id": 2104,
+    "kabupatenId": 253,
+    "name": "KREJENGAN"
+  },
+  {
+    "id": 2014,
+    "kabupatenId": 10,
+    "name": "KREMBANGAN"
+  },
+  {
+    "id": 22,
+    "kabupatenId": 11,
+    "name": "KREMBUNG"
+  },
+  {
+    "id": 701,
+    "kabupatenId": 3,
+    "name": "KRESEK"
+  },
+  {
+    "id": 37,
+    "kabupatenId": 11,
+    "name": "KRIAN"
+  },
+  {
+    "id": 702,
+    "kabupatenId": 3,
+    "name": "KRONJO"
+  },
+  {
+    "id": 2103,
+    "kabupatenId": 253,
+    "name": "KRUCIL"
+  },
+  {
+    "id": 307,
+    "kabupatenId": 16,
+    "name": "KR WUNI"
+  },
+  {
+    "id": 1114,
+    "kabupatenId": 276,
+    "name": "KUALA INDRAGIRI"
+  },
+  {
+    "id": 1271,
+    "kabupatenId": 271,
+    "name": "KUANTAN MUDIK"
+  },
+  {
+    "id": 1270,
+    "kabupatenId": 271,
+    "name": "KUANTAN TENGAH"
+  },
+  {
+    "id": 2387,
+    "kabupatenId": 371,
+    "name": "KUANTAN TENGAH"
+  },
+  {
+    "id": 1152,
+    "kabupatenId": 261,
+    "name": "KUBU"
+  },
+  {
+    "id": 2040,
+    "kabupatenId": 38,
+    "name": "KUDU"
+  },
+  {
+    "id": 1269,
+    "kabupatenId": 276,
+    "name": "KUINDRA"
+  },
+  {
+    "id": 690,
+    "kabupatenId": 3,
+    "name": "KUNCIRAN"
+  },
+  {
+    "id": 1075,
+    "kabupatenId": 77,
+    "name": "KUNDUR "
+  },
+  {
+    "id": 1077,
+    "kabupatenId": 77,
+    "name": "KUNDUR BARAT"
+  },
+  {
+    "id": 1076,
+    "kabupatenId": 77,
+    "name": "KUNDUR UTARA "
+  },
+  {
+    "id": 1281,
+    "kabupatenId": 262,
+    "name": "KUNTO DARUSALAM"
+  },
+  {
+    "id": 838,
+    "kabupatenId": 143,
+    "name": "KURAU"
+  },
+  {
+    "id": 1043,
+    "kabupatenId": 169,
+    "name": "KURAU"
+  },
+  {
+    "id": 2102,
+    "kabupatenId": 253,
+    "name": "KURIPAN"
+  },
+  {
+    "id": 883,
+    "kabupatenId": 164,
+    "name": "KUSAN HILIR"
+  },
+  {
+    "id": 1975,
+    "kabupatenId": 251,
+    "name": "KUTOREJO"
+  },
+  {
+    "id": 1069,
+    "kabupatenId": 72,
+    "name": "KWADUNGAN"
+  },
+  {
+    "id": 1488,
+    "kabupatenId": 280,
+    "name": "KWANYAR"
+  },
+  {
+    "id": 1489,
+    "kabupatenId": 280,
+    "name": "LABANG"
+  },
+  {
+    "id": 2348,
+    "kabupatenId": 353,
+    "name": "LAGOA"
+  },
+  {
+    "id": 2015,
+    "kabupatenId": 10,
+    "name": "LAKARSANTRI"
+  },
+  {
+    "id": 939,
+    "kabupatenId": 176,
+    "name": "LAMPIHONG"
+  },
+  {
+    "id": 938,
+    "kabupatenId": 167,
+    "name": "LAMPIHONG"
+  },
+  {
+    "id": 2235,
+    "kabupatenId": 73,
+    "name": "LAMPUNG TIMUR"
+  },
+  {
+    "id": 808,
+    "kabupatenId": 137,
+    "name": "LANDASAN ULIN"
+  },
+  {
+    "id": 1251,
+    "kabupatenId": 260,
+    "name": "LANGGAM"
+  },
+  {
+    "id": 1498,
+    "kabupatenId": 240,
+    "name": "LARANGAN"
+  },
+  {
+    "id": 2363,
+    "kabupatenId": 361,
+    "name": "LATIMOJONG"
+  },
+  {
+    "id": 736,
+    "kabupatenId": 2,
+    "name": "LEBAK"
+  },
+  {
+    "id": 2101,
+    "kabupatenId": 253,
+    "name": "LECES"
+  },
+  {
+    "id": 2298,
+    "kabupatenId": 234,
+    "name": "LEDOKOMBO"
+  },
+  {
+    "id": 694,
+    "kabupatenId": 3,
+    "name": "LEGOK"
+  },
+  {
+    "id": 1941,
+    "kabupatenId": 252,
+    "name": "LEKOK"
+  },
+  {
+    "id": 1050,
+    "kabupatenId": 70,
+    "name": "LEMBEYAN"
+  },
+  {
+    "id": 2343,
+    "kabupatenId": 13,
+    "name": "LENGKONG"
+  },
+  {
+    "id": 2229,
+    "kabupatenId": 49,
+    "name": "LENGKONG"
+  },
+  {
+    "id": 1623,
+    "kabupatenId": 243,
+    "name": "LENTENG"
+  },
+  {
+    "id": 954,
+    "kabupatenId": 169,
+    "name": "LIANG ANGGANG"
+  },
+  {
+    "id": 1381,
+    "kabupatenId": 236,
+    "name": "LICIN"
+  },
+  {
+    "id": 1210,
+    "kabupatenId": 265,
+    "name": "LIMA PULUH"
+  },
+  {
+    "id": 1172,
+    "kabupatenId": 9,
+    "name": "LINGGO SARI BAGANTI"
+  },
+  {
+    "id": 1179,
+    "kabupatenId": 269,
+    "name": "LINGGO SARI BAGANTI"
+  },
+  {
+    "id": 1229,
+    "kabupatenId": 271,
+    "name": "LIPAT KAIN"
+  },
+  {
+    "id": 1135,
+    "kabupatenId": 257,
+    "name": "LIRIK "
+  },
+  {
+    "id": 1201,
+    "kabupatenId": 271,
+    "name": "LOGAS"
+  },
+  {
+    "id": 1258,
+    "kabupatenId": 271,
+    "name": "LOGAS TANAH DARAT"
+  },
+  {
+    "id": 903,
+    "kabupatenId": 137,
+    "name": "LOKTABAT"
+  },
+  {
+    "id": 2266,
+    "kabupatenId": 54,
+    "name": "LOSARANG"
+  },
+  {
+    "id": 2078,
+    "kabupatenId": 250,
+    "name": "LOWOK WARU"
+  },
+  {
+    "id": 2117,
+    "kabupatenId": 238,
+    "name": "LOWOKWARU"
+  },
+  {
+    "id": 1091,
+    "kabupatenId": 263,
+    "name": "LUBUK DALAM"
+  },
+  {
+    "id": 1217,
+    "kabupatenId": 271,
+    "name": "LUBUK JAMBI"
+  },
+  {
+    "id": 1171,
+    "kabupatenId": 271,
+    "name": "LUBUKJAMBI"
+  },
+  {
+    "id": 2242,
+    "kabupatenId": 57,
+    "name": "LUMAJANG"
+  },
+  {
+    "id": 1942,
+    "kabupatenId": 252,
+    "name": "LUMBANG"
+  },
+  {
+    "id": 2100,
+    "kabupatenId": 253,
+    "name": "LUMBANG"
+  },
+  {
+    "id": 2129,
+    "kabupatenId": 295,
+    "name": "LUWUK"
+  },
+  {
+    "id": 549,
+    "kabupatenId": 66,
+    "name": "MADIUN"
+  },
+  {
+    "id": 1301,
+    "kabupatenId": 235,
+    "name": "MAESAN"
+  },
+  {
+    "id": 486,
+    "kabupatenId": 30,
+    "name": "MAGELANG UTARA"
+  },
+  {
+    "id": 2158,
+    "kabupatenId": 251,
+    "name": "MAGERSARI"
+  },
+  {
+    "id": 1980,
+    "kabupatenId": 113,
+    "name": "MAGERSARI"
+  },
+  {
+    "id": 1045,
+    "kabupatenId": 70,
+    "name": "MAGETAN"
+  },
+  {
+    "id": 1221,
+    "kabupatenId": 265,
+    "name": "MAHARATU"
+  },
+  {
+    "id": 784,
+    "kabupatenId": 90,
+    "name": "MAKASAR"
+  },
+  {
+    "id": 1039,
+    "kabupatenId": 185,
+    "name": "MALIKU"
+  },
+  {
+    "id": 2212,
+    "kabupatenId": 311,
+    "name": "MAMAJANG"
+  },
+  {
+    "id": 2332,
+    "kabupatenId": 2,
+    "name": "MANCAK"
+  },
+  {
+    "id": 1121,
+    "kabupatenId": 256,
+    "name": "MANDAH"
+  },
+  {
+    "id": 835,
+    "kabupatenId": 116,
+    "name": "MANDASTANA"
+  },
+  {
+    "id": 1100,
+    "kabupatenId": 275,
+    "name": "MANDAU"
+  },
+  {
+    "id": 1624,
+    "kabupatenId": 243,
+    "name": "MANDING"
+  },
+  {
+    "id": 984,
+    "kabupatenId": 171,
+    "name": "MANDOMAI"
+  },
+  {
+    "id": 1352,
+    "kabupatenId": 242,
+    "name": "MANGARAN"
+  },
+  {
+    "id": 2271,
+    "kabupatenId": 329,
+    "name": "MANGKUTANA"
+  },
+  {
+    "id": 2140,
+    "kabupatenId": 249,
+    "name": "MANGUNHARJO"
+  },
+  {
+    "id": 2393,
+    "kabupatenId": 72,
+    "name": "MANTINGAN"
+  },
+  {
+    "id": 2075,
+    "kabupatenId": 10,
+    "name": "MANUKAN WETAN"
+  },
+  {
+    "id": 1992,
+    "kabupatenId": 14,
+    "name": "MANYAR"
+  },
+  {
+    "id": 2276,
+    "kabupatenId": 235,
+    "name": "MANYAR"
+  },
+  {
+    "id": 1048,
+    "kabupatenId": 70,
+    "name": "MAOSPATI"
+  },
+  {
+    "id": 969,
+    "kabupatenId": 116,
+    "name": "MARABAHAN KOTA"
+  },
+  {
+    "id": 1035,
+    "kabupatenId": 169,
+    "name": "MARATAPURA BARAT"
+  },
+  {
+    "id": 1065,
+    "kabupatenId": 110,
+    "name": "MARGAHAYU"
+  },
+  {
+    "id": 637,
+    "kabupatenId": 23,
+    "name": "MARGOREJO"
+  },
+  {
+    "id": 2148,
+    "kabupatenId": 11,
+    "name": "MARISO"
+  },
+  {
+    "id": 2099,
+    "kabupatenId": 253,
+    "name": "MARON"
+  },
+  {
+    "id": 1194,
+    "kabupatenId": 265,
+    "name": "MARPOYAN"
+  },
+  {
+    "id": 1176,
+    "kabupatenId": 98,
+    "name": "MARPOYAN RIBUT"
+  },
+  {
+    "id": 881,
+    "kabupatenId": 169,
+    "name": "MARTAPURA"
+  },
+  {
+    "id": 1625,
+    "kabupatenId": 243,
+    "name": "MASALEMBU"
+  },
+  {
+    "id": 2296,
+    "kabupatenId": 334,
+    "name": "MATANGNGA"
+  },
+  {
+    "id": 2346,
+    "kabupatenId": 253,
+    "name": "MATRAMAN"
+  },
+  {
+    "id": 880,
+    "kabupatenId": 169,
+    "name": "MATRAMAN"
+  },
+  {
+    "id": 2260,
+    "kabupatenId": 90,
+    "name": "MATRAMAN"
+  },
+  {
+    "id": 2347,
+    "kabupatenId": 352,
+    "name": "MATRAMAN"
+  },
+  {
+    "id": 707,
+    "kabupatenId": 3,
+    "name": "MAUK"
+  },
+  {
+    "id": 2088,
+    "kabupatenId": 78,
+    "name": "MAYANGAN"
+  },
+  {
+    "id": 2211,
+    "kabupatenId": 253,
+    "name": "MAYANGAN"
+  },
+  {
+    "id": 2157,
+    "kabupatenId": 18,
+    "name": "MAYONG"
+  },
+  {
+    "id": 2310,
+    "kabupatenId": 253,
+    "name": "MEDAN HELVETIA"
+  },
+  {
+    "id": 2194,
+    "kabupatenId": 67,
+    "name": "MEDAN PERJUANGAN"
+  },
+  {
+    "id": 2364,
+    "kabupatenId": 221,
+    "name": "MEDAN SATRIA"
+  },
+  {
+    "id": 2041,
+    "kabupatenId": 38,
+    "name": "MEGALUH"
+  },
+  {
+    "id": 2372,
+    "kabupatenId": 66,
+    "name": "MEJAYAN"
+  },
+  {
+    "id": 817,
+    "kabupatenId": 116,
+    "name": "MEKAR JAYA"
+  },
+  {
+    "id": 911,
+    "kabupatenId": 116,
+    "name": "MEKAR SARI"
+  },
+  {
+    "id": 1098,
+    "kabupatenId": 263,
+    "name": "MEMPURA"
+  },
+  {
+    "id": 1993,
+    "kabupatenId": 14,
+    "name": "MENGANTI"
+  },
+  {
+    "id": 990,
+    "kabupatenId": 179,
+    "name": "MENGKATIP"
+  },
+  {
+    "id": 805,
+    "kabupatenId": 147,
+    "name": "MENTANGAI"
+  },
+  {
+    "id": 964,
+    "kabupatenId": 148,
+    "name": "MENTAYA HILIR SELATAN"
+  },
+  {
+    "id": 646,
+    "kabupatenId": 52,
+    "name": "MERAK KURAK"
+  },
+  {
+    "id": 1072,
+    "kabupatenId": 77,
+    "name": "MERAL "
+  },
+  {
+    "id": 1276,
+    "kabupatenId": 265,
+    "name": "MERANTI PANDAK"
+  },
+  {
+    "id": 1103,
+    "kabupatenId": 275,
+    "name": "MERBAU"
+  },
+  {
+    "id": 370,
+    "kabupatenId": 15,
+    "name": "MIJEN"
+  },
+  {
+    "id": 114,
+    "kabupatenId": 17,
+    "name": "MIJEN"
+  },
+  {
+    "id": 1092,
+    "kabupatenId": 263,
+    "name": "MINAS"
+  },
+  {
+    "id": 1209,
+    "kabupatenId": 265,
+    "name": "MINAS"
+  },
+  {
+    "id": 1282,
+    "kabupatenId": 263,
+    "name": "MINAS JAYA"
+  },
+  {
+    "id": 1347,
+    "kabupatenId": 242,
+    "name": "MLANDINGAN"
+  },
+  {
+    "id": 632,
+    "kabupatenId": 18,
+    "name": "MLONGGO"
+  },
+  {
+    "id": 1490,
+    "kabupatenId": 280,
+    "name": "MODUNG"
+  },
+  {
+    "id": 2042,
+    "kabupatenId": 38,
+    "name": "MOJOAGUNG"
+  },
+  {
+    "id": 1966,
+    "kabupatenId": 251,
+    "name": "MOJOANYAR"
+  },
+  {
+    "id": 1973,
+    "kabupatenId": 251,
+    "name": "MOJOSARI"
+  },
+  {
+    "id": 2043,
+    "kabupatenId": 38,
+    "name": "MOJOWARNO"
+  },
+  {
+    "id": 1074,
+    "kabupatenId": 77,
+    "name": "MORO "
+  },
+  {
+    "id": 126,
+    "kabupatenId": 17,
+    "name": "MRANGGEN"
+  },
+  {
+    "id": 2206,
+    "kabupatenId": 310,
+    "name": "MUARA DUA"
+  },
+  {
+    "id": 1017,
+    "kabupatenId": 157,
+    "name": "MUARA KOMAM"
+  },
+  {
+    "id": 815,
+    "kabupatenId": 146,
+    "name": "MUARA TEWEH"
+  },
+  {
+    "id": 2016,
+    "kabupatenId": 10,
+    "name": "MULYOREJO"
+  },
+  {
+    "id": 1325,
+    "kabupatenId": 82,
+    "name": "MUNCAR"
+  },
+  {
+    "id": 1395,
+    "kabupatenId": 236,
+    "name": "MUNCAR"
+  },
+  {
+    "id": 1044,
+    "kabupatenId": 139,
+    "name": "NAGARA"
+  },
+  {
+    "id": 2236,
+    "kabupatenId": 107,
+    "name": "NARINGGUL"
+  },
+  {
+    "id": 1255,
+    "kabupatenId": 270,
+    "name": "NATUNA"
+  },
+  {
+    "id": 767,
+    "kabupatenId": 3,
+    "name": "NEGLASARI"
+  },
+  {
+    "id": 2234,
+    "kabupatenId": 59,
+    "name": "NGAGLIK"
+  },
+  {
+    "id": 2344,
+    "kabupatenId": 350,
+    "name": "NGAGLIK"
+  },
+  {
+    "id": 131,
+    "kabupatenId": 15,
+    "name": "NGALIYAN"
+  },
+  {
+    "id": 1052,
+    "kabupatenId": 70,
+    "name": "NGARIBOYO"
+  },
+  {
+    "id": 2151,
+    "kabupatenId": 71,
+    "name": "NGIMBABG"
+  },
+  {
+    "id": 2322,
+    "kabupatenId": 13,
+    "name": "NGLUYU"
+  },
+  {
+    "id": 2267,
+    "kabupatenId": 38,
+    "name": "NGOBO"
+  },
+  {
+    "id": 2044,
+    "kabupatenId": 38,
+    "name": "NGORO"
+  },
+  {
+    "id": 1976,
+    "kabupatenId": 251,
+    "name": "NGORO "
+  },
+  {
+    "id": 2164,
+    "kabupatenId": 13,
+    "name": "NGRONGGOT"
+  },
+  {
+    "id": 1943,
+    "kabupatenId": 252,
+    "name": "NGULING"
+  },
+  {
+    "id": 560,
+    "kabupatenId": 70,
+    "name": "NGUNTORONADI"
+  },
+  {
+    "id": 2045,
+    "kabupatenId": 38,
+    "name": "NGUSIKAN"
+  },
+  {
+    "id": 1926,
+    "kabupatenId": 243,
+    "name": "NONGGUNONG"
+  },
+  {
+    "id": 1470,
+    "kabupatenId": 233,
+    "name": "OMBEN"
+  },
+  {
+    "id": 2017,
+    "kabupatenId": 10,
+    "name": "PABEAN CANTIKAN"
+  },
+  {
+    "id": 2358,
+    "kabupatenId": 13,
+    "name": "PACE"
+  },
+  {
+    "id": 1979,
+    "kabupatenId": 251,
+    "name": "PACET"
+  },
+  {
+    "id": 2259,
+    "kabupatenId": 57,
+    "name": "PADANG"
+  },
+  {
+    "id": 2366,
+    "kabupatenId": 362,
+    "name": "PADANG BATUNG"
+  },
+  {
+    "id": 902,
+    "kabupatenId": 139,
+    "name": "PADANG BATUNG"
+  },
+  {
+    "id": 1219,
+    "kabupatenId": 265,
+    "name": "PADANG BULANG"
+  },
+  {
+    "id": 1499,
+    "kabupatenId": 240,
+    "name": "PADEMAWU"
+  },
+  {
+    "id": 2084,
+    "kabupatenId": 250,
+    "name": "PAGAK"
+  },
+  {
+    "id": 936,
+    "kabupatenId": 164,
+    "name": "PAGATAN"
+  },
+  {
+    "id": 691,
+    "kabupatenId": 3,
+    "name": "PAGEDANGAN"
+  },
+  {
+    "id": 2159,
+    "kabupatenId": 250,
+    "name": "PAGELARAN"
+  },
+  {
+    "id": 2278,
+    "kabupatenId": 248,
+    "name": "PAGU"
+  },
+  {
+    "id": 906,
+    "kabupatenId": 117,
+    "name": "PAHANDUT"
+  },
+  {
+    "id": 2098,
+    "kabupatenId": 253,
+    "name": "PAITON"
+  },
+  {
+    "id": 2097,
+    "kabupatenId": 253,
+    "name": "PAJARAKAN"
+  },
+  {
+    "id": 2217,
+    "kabupatenId": 253,
+    "name": "PAKAL"
+  },
+  {
+    "id": 2018,
+    "kabupatenId": 10,
+    "name": "PAKAL"
+  },
+  {
+    "id": 1314,
+    "kabupatenId": 235,
+    "name": "PAKEM"
+  },
+  {
+    "id": 1313,
+    "kabupatenId": 235,
+    "name": "PAKISAN"
+  },
+  {
+    "id": 734,
+    "kabupatenId": 103,
+    "name": "PAKIS JAYA"
+  },
+  {
+    "id": 1500,
+    "kabupatenId": 240,
+    "name": "PAKONG"
+  },
+  {
+    "id": 706,
+    "kabupatenId": 3,
+    "name": "PAKU HAJI"
+  },
+  {
+    "id": 2096,
+    "kabupatenId": 253,
+    "name": "PAKUNIRAN"
+  },
+  {
+    "id": 912,
+    "kabupatenId": 117,
+    "name": "PALANGKARAYA"
+  },
+  {
+    "id": 1501,
+    "kabupatenId": 240,
+    "name": "PALENGAAN"
+  },
+  {
+    "id": 2146,
+    "kabupatenId": 299,
+    "name": "PALLANGGA"
+  },
+  {
+    "id": 769,
+    "kabupatenId": 89,
+    "name": "PALMERAH"
+  },
+  {
+    "id": 1502,
+    "kabupatenId": 240,
+    "name": "PAMEKASAN"
+  },
+  {
+    "id": 1464,
+    "kabupatenId": 75,
+    "name": "PAMEKASAN"
+  },
+  {
+    "id": 516,
+    "kabupatenId": 36,
+    "name": "PAMOTAN"
+  },
+  {
+    "id": 741,
+    "kabupatenId": 3,
+    "name": "PAMULANG"
+  },
+  {
+    "id": 1174,
+    "kabupatenId": 265,
+    "name": "PANAM"
+  },
+  {
+    "id": 1350,
+    "kabupatenId": 242,
+    "name": "PANARUKAN"
+  },
+  {
+    "id": 2167,
+    "kabupatenId": 302,
+    "name": "PANARUKAN"
+  },
+  {
+    "id": 2001,
+    "kabupatenId": 14,
+    "name": "PANCENG"
+  },
+  {
+    "id": 1944,
+    "kabupatenId": 252,
+    "name": "PANDAAN "
+  },
+  {
+    "id": 1046,
+    "kabupatenId": 70,
+    "name": "PANEKAN"
+  },
+  {
+    "id": 1227,
+    "kabupatenId": 271,
+    "name": "PANGEAN"
+  },
+  {
+    "id": 2294,
+    "kabupatenId": 12,
+    "name": "PANGGUNGREJO"
+  },
+  {
+    "id": 1001,
+    "kabupatenId": 149,
+    "name": "PANGKALANBUN"
+  },
+  {
+    "id": 1253,
+    "kabupatenId": 260,
+    "name": "PANGKALAN KURAS"
+  },
+  {
+    "id": 987,
+    "kabupatenId": 171,
+    "name": "PANGKOH"
+  },
+  {
+    "id": 2252,
+    "kabupatenId": 72,
+    "name": "PANGKUR"
+  },
+  {
+    "id": 1353,
+    "kabupatenId": 242,
+    "name": "PANJI"
+  },
+  {
+    "id": 844,
+    "kabupatenId": 165,
+    "name": "PANTAI HAMBAWANG"
+  },
+  {
+    "id": 1283,
+    "kabupatenId": 258,
+    "name": "PANTAI RAJA"
+  },
+  {
+    "id": 737,
+    "kabupatenId": 3,
+    "name": "PANUNGGANGAN"
+  },
+  {
+    "id": 1010,
+    "kabupatenId": 143,
+    "name": "PANYIPATAN"
+  },
+  {
+    "id": 559,
+    "kabupatenId": 70,
+    "name": "PARANG"
+  },
+  {
+    "id": 2218,
+    "kabupatenId": 52,
+    "name": "PARENGAN"
+  },
+  {
+    "id": 1178,
+    "kabupatenId": 268,
+    "name": "PARIAMAN"
+  },
+  {
+    "id": 940,
+    "kabupatenId": 176,
+    "name": "PARINGIN"
+  },
+  {
+    "id": 1061,
+    "kabupatenId": 72,
+    "name": "PARON"
+  },
+  {
+    "id": 742,
+    "kabupatenId": 134,
+    "name": "PARUNG PANJANG"
+  },
+  {
+    "id": 696,
+    "kabupatenId": 3,
+    "name": "PARUNG PANJANG"
+  },
+  {
+    "id": 761,
+    "kabupatenId": 6,
+    "name": "PARUNG PANJANG"
+  },
+  {
+    "id": 709,
+    "kabupatenId": 3,
+    "name": "PASAR KEMIS"
+  },
+  {
+    "id": 2204,
+    "kabupatenId": 90,
+    "name": "PASAR REBO"
+  },
+  {
+    "id": 1503,
+    "kabupatenId": 240,
+    "name": "PASEAN"
+  },
+  {
+    "id": 2283,
+    "kabupatenId": 57,
+    "name": "PASIRAN"
+  },
+  {
+    "id": 1156,
+    "kabupatenId": 261,
+    "name": "PASIR LIMAU KAPAS"
+  },
+  {
+    "id": 1300,
+    "kabupatenId": 262,
+    "name": "PASIR PANGARAIAN"
+  },
+  {
+    "id": 1132,
+    "kabupatenId": 257,
+    "name": "PASIR PENYU "
+  },
+  {
+    "id": 1196,
+    "kabupatenId": 265,
+    "name": "PASIR PUTIH"
+  },
+  {
+    "id": 1927,
+    "kabupatenId": 243,
+    "name": "PASONGSONGAN"
+  },
+  {
+    "id": 1945,
+    "kabupatenId": 252,
+    "name": "PASREPAN"
+  },
+  {
+    "id": 2284,
+    "kabupatenId": 57,
+    "name": "PASRUJAMBE"
+  },
+  {
+    "id": 2371,
+    "kabupatenId": 364,
+    "name": "PATAMPANUA"
+  },
+  {
+    "id": 2128,
+    "kabupatenId": 234,
+    "name": "Patrang"
+  },
+  {
+    "id": 1207,
+    "kabupatenId": 265,
+    "name": "PAYUNG SEKAKI"
+  },
+  {
+    "id": 267,
+    "kabupatenId": 15,
+    "name": "PEDURUNGAN"
+  },
+  {
+    "id": 763,
+    "kabupatenId": 89,
+    "name": "PEGADUNGAN"
+  },
+  {
+    "id": 261,
+    "kabupatenId": 20,
+    "name": "PEGANDON"
+  },
+  {
+    "id": 1082,
+    "kabupatenId": 265,
+    "name": "PEKANBARU KOTA"
+  },
+  {
+    "id": 861,
+    "kabupatenId": 143,
+    "name": "PELAIHARI"
+  },
+  {
+    "id": 1240,
+    "kabupatenId": 276,
+    "name": "PELANGIRAN"
+  },
+  {
+    "id": 1126,
+    "kabupatenId": 256,
+    "name": "PELANGIRAN       "
+  },
+  {
+    "id": 1249,
+    "kabupatenId": 263,
+    "name": "PELAWANG"
+  },
+  {
+    "id": 1025,
+    "kabupatenId": 139,
+    "name": "PEMALANG BATUNG"
+  },
+  {
+    "id": 2171,
+    "kabupatenId": 303,
+    "name": "PENAJAM"
+  },
+  {
+    "id": 1504,
+    "kabupatenId": 240,
+    "name": "PENGANTENAN"
+  },
+  {
+    "id": 1471,
+    "kabupatenId": 233,
+    "name": "PENGARENGAN"
+  },
+  {
+    "id": 937,
+    "kabupatenId": 169,
+    "name": "PENGARON"
+  },
+  {
+    "id": 634,
+    "kabupatenId": 18,
+    "name": "PENGKOL"
+  },
+  {
+    "id": 2046,
+    "kabupatenId": 38,
+    "name": "PERAK"
+  },
+  {
+    "id": 1133,
+    "kabupatenId": 257,
+    "name": "PERANAP "
+  },
+  {
+    "id": 1191,
+    "kabupatenId": 260,
+    "name": "PERAWANG"
+  },
+  {
+    "id": 1246,
+    "kabupatenId": 258,
+    "name": "PERHENTIAN RAJA"
+  },
+  {
+    "id": 713,
+    "kabupatenId": 3,
+    "name": "PERIUK JAYA"
+  },
+  {
+    "id": 2374,
+    "kabupatenId": 145,
+    "name": "PERMATA KECUBUNG"
+  },
+  {
+    "id": 1321,
+    "kabupatenId": 82,
+    "name": "PESANGGARAN"
+  },
+  {
+    "id": 1452,
+    "kabupatenId": 236,
+    "name": "PESANGGARAN"
+  },
+  {
+    "id": 754,
+    "kabupatenId": 3,
+    "name": "PESANGGRAHAN"
+  },
+  {
+    "id": 766,
+    "kabupatenId": 47,
+    "name": "PESANGGRAHAN"
+  },
+  {
+    "id": 2047,
+    "kabupatenId": 38,
+    "name": "PETERONGAN"
+  },
+  {
+    "id": 711,
+    "kabupatenId": 3,
+    "name": "PINANG"
+  },
+  {
+    "id": 1110,
+    "kabupatenId": 275,
+    "name": "PINGGIR"
+  },
+  {
+    "id": 2165,
+    "kabupatenId": 301,
+    "name": "PINGGIR"
+  },
+  {
+    "id": 1066,
+    "kabupatenId": 72,
+    "name": "PITU"
+  },
+  {
+    "id": 787,
+    "kabupatenId": 3,
+    "name": "P KEC CENGKARENG"
+  },
+  {
+    "id": 2048,
+    "kabupatenId": 38,
+    "name": "PLANDAAN"
+  },
+  {
+    "id": 1049,
+    "kabupatenId": 70,
+    "name": "PLAOSAN"
+  },
+  {
+    "id": 2049,
+    "kabupatenId": 38,
+    "name": "PLOSO"
+  },
+  {
+    "id": 2320,
+    "kabupatenId": 52,
+    "name": "PLUMPANG"
+  },
+  {
+    "id": 1946,
+    "kabupatenId": 252,
+    "name": "POHJENTREK"
+  },
+  {
+    "id": 1064,
+    "kabupatenId": 55,
+    "name": "POH PELEM"
+  },
+  {
+    "id": 2396,
+    "kabupatenId": 253,
+    "name": "POIGAR"
+  },
+  {
+    "id": 608,
+    "kabupatenId": 63,
+    "name": "POLAN HARJO"
+  },
+  {
+    "id": 2313,
+    "kabupatenId": 336,
+    "name": "POLONGBANGKENG SELATAN"
+  },
+  {
+    "id": 1057,
+    "kabupatenId": 70,
+    "name": "PONCOL"
+  },
+  {
+    "id": 692,
+    "kabupatenId": 3,
+    "name": "PONDOK AREN"
+  },
+  {
+    "id": 780,
+    "kabupatenId": 3,
+    "name": "PONDOK KACANG"
+  },
+  {
+    "id": 2312,
+    "kabupatenId": 221,
+    "name": "PONDOK MELATI"
+  },
+  {
+    "id": 1068,
+    "kabupatenId": 188,
+    "name": "PONOROGO"
+  },
+  {
+    "id": 19,
+    "kabupatenId": 11,
+    "name": "PORONG"
+  },
+  {
+    "id": 2118,
+    "kabupatenId": 293,
+    "name": "PRABUMULIH TIMUR"
+  },
+  {
+    "id": 1928,
+    "kabupatenId": 243,
+    "name": "PRAGAAN"
+  },
+  {
+    "id": 1319,
+    "kabupatenId": 235,
+    "name": "PRAJEKAN"
+  },
+  {
+    "id": 1981,
+    "kabupatenId": 113,
+    "name": "PRAJURIT KULON"
+  },
+  {
+    "id": 2273,
+    "kabupatenId": 58,
+    "name": "PRAMBANAN"
+  },
+  {
+    "id": 26,
+    "kabupatenId": 11,
+    "name": "PRAMBON"
+  },
+  {
+    "id": 2209,
+    "kabupatenId": 13,
+    "name": "PRAMBON"
+  },
+  {
+    "id": 2226,
+    "kabupatenId": 41,
+    "name": "PREMBUN"
+  },
+  {
+    "id": 1947,
+    "kabupatenId": 252,
+    "name": "PRIGEN "
+  },
+  {
+    "id": 2331,
+    "kabupatenId": 239,
+    "name": "PRINGKUKU"
+  },
+  {
+    "id": 1505,
+    "kabupatenId": 240,
+    "name": "PROPPO"
+  },
+  {
+    "id": 1024,
+    "kabupatenId": 176,
+    "name": "PUGAAN "
+  },
+  {
+    "id": 1304,
+    "kabupatenId": 235,
+    "name": "PUJER"
+  },
+  {
+    "id": 898,
+    "kabupatenId": 147,
+    "name": "PUJON"
+  },
+  {
+    "id": 1287,
+    "kabupatenId": 262,
+    "name": "PUJUD"
+  },
+  {
+    "id": 1155,
+    "kabupatenId": 261,
+    "name": "PUJUT"
+  },
+  {
+    "id": 985,
+    "kabupatenId": 171,
+    "name": "PULANG PISAU"
+  },
+  {
+    "id": 1127,
+    "kabupatenId": 276,
+    "name": "PULAU BURUNG"
+  },
+  {
+    "id": 1215,
+    "kabupatenId": 265,
+    "name": "PULAU KARANG"
+  },
+  {
+    "id": 1278,
+    "kabupatenId": 276,
+    "name": "PULAU KIJANG"
+  },
+  {
+    "id": 794,
+    "kabupatenId": 138,
+    "name": "PULAU LAUT UTARA"
+  },
+  {
+    "id": 2156,
+    "kabupatenId": 93,
+    "name": "PULOMERAK"
+  },
+  {
+    "id": 1974,
+    "kabupatenId": 251,
+    "name": "PUNGGING"
+  },
+  {
+    "id": 864,
+    "kabupatenId": 116,
+    "name": "PUNTIK"
+  },
+  {
+    "id": 1969,
+    "kabupatenId": 251,
+    "name": "PURI"
+  },
+  {
+    "id": 917,
+    "kabupatenId": 173,
+    "name": "PURUK CAHU"
+  },
+  {
+    "id": 1948,
+    "kabupatenId": 252,
+    "name": "PURWODADI"
+  },
+  {
+    "id": 2177,
+    "kabupatenId": 37,
+    "name": "PURWODADI"
+  },
+  {
+    "id": 1453,
+    "kabupatenId": 236,
+    "name": "PURWOHARJO"
+  },
+  {
+    "id": 1323,
+    "kabupatenId": 82,
+    "name": "PURWOHARJO"
+  },
+  {
+    "id": 1960,
+    "kabupatenId": 12,
+    "name": "PURWOREJO"
+  },
+  {
+    "id": 1949,
+    "kabupatenId": 252,
+    "name": "PURWOSARI"
+  },
+  {
+    "id": 2184,
+    "kabupatenId": 285,
+    "name": "PURWOSARI"
+  },
+  {
+    "id": 1950,
+    "kabupatenId": 252,
+    "name": "PUSPO"
+  },
+  {
+    "id": 1929,
+    "kabupatenId": 243,
+    "name": "RAAS"
+  },
+  {
+    "id": 708,
+    "kabupatenId": 3,
+    "name": "RAJEG"
+  },
+  {
+    "id": 1244,
+    "kabupatenId": 262,
+    "name": "RAMBAH"
+  },
+  {
+    "id": 2305,
+    "kabupatenId": 234,
+    "name": "RAMBIPUJI"
+  },
+  {
+    "id": 2114,
+    "kabupatenId": 291,
+    "name": "RANDUBLATUNG"
+  },
+  {
+    "id": 778,
+    "kabupatenId": 1,
+    "name": "RANGKAS BITUNG"
+  },
+  {
+    "id": 1106,
+    "kabupatenId": 275,
+    "name": "RANGSANG"
+  },
+  {
+    "id": 1107,
+    "kabupatenId": 275,
+    "name": "RANGSANG BARAT"
+  },
+  {
+    "id": 930,
+    "kabupatenId": 165,
+    "name": "RANTAU"
+  },
+  {
+    "id": 916,
+    "kabupatenId": 116,
+    "name": "RANTAU BADAUH "
+  },
+  {
+    "id": 2243,
+    "kabupatenId": 319,
+    "name": "RANTEPAO"
+  },
+  {
+    "id": 2222,
+    "kabupatenId": 57,
+    "name": "RANUYOSO"
+  },
+  {
+    "id": 774,
+    "kabupatenId": 3,
+    "name": "RAWA BUNTU"
+  },
+  {
+    "id": 1266,
+    "kabupatenId": 263,
+    "name": "RAWANG KAO"
+  },
+  {
+    "id": 2190,
+    "kabupatenId": 242,
+    "name": "RAWAN SELATAN"
+  },
+  {
+    "id": 1168,
+    "kabupatenId": 265,
+    "name": "REJOSARI"
+  },
+  {
+    "id": 1951,
+    "kabupatenId": 252,
+    "name": "REJOSO"
+  },
+  {
+    "id": 612,
+    "kabupatenId": 36,
+    "name": "REMBANG"
+  },
+  {
+    "id": 1952,
+    "kabupatenId": 252,
+    "name": "REMBANG "
+  },
+  {
+    "id": 1129,
+    "kabupatenId": 257,
+    "name": "RENGAT  "
+  },
+  {
+    "id": 1130,
+    "kabupatenId": 257,
+    "name": "RENGAT BARAT "
+  },
+  {
+    "id": 2152,
+    "kabupatenId": 52,
+    "name": "RENGEL"
+  },
+  {
+    "id": 1124,
+    "kabupatenId": 256,
+    "name": "RETEH "
+  },
+  {
+    "id": 1154,
+    "kabupatenId": 261,
+    "name": "RIMBA MELINTANG"
+  },
+  {
+    "id": 264,
+    "kabupatenId": 20,
+    "name": "RINGIN ARUM"
+  },
+  {
+    "id": 1211,
+    "kabupatenId": 265,
+    "name": "RINTIS"
+  },
+  {
+    "id": 1472,
+    "kabupatenId": 233,
+    "name": "ROBATAL"
+  },
+  {
+    "id": 1454,
+    "kabupatenId": 236,
+    "name": "ROGOJAMPI"
+  },
+  {
+    "id": 1332,
+    "kabupatenId": 82,
+    "name": "ROGOJAMPI BALI"
+  },
+  {
+    "id": 1188,
+    "kabupatenId": 258,
+    "name": "ROMBIO JAYA"
+  },
+  {
+    "id": 2306,
+    "kabupatenId": 57,
+    "name": "ROWOKANGKUNG"
+  },
+  {
+    "id": 170,
+    "kabupatenId": 20,
+    "name": "ROWOSARI"
+  },
+  {
+    "id": 1930,
+    "kabupatenId": 243,
+    "name": "RUBARU"
+  },
+  {
+    "id": 1085,
+    "kabupatenId": 265,
+    "name": "RUMBAI"
+  },
+  {
+    "id": 1289,
+    "kabupatenId": 265,
+    "name": "RUMBAI BUKIT"
+  },
+  {
+    "id": 1185,
+    "kabupatenId": 265,
+    "name": "RUMBAI PESISIR"
+  },
+  {
+    "id": 762,
+    "kabupatenId": 6,
+    "name": "RUMPIN"
+  },
+  {
+    "id": 649,
+    "kabupatenId": 3,
+    "name": "RUMPIN"
+  },
+  {
+    "id": 2398,
+    "kabupatenId": 253,
+    "name": "RUNGKUT"
+  },
+  {
+    "id": 2019,
+    "kabupatenId": 10,
+    "name": "RUNGKUT"
+  },
+  {
+    "id": 1104,
+    "kabupatenId": 275,
+    "name": "RUPAT"
+  },
+  {
+    "id": 1105,
+    "kabupatenId": 275,
+    "name": "RUPAT UTARA"
+  },
+  {
+    "id": 1097,
+    "kabupatenId": 263,
+    "name": "SABAK AUH"
+  },
+  {
+    "id": 1230,
+    "kabupatenId": 275,
+    "name": "SAGO"
+  },
+  {
+    "id": 1081,
+    "kabupatenId": 265,
+    "name": "SAIL"
+  },
+  {
+    "id": 1291,
+    "kabupatenId": 258,
+    "name": "SALO"
+  },
+  {
+    "id": 2020,
+    "kabupatenId": 10,
+    "name": "SAMBIKEREP"
+  },
+  {
+    "id": 541,
+    "kabupatenId": 64,
+    "name": "SAMBIROTO"
+  },
+  {
+    "id": 2170,
+    "kabupatenId": 64,
+    "name": "SAMBUNGMACAN"
+  },
+  {
+    "id": 1463,
+    "kabupatenId": 75,
+    "name": "SAMPANG"
+  },
+  {
+    "id": 1473,
+    "kabupatenId": 233,
+    "name": "SAMPANG"
+  },
+  {
+    "id": 950,
+    "kabupatenId": 148,
+    "name": "SAMPIT"
+  },
+  {
+    "id": 2113,
+    "kabupatenId": 289,
+    "name": "SANANWETAN"
+  },
+  {
+    "id": 2255,
+    "kabupatenId": 323,
+    "name": "SANGATTA UTARA"
+  },
+  {
+    "id": 2277,
+    "kabupatenId": 155,
+    "name": "SANGATTA UTARA"
+  },
+  {
+    "id": 1995,
+    "kabupatenId": 14,
+    "name": "SANGKAPURA"
+  },
+  {
+    "id": 1931,
+    "kabupatenId": 243,
+    "name": "SAPEKEN"
+  },
+  {
+    "id": 1062,
+    "kabupatenId": 66,
+    "name": "SARADAN"
+  },
+  {
+    "id": 1932,
+    "kabupatenId": 243,
+    "name": "SARONGGI"
+  },
+  {
+    "id": 884,
+    "kabupatenId": 164,
+    "name": "SATUI"
+  },
+  {
+    "id": 2021,
+    "kabupatenId": 10,
+    "name": "SAWAHAN"
+  },
+  {
+    "id": 2227,
+    "kabupatenId": 94,
+    "name": "SAWAH BESAR"
+  },
+  {
+    "id": 584,
+    "kabupatenId": 17,
+    "name": "SAYUNG"
+  },
+  {
+    "id": 918,
+    "kabupatenId": 164,
+    "name": "SEBAMBAN"
+  },
+  {
+    "id": 1131,
+    "kabupatenId": 257,
+    "name": "SEBERIDA "
+  },
+  {
+    "id": 32,
+    "kabupatenId": 11,
+    "name": "SEDATI"
+  },
+  {
+    "id": 919,
+    "kabupatenId": 169,
+    "name": "SEI BESAR"
+  },
+  {
+    "id": 1212,
+    "kabupatenId": 260,
+    "name": "SEI KIJANG"
+  },
+  {
+    "id": 1280,
+    "kabupatenId": 258,
+    "name": "SEI PAGAR"
+  },
+  {
+    "id": 891,
+    "kabupatenId": 169,
+    "name": "SEI TABUK"
+  },
+  {
+    "id": 561,
+    "kabupatenId": 71,
+    "name": "SEKARAN"
+  },
+  {
+    "id": 897,
+    "kabupatenId": 147,
+    "name": "SELAT HULU"
+  },
+  {
+    "id": 1213,
+    "kabupatenId": 270,
+    "name": "SELAT PANJANG"
+  },
+  {
+    "id": 922,
+    "kabupatenId": 147,
+    "name": "SELAT TENGAH"
+  },
+  {
+    "id": 2377,
+    "kabupatenId": 55,
+    "name": "SELOGIRI"
+  },
+  {
+    "id": 2022,
+    "kabupatenId": 10,
+    "name": "SEMAMPIR"
+  },
+  {
+    "id": 485,
+    "kabupatenId": 15,
+    "name": "SEMARANG BARAT"
+  },
+  {
+    "id": 175,
+    "kabupatenId": 15,
+    "name": "SEMARANG SELATAN"
+  },
+  {
+    "id": 174,
+    "kabupatenId": 15,
+    "name": "SEMARANG TENGAH"
+  },
+  {
+    "id": 2207,
+    "kabupatenId": 230,
+    "name": "SEMARANG TENGAH"
+  },
+  {
+    "id": 173,
+    "kabupatenId": 15,
+    "name": "SEMARANG TIMUR"
+  },
+  {
+    "id": 242,
+    "kabupatenId": 15,
+    "name": "SEMARANG UTARA"
+  },
+  {
+    "id": 2115,
+    "kabupatenId": 230,
+    "name": "SEMARANG UTARA"
+  },
+  {
+    "id": 1318,
+    "kabupatenId": 235,
+    "name": "SEMPOL"
+  },
+  {
+    "id": 1455,
+    "kabupatenId": 236,
+    "name": "SEMPU"
+  },
+  {
+    "id": 1335,
+    "kabupatenId": 82,
+    "name": "SEMPU"
+  },
+  {
+    "id": 1084,
+    "kabupatenId": 265,
+    "name": "SENAPELAN"
+  },
+  {
+    "id": 2247,
+    "kabupatenId": 57,
+    "name": "SENDORO"
+  },
+  {
+    "id": 2345,
+    "kabupatenId": 323,
+    "name": "SEPASO TIMUR"
+  },
+  {
+    "id": 705,
+    "kabupatenId": 3,
+    "name": "SEPATAN"
+  },
+  {
+    "id": 1491,
+    "kabupatenId": 280,
+    "name": "SEPULU"
+  },
+  {
+    "id": 740,
+    "kabupatenId": 2,
+    "name": "SERANG"
+  },
+  {
+    "id": 776,
+    "kabupatenId": 3,
+    "name": "SERANG."
+  },
+  {
+    "id": 693,
+    "kabupatenId": 3,
+    "name": "SERPONG"
+  },
+  {
+    "id": 1093,
+    "kabupatenId": 263,
+    "name": "SIAK"
+  },
+  {
+    "id": 1080,
+    "kabupatenId": 265,
+    "name": "SIAK HULU"
+  },
+  {
+    "id": 1144,
+    "kabupatenId": 258,
+    "name": "SIAK HULU "
+  },
+  {
+    "id": 1273,
+    "kabupatenId": 275,
+    "name": "SIAK KECIL "
+  },
+  {
+    "id": 1288,
+    "kabupatenId": 67,
+    "name": "SIANTAR SELATAN"
+  },
+  {
+    "id": 2367,
+    "kabupatenId": 363,
+    "name": "SIANTAR SELATAN"
+  },
+  {
+    "id": 1996,
+    "kabupatenId": 14,
+    "name": "SIDAYU"
+  },
+  {
+    "id": 16,
+    "kabupatenId": 11,
+    "name": "SIDOARJO"
+  },
+  {
+    "id": 1245,
+    "kabupatenId": 265,
+    "name": "SIDOMULYO BARAT"
+  },
+  {
+    "id": 1218,
+    "kabupatenId": 265,
+    "name": "SIDOMULYO TIMUR"
+  },
+  {
+    "id": 2143,
+    "kabupatenId": 285,
+    "name": "SIDOREJO"
+  },
+  {
+    "id": 1456,
+    "kabupatenId": 236,
+    "name": "SILIRAGUNG"
+  },
+  {
+    "id": 2233,
+    "kabupatenId": 234,
+    "name": "SILO"
+  },
+  {
+    "id": 2023,
+    "kabupatenId": 10,
+    "name": "SIMOKERTO"
+  },
+  {
+    "id": 921,
+    "kabupatenId": 169,
+    "name": "SIMPANG EMPAT"
+  },
+  {
+    "id": 1160,
+    "kabupatenId": 261,
+    "name": "SIMPANG KANAN"
+  },
+  {
+    "id": 949,
+    "kabupatenId": 139,
+    "name": "SIMPUR"
+  },
+  {
+    "id": 1157,
+    "kabupatenId": 261,
+    "name": "SINABOI"
+  },
+  {
+    "id": 2254,
+    "kabupatenId": 322,
+    "name": "SINGA GEMBARA"
+  },
+  {
+    "id": 2141,
+    "kabupatenId": 52,
+    "name": "SINGAHAN"
+  },
+  {
+    "id": 2130,
+    "kabupatenId": 52,
+    "name": "SINGGAHAN"
+  },
+  {
+    "id": 1228,
+    "kabupatenId": 271,
+    "name": "SINGINGI"
+  },
+  {
+    "id": 1250,
+    "kabupatenId": 271,
+    "name": "SINGINGI HILIR"
+  },
+  {
+    "id": 1177,
+    "kabupatenId": 191,
+    "name": "SINGKEP"
+  },
+  {
+    "id": 1457,
+    "kabupatenId": 236,
+    "name": "SINGOJURUH"
+  },
+  {
+    "id": 1334,
+    "kabupatenId": 82,
+    "name": "SINGOJURUH"
+  },
+  {
+    "id": 2264,
+    "kabupatenId": 250,
+    "name": "SINGOSARI"
+  },
+  {
+    "id": 2395,
+    "kabupatenId": 253,
+    "name": "SINGOSARI"
+  },
+  {
+    "id": 1351,
+    "kabupatenId": 242,
+    "name": "SITUBONDO"
+  },
+  {
+    "id": 2292,
+    "kabupatenId": 54,
+    "name": "SLIYEG"
+  },
+  {
+    "id": 1492,
+    "kabupatenId": 280,
+    "name": "SOCAH"
+  },
+  {
+    "id": 2391,
+    "kabupatenId": 253,
+    "name": "SOKARAJA"
+  },
+  {
+    "id": 1474,
+    "kabupatenId": 233,
+    "name": "SOKOBANAH"
+  },
+  {
+    "id": 2361,
+    "kabupatenId": 359,
+    "name": "SOLOR TIMUR"
+  },
+  {
+    "id": 1336,
+    "kabupatenId": 82,
+    "name": "SONGGON"
+  },
+  {
+    "id": 1458,
+    "kabupatenId": 236,
+    "name": "SONGGON"
+  },
+  {
+    "id": 1967,
+    "kabupatenId": 251,
+    "name": "SOOKO"
+  },
+  {
+    "id": 1223,
+    "kabupatenId": 260,
+    "name": "SOREK"
+  },
+  {
+    "id": 1475,
+    "kabupatenId": 233,
+    "name": "SRESEH"
+  },
+  {
+    "id": 1331,
+    "kabupatenId": 82,
+    "name": "SRONO"
+  },
+  {
+    "id": 1459,
+    "kabupatenId": 236,
+    "name": "SRONO"
+  },
+  {
+    "id": 1346,
+    "kabupatenId": 242,
+    "name": "SUBOH"
+  },
+  {
+    "id": 2149,
+    "kabupatenId": 71,
+    "name": "SUGIO"
+  },
+  {
+    "id": 1083,
+    "kabupatenId": 265,
+    "name": "SUKAJADI"
+  },
+  {
+    "id": 1239,
+    "kabupatenId": 265,
+    "name": "SUKAMAJU"
+  },
+  {
+    "id": 2095,
+    "kabupatenId": 253,
+    "name": "SUKAPURA"
+  },
+  {
+    "id": 1214,
+    "kabupatenId": 265,
+    "name": "SUKARAMAI"
+  },
+  {
+    "id": 2286,
+    "kabupatenId": 104,
+    "name": "SUKATANI"
+  },
+  {
+    "id": 2304,
+    "kabupatenId": 71,
+    "name": "SUKODADI"
+  },
+  {
+    "id": 533,
+    "kabupatenId": 57,
+    "name": "SUKODONO"
+  },
+  {
+    "id": 29,
+    "kabupatenId": 11,
+    "name": "SUKODONO"
+  },
+  {
+    "id": 2024,
+    "kabupatenId": 10,
+    "name": "SUKOLILO"
+  },
+  {
+    "id": 2025,
+    "kabupatenId": 10,
+    "name": "SUKOMANUNGGAL"
+  },
+  {
+    "id": 1063,
+    "kabupatenId": 70,
+    "name": "SUKOMORO"
+  },
+  {
+    "id": 2350,
+    "kabupatenId": 234,
+    "name": "SUKORAMBI"
+  },
+  {
+    "id": 1953,
+    "kabupatenId": 252,
+    "name": "SUKOREJO"
+  },
+  {
+    "id": 1306,
+    "kabupatenId": 235,
+    "name": "SUKOSARI"
+  },
+  {
+    "id": 2300,
+    "kabupatenId": 249,
+    "name": "SUKUN"
+  },
+  {
+    "id": 2324,
+    "kabupatenId": 238,
+    "name": "SUKUN"
+  },
+  {
+    "id": 2230,
+    "kabupatenId": 250,
+    "name": "SUKUN"
+  },
+  {
+    "id": 1231,
+    "kabupatenId": 265,
+    "name": "SUMAHILANG"
+  },
+  {
+    "id": 2094,
+    "kabupatenId": 253,
+    "name": "SUMBER"
+  },
+  {
+    "id": 2093,
+    "kabupatenId": 253,
+    "name": "SUMBERASIH"
+  },
+  {
+    "id": 1342,
+    "kabupatenId": 242,
+    "name": "SUMBERMALANG"
+  },
+  {
+    "id": 1190,
+    "kabupatenId": 265,
+    "name": "SUMBER SARI"
+  },
+  {
+    "id": 2120,
+    "kabupatenId": 234,
+    "name": "SUMBERSARI"
+  },
+  {
+    "id": 1307,
+    "kabupatenId": 235,
+    "name": "SUMBER WRINGIN"
+  },
+  {
+    "id": 1364,
+    "kabupatenId": 243,
+    "name": "SUMENEP"
+  },
+  {
+    "id": 2050,
+    "kabupatenId": 38,
+    "name": "SUMOBITO"
+  },
+  {
+    "id": 1284,
+    "kabupatenId": 275,
+    "name": "SUNAGI PAKNING"
+  },
+  {
+    "id": 2281,
+    "kabupatenId": 289,
+    "name": "SUNANKULON"
+  },
+  {
+    "id": 1095,
+    "kabupatenId": 263,
+    "name": "SUNGAI APIT"
+  },
+  {
+    "id": 1031,
+    "kabupatenId": 169,
+    "name": "SUNGAI BATANG "
+  },
+  {
+    "id": 882,
+    "kabupatenId": 164,
+    "name": "SUNGAI DANAU"
+  },
+  {
+    "id": 1037,
+    "kabupatenId": 116,
+    "name": "SUNGAI GAMPA"
+  },
+  {
+    "id": 1261,
+    "kabupatenId": 276,
+    "name": "SUNGAI GUNTUNG"
+  },
+  {
+    "id": 1298,
+    "kabupatenId": 257,
+    "name": "SUNGAI LALAK"
+  },
+  {
+    "id": 904,
+    "kabupatenId": 164,
+    "name": "SUNGAI LOBAN"
+  },
+  {
+    "id": 959,
+    "kabupatenId": 169,
+    "name": "SUNGAI LULUT"
+  },
+  {
+    "id": 1094,
+    "kabupatenId": 263,
+    "name": "SUNGAI MANDAU"
+  },
+  {
+    "id": 851,
+    "kabupatenId": 167,
+    "name": "SUNGAI PANDAN"
+  },
+  {
+    "id": 892,
+    "kabupatenId": 169,
+    "name": "SUNGAI PINANG"
+  },
+  {
+    "id": 1027,
+    "kabupatenId": 169,
+    "name": "SUNGAI RANGAS"
+  },
+  {
+    "id": 1022,
+    "kabupatenId": 164,
+    "name": "SUNGAI RASAU"
+  },
+  {
+    "id": 901,
+    "kabupatenId": 139,
+    "name": "SUNGAI RAYA"
+  },
+  {
+    "id": 2307,
+    "kabupatenId": 57,
+    "name": "SUPITURANG"
+  },
+  {
+    "id": 2382,
+    "kabupatenId": 305,
+    "name": "TABANAN"
+  },
+  {
+    "id": 926,
+    "kabupatenId": 116,
+    "name": "TABUKAN"
+  },
+  {
+    "id": 914,
+    "kabupatenId": 116,
+    "name": "TABUNGANEN"
+  },
+  {
+    "id": 636,
+    "kabupatenId": 18,
+    "name": "TAHUNAN"
+  },
+  {
+    "id": 955,
+    "kabupatenId": 143,
+    "name": "TAJAU PECAH"
+  },
+  {
+    "id": 1056,
+    "kabupatenId": 70,
+    "name": "TAKERAN"
+  },
+  {
+    "id": 796,
+    "kabupatenId": 143,
+    "name": "TAKISUNG"
+  },
+  {
+    "id": 1933,
+    "kabupatenId": 243,
+    "name": "TALANGO"
+  },
+  {
+    "id": 1297,
+    "kabupatenId": 271,
+    "name": "TALUK KUANTAN"
+  },
+  {
+    "id": 28,
+    "kabupatenId": 11,
+    "name": "TAMAN"
+  },
+  {
+    "id": 1303,
+    "kabupatenId": 235,
+    "name": "TAMANAN"
+  },
+  {
+    "id": 1389,
+    "kabupatenId": 235,
+    "name": "TAMAN KROCOK"
+  },
+  {
+    "id": 1997,
+    "kabupatenId": 14,
+    "name": "TAMBAK"
+  },
+  {
+    "id": 2026,
+    "kabupatenId": 10,
+    "name": "TAMBAKSARI"
+  },
+  {
+    "id": 862,
+    "kabupatenId": 143,
+    "name": "TAMBAK ULANG"
+  },
+  {
+    "id": 2325,
+    "kabupatenId": 10,
+    "name": "TAMBAK WEDI"
+  },
+  {
+    "id": 820,
+    "kabupatenId": 116,
+    "name": "TAMBAN"
+  },
+  {
+    "id": 1145,
+    "kabupatenId": 258,
+    "name": "TAMBANG "
+  },
+  {
+    "id": 1011,
+    "kabupatenId": 143,
+    "name": "TAMBANG ULANG"
+  },
+  {
+    "id": 1476,
+    "kabupatenId": 233,
+    "name": "TAMBELANGAN"
+  },
+  {
+    "id": 2169,
+    "kabupatenId": 102,
+    "name": "TAMBUN SELATAN"
+  },
+  {
+    "id": 1222,
+    "kabupatenId": 262,
+    "name": "TAMBUSAI"
+  },
+  {
+    "id": 508,
+    "kabupatenId": 48,
+    "name": "TAMIYANG LAYANG"
+  },
+  {
+    "id": 1078,
+    "kabupatenId": 265,
+    "name": "TAMPAN"
+  },
+  {
+    "id": 834,
+    "kabupatenId": 164,
+    "name": "TANAH BUMBU"
+  },
+  {
+    "id": 1285,
+    "kabupatenId": 265,
+    "name": "TANAH DATAR"
+  },
+  {
+    "id": 1116,
+    "kabupatenId": 276,
+    "name": "TANAH MERAH"
+  },
+  {
+    "id": 1493,
+    "kabupatenId": 280,
+    "name": "TANAH MERAH"
+  },
+  {
+    "id": 1151,
+    "kabupatenId": 261,
+    "name": "TANAH PUTIH"
+  },
+  {
+    "id": 1159,
+    "kabupatenId": 261,
+    "name": "TANAH PUTIH TG. MELAWAN"
+  },
+  {
+    "id": 764,
+    "kabupatenId": 3,
+    "name": "TANAH TINGGI"
+  },
+  {
+    "id": 2027,
+    "kabupatenId": 10,
+    "name": "TANDES"
+  },
+  {
+    "id": 1248,
+    "kabupatenId": 262,
+    "name": "TANDUN"
+  },
+  {
+    "id": 2388,
+    "kabupatenId": 372,
+    "name": "TANETERIATTANG"
+  },
+  {
+    "id": 689,
+    "kabupatenId": 3,
+    "name": "TANGERANG KOTA"
+  },
+  {
+    "id": 1379,
+    "kabupatenId": 236,
+    "name": "TANGGUL"
+  },
+  {
+    "id": 21,
+    "kabupatenId": 11,
+    "name": "TANGGULANGIN"
+  },
+  {
+    "id": 953,
+    "kabupatenId": 176,
+    "name": "TANJUNG"
+  },
+  {
+    "id": 887,
+    "kabupatenId": 138,
+    "name": "TANJUNG BATU"
+  },
+  {
+    "id": 1494,
+    "kabupatenId": 280,
+    "name": "TANJUNG BUMI"
+  },
+  {
+    "id": 1186,
+    "kabupatenId": 265,
+    "name": "TANJUNG DATUK"
+  },
+  {
+    "id": 1192,
+    "kabupatenId": 265,
+    "name": "TANJUNG HURU"
+  },
+  {
+    "id": 1279,
+    "kabupatenId": 270,
+    "name": "TANJUNG PINANG"
+  },
+  {
+    "id": 2274,
+    "kabupatenId": 150,
+    "name": "TANJUNG REDEB"
+  },
+  {
+    "id": 2378,
+    "kabupatenId": 341,
+    "name": "TANJUNG SARI"
+  },
+  {
+    "id": 975,
+    "kabupatenId": 176,
+    "name": "TANTA"
+  },
+  {
+    "id": 1308,
+    "kabupatenId": 235,
+    "name": "TAPEN"
+  },
+  {
+    "id": 1138,
+    "kabupatenId": 258,
+    "name": "TAPUNG"
+  },
+  {
+    "id": 1147,
+    "kabupatenId": 258,
+    "name": "TAPUNG HILIR "
+  },
+  {
+    "id": 1148,
+    "kabupatenId": 258,
+    "name": "TAPUNG HULU "
+  },
+  {
+    "id": 1149,
+    "kabupatenId": 258,
+    "name": "TAPUNG KIRI "
+  },
+  {
+    "id": 2082,
+    "kabupatenId": 287,
+    "name": "TARAKAN"
+  },
+  {
+    "id": 2384,
+    "kabupatenId": 369,
+    "name": "TARAKAN UTARA"
+  },
+  {
+    "id": 25,
+    "kabupatenId": 11,
+    "name": "TARIK"
+  },
+  {
+    "id": 2246,
+    "kabupatenId": 217,
+    "name": "TAROGONG KDL"
+  },
+  {
+    "id": 519,
+    "kabupatenId": 52,
+    "name": "TASIK MADU"
+  },
+  {
+    "id": 602,
+    "kabupatenId": 24,
+    "name": "TAWANGHARJO"
+  },
+  {
+    "id": 169,
+    "kabupatenId": 23,
+    "name": "TAYU"
+  },
+  {
+    "id": 592,
+    "kabupatenId": 15,
+    "name": "TAYU"
+  },
+  {
+    "id": 1399,
+    "kabupatenId": 22,
+    "name": "TDK DIKETAHUI"
+  },
+  {
+    "id": 2341,
+    "kabupatenId": 47,
+    "name": "TEBET"
+  },
+  {
+    "id": 1071,
+    "kabupatenId": 77,
+    "name": "TEBING "
+  },
+  {
+    "id": 1316,
+    "kabupatenId": 235,
+    "name": "TEGALAMPEL"
+  },
+  {
+    "id": 1375,
+    "kabupatenId": 247,
+    "name": "TEGALDLIMO"
+  },
+  {
+    "id": 1460,
+    "kabupatenId": 236,
+    "name": "TEGALDLIMO"
+  },
+  {
+    "id": 1324,
+    "kabupatenId": 82,
+    "name": "TEGALDLIMO"
+  },
+  {
+    "id": 492,
+    "kabupatenId": 22,
+    "name": "TEGALDLIMO"
+  },
+  {
+    "id": 1461,
+    "kabupatenId": 236,
+    "name": "TEGALSARI"
+  },
+  {
+    "id": 2028,
+    "kabupatenId": 10,
+    "name": "TEGALSARI "
+  },
+  {
+    "id": 2092,
+    "kabupatenId": 253,
+    "name": "TEGAL SIWALAN"
+  },
+  {
+    "id": 501,
+    "kabupatenId": 43,
+    "name": "TEGOWANU"
+  },
+  {
+    "id": 2263,
+    "kabupatenId": 57,
+    "name": "TEKUNG"
+  },
+  {
+    "id": 977,
+    "kabupatenId": 139,
+    "name": "TELAGA LANGSAT"
+  },
+  {
+    "id": 2183,
+    "kabupatenId": 79,
+    "name": "TELANAIPURA"
+  },
+  {
+    "id": 1123,
+    "kabupatenId": 256,
+    "name": "TELUK BELENGKONG"
+  },
+  {
+    "id": 1007,
+    "kabupatenId": 146,
+    "name": "TELUK MELAWAI"
+  },
+  {
+    "id": 704,
+    "kabupatenId": 3,
+    "name": "TELUK NAGA"
+  },
+  {
+    "id": 590,
+    "kabupatenId": 15,
+    "name": "TEMBALANG"
+  },
+  {
+    "id": 2051,
+    "kabupatenId": 38,
+    "name": "TEMBELANG"
+  },
+  {
+    "id": 1295,
+    "kabupatenId": 276,
+    "name": "TEMBILAHAN"
+  },
+  {
+    "id": 1290,
+    "kabupatenId": 261,
+    "name": "TEMBILAHAN KOTA"
+  },
+  {
+    "id": 2187,
+    "kabupatenId": 57,
+    "name": "TEMPEH"
+  },
+  {
+    "id": 1115,
+    "kabupatenId": 276,
+    "name": "TEMPULING"
+  },
+  {
+    "id": 2323,
+    "kabupatenId": 234,
+    "name": "TEMPUREJO"
+  },
+  {
+    "id": 1164,
+    "kabupatenId": 265,
+    "name": "TENAYAN"
+  },
+  {
+    "id": 1310,
+    "kabupatenId": 235,
+    "name": "TENGGARANG"
+  },
+  {
+    "id": 2029,
+    "kabupatenId": 10,
+    "name": "TENGGILIS MEJOYO"
+  },
+  {
+    "id": 2315,
+    "kabupatenId": 339,
+    "name": "TERNATE TENGAH"
+  },
+  {
+    "id": 2270,
+    "kabupatenId": 328,
+    "name": "TERUMO"
+  },
+  {
+    "id": 951,
+    "kabupatenId": 149,
+    "name": "TEWANG SANGGALANG GARING"
+  },
+  {
+    "id": 1267,
+    "kabupatenId": 265,
+    "name": "TGKR BARAT"
+  },
+  {
+    "id": 1187,
+    "kabupatenId": 265,
+    "name": "TGKR DALAM"
+  },
+  {
+    "id": 1256,
+    "kabupatenId": 265,
+    "name": "TGKR LABUAI"
+  },
+  {
+    "id": 1195,
+    "kabupatenId": 265,
+    "name": "TGKR SELATAN"
+  },
+  {
+    "id": 1216,
+    "kabupatenId": 265,
+    "name": "TGKR TENGAH"
+  },
+  {
+    "id": 1182,
+    "kabupatenId": 265,
+    "name": "TGKR TIMUR"
+  },
+  {
+    "id": 1189,
+    "kabupatenId": 265,
+    "name": "TGKR UTARA"
+  },
+  {
+    "id": 2196,
+    "kabupatenId": 5,
+    "name": "TIGARAKSA"
+  },
+  {
+    "id": 699,
+    "kabupatenId": 3,
+    "name": "TIGARAKSA"
+  },
+  {
+    "id": 2262,
+    "kabupatenId": 57,
+    "name": "TIKUNG"
+  },
+  {
+    "id": 1032,
+    "kabupatenId": 147,
+    "name": "TIMPAH"
+  },
+  {
+    "id": 2175,
+    "kabupatenId": 33,
+    "name": "TINGKIR"
+  },
+  {
+    "id": 2091,
+    "kabupatenId": 253,
+    "name": "TIRIS"
+  },
+  {
+    "id": 2354,
+    "kabupatenId": 250,
+    "name": "TIRTOYUDO"
+  },
+  {
+    "id": 1506,
+    "kabupatenId": 240,
+    "name": "TLANAKAN"
+  },
+  {
+    "id": 1305,
+    "kabupatenId": 235,
+    "name": "TLOGOSARI"
+  },
+  {
+    "id": 2404,
+    "kabupatenId": 253,
+    "name": "TOMIA TIMUR"
+  },
+  {
+    "id": 2090,
+    "kabupatenId": 253,
+    "name": "TONGAS"
+  },
+  {
+    "id": 1477,
+    "kabupatenId": 233,
+    "name": "TORJUN"
+  },
+  {
+    "id": 624,
+    "kabupatenId": 43,
+    "name": "TOROH"
+  },
+  {
+    "id": 1954,
+    "kabupatenId": 252,
+    "name": "TOSARI"
+  },
+  {
+    "id": 1495,
+    "kabupatenId": 280,
+    "name": "TRAGAH"
+  },
+  {
+    "id": 1978,
+    "kabupatenId": 251,
+    "name": "TRAWAS"
+  },
+  {
+    "id": 1970,
+    "kabupatenId": 251,
+    "name": "TROWULAN"
+  },
+  {
+    "id": 1108,
+    "kabupatenId": 275,
+    "name": "T. TINGGI"
+  },
+  {
+    "id": 1109,
+    "kabupatenId": 275,
+    "name": "T. TINGGI BARAT"
+  },
+  {
+    "id": 2356,
+    "kabupatenId": 356,
+    "name": "TUALANG"
+  },
+  {
+    "id": 1096,
+    "kabupatenId": 263,
+    "name": "TUALANG"
+  },
+  {
+    "id": 1265,
+    "kabupatenId": 263,
+    "name": "TUALANG PERAWANG"
+  },
+  {
+    "id": 1387,
+    "kabupatenId": 52,
+    "name": "TUBAN"
+  },
+  {
+    "id": 201,
+    "kabupatenId": 15,
+    "name": "TUGU"
+  },
+  {
+    "id": 2390,
+    "kabupatenId": 373,
+    "name": "TUJUH BELAS"
+  },
+  {
+    "id": 407,
+    "kabupatenId": 31,
+    "name": "TULANG"
+  },
+  {
+    "id": 20,
+    "kabupatenId": 11,
+    "name": "TULANGAN"
+  },
+  {
+    "id": 2365,
+    "kabupatenId": 245,
+    "name": "TULUNGAGUNG"
+  },
+  {
+    "id": 1955,
+    "kabupatenId": 252,
+    "name": "TUTUR"
+  },
+  {
+    "id": 2394,
+    "kabupatenId": 376,
+    "name": "UJUNA"
+  },
+  {
+    "id": 1254,
+    "kabupatenId": 262,
+    "name": "UJUNG BATU"
+  },
+  {
+    "id": 2336,
+    "kabupatenId": 347,
+    "name": "UJUNG LOE"
+  },
+  {
+    "id": 1998,
+    "kabupatenId": 14,
+    "name": "UJUNGPANGKAH"
+  },
+  {
+    "id": 1277,
+    "kabupatenId": 260,
+    "name": "UKUI"
+  },
+  {
+    "id": 2334,
+    "kabupatenId": 234,
+    "name": "UMBULSARI"
+  },
+  {
+    "id": 616,
+    "kabupatenId": 19,
+    "name": "UNDAAN"
+  },
+  {
+    "id": 336,
+    "kabupatenId": 15,
+    "name": "UNGARAN"
+  },
+  {
+    "id": 842,
+    "kabupatenId": 116,
+    "name": "WANARAYA"
+  },
+  {
+    "id": 30,
+    "kabupatenId": 11,
+    "name": "WARU"
+  },
+  {
+    "id": 1507,
+    "kabupatenId": 240,
+    "name": "WARU"
+  },
+  {
+    "id": 2355,
+    "kabupatenId": 242,
+    "name": "WARU"
+  },
+  {
+    "id": 596,
+    "kabupatenId": 17,
+    "name": "WEDUNG"
+  },
+  {
+    "id": 116,
+    "kabupatenId": 18,
+    "name": "WELAHAN"
+  },
+  {
+    "id": 161,
+    "kabupatenId": 17,
+    "name": "WELAHAN"
+  },
+  {
+    "id": 139,
+    "kabupatenId": 20,
+    "name": "WELERI"
+  },
+  {
+    "id": 648,
+    "kabupatenId": 23,
+    "name": "WINONG"
+  },
+  {
+    "id": 1956,
+    "kabupatenId": 252,
+    "name": "WINONGAN"
+  },
+  {
+    "id": 2030,
+    "kabupatenId": 10,
+    "name": "WIYUNG"
+  },
+  {
+    "id": 1462,
+    "kabupatenId": 236,
+    "name": "WONGSOREJO"
+  },
+  {
+    "id": 1341,
+    "kabupatenId": 82,
+    "name": "WONGSOREJO"
+  },
+  {
+    "id": 577,
+    "kabupatenId": 78,
+    "name": "WONOASIH"
+  },
+  {
+    "id": 2160,
+    "kabupatenId": 253,
+    "name": "WONOASIH"
+  },
+  {
+    "id": 27,
+    "kabupatenId": 11,
+    "name": "WONOAYU"
+  },
+  {
+    "id": 2031,
+    "kabupatenId": 10,
+    "name": "WONOCOLO"
+  },
+  {
+    "id": 500,
+    "kabupatenId": 10,
+    "name": "WONOKROMO"
+  },
+  {
+    "id": 2089,
+    "kabupatenId": 253,
+    "name": "WONOMERTO"
+  },
+  {
+    "id": 594,
+    "kabupatenId": 45,
+    "name": "WONOMULYO"
+  },
+  {
+    "id": 1957,
+    "kabupatenId": 252,
+    "name": "WONOREJO"
+  },
+  {
+    "id": 2052,
+    "kabupatenId": 38,
+    "name": "WONOSALAM"
+  },
+  {
+    "id": 583,
+    "kabupatenId": 17,
+    "name": "WONOSALAM"
+  },
+  {
+    "id": 2383,
+    "kabupatenId": 368,
+    "name": "WONOSARI"
+  },
+  {
+    "id": 1309,
+    "kabupatenId": 235,
+    "name": "WONOSARI"
+  },
+  {
+    "id": 2180,
+    "kabupatenId": 68,
+    "name": "WONOSOBO"
+  },
+  {
+    "id": 1315,
+    "kabupatenId": 235,
+    "name": "WRINGIN"
+  },
+  {
+    "id": 1999,
+    "kabupatenId": 14,
+    "name": "WRINGIN ANOM"
+  },
+  {
+    "id": 2299,
+    "kabupatenId": 234,
+    "name": "WULUHAN"
+  },
+  {
+    "id": 1150,
+    "kabupatenId": 258,
+    "name": "XIII KOTO KAMPAR"
+  },
+  {
+    "id": 2373,
+    "kabupatenId": 57,
+    "name": "YOSOWILANGUN"
+  }
+]

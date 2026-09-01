@@ -1,0 +1,154 @@
+[
+  {
+    "id": 34,
+    "name": "ACEH"
+  },
+  {
+    "id": 33,
+    "name": "BALI"
+  },
+  {
+    "id": 26,
+    "name": "BANTEN"
+  },
+  {
+    "id": 6,
+    "name": "BENGKULU"
+  },
+  {
+    "id": 11,
+    "name": "DI YOGYAKARTA"
+  },
+  {
+    "id": 29,
+    "name": "DKI JAKARTA"
+  },
+  {
+    "id": 57,
+    "name": "GORONTALO"
+  },
+  {
+    "id": 40,
+    "name": "JAKARTA BARAT"
+  },
+  {
+    "id": 31,
+    "name": "JAKARTA SELATAN"
+  },
+  {
+    "id": 30,
+    "name": "JAKARTA TIMUR"
+  },
+  {
+    "id": 41,
+    "name": "JAKARTA UTARA"
+  },
+  {
+    "id": 4,
+    "name": "JAMBI"
+  },
+  {
+    "id": 9,
+    "name": "JAWA BARAT"
+  },
+  {
+    "id": 10,
+    "name": "JAWA TENGAH"
+  },
+  {
+    "id": 12,
+    "name": "JAWA TIMUR"
+  },
+  {
+    "id": 70,
+    "name": "JAYAPURA"
+  },
+  {
+    "id": 16,
+    "name": "KALIMANTAN BARAT"
+  },
+  {
+    "id": 18,
+    "name": "KALIMANTAN SELATAN"
+  },
+  {
+    "id": 17,
+    "name": "KALIMANTAN TENGAH"
+  },
+  {
+    "id": 19,
+    "name": "KALIMANTAN TIMUR"
+  },
+  {
+    "id": 61,
+    "name": "KALIMANTAN UTARA"
+  },
+  {
+    "id": 7,
+    "name": "LAMPUNG"
+  },
+  {
+    "id": 44,
+    "name": "LUAR NEGERI"
+  },
+  {
+    "id": 39,
+    "name": "MAKASSAR"
+  },
+  {
+    "id": 24,
+    "name": "MALUKU"
+  },
+  {
+    "id": 14,
+    "name": "NUSA TENGGARA BARAT"
+  },
+  {
+    "id": 15,
+    "name": "NUSA TENGGARA TIMUR"
+  },
+  {
+    "id": 25,
+    "name": "PAPUA"
+  },
+  {
+    "id": 3,
+    "name": "RIAU"
+  },
+  {
+    "id": 51,
+    "name": "SULAWESI BARAT"
+  },
+  {
+    "id": 23,
+    "name": "SULAWESI SELATAN"
+  },
+  {
+    "id": 21,
+    "name": "SULAWESI TENGAH"
+  },
+  {
+    "id": 22,
+    "name": "SULAWESI TENGGARA"
+  },
+  {
+    "id": 20,
+    "name": "SULAWESI UTARA"
+  },
+  {
+    "id": 13,
+    "name": "SUMATERA BARAT"
+  },
+  {
+    "id": 5,
+    "name": "SUMATERA SELATAN"
+  },
+  {
+    "id": 1,
+    "name": "SUMATERA UTARA"
+  },
+  {
+    "id": 37,
+    "name": "TUBAN"
+  }
+]

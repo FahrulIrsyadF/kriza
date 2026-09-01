@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: kriza_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: kriza_dev
+      POSTGRES_USER: kriza
+      POSTGRES_PASSWORD: kriza_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - kriza_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U kriza -d kriza_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  kriza_pgdata:
+    name: kriza_pgdata
