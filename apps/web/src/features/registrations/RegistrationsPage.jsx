@@ -5,10 +5,11 @@ import {
   ClipboardList, Plus, X, Search, RefreshCw, Calendar, User, Stethoscope,
   CreditCard, AlertTriangle, CheckCircle2, Clock, UserCheck, ChevronRight,
   Info, Building, Phone, Wifi, FileText, Eye, Edit2, Ban, Activity,
-  ArrowRight, Tag,
+  ArrowRight, Tag, UserPlus,
 } from 'lucide-react';
 import AppLayout from '@/components/layout/AppLayout';
 import { SearchableSelect } from '@/components/ui/searchable-select';
+import { QuickPatientDialog } from './QuickPatientDialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -201,6 +202,8 @@ export default function RegistrationsPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedReg, setSelectedReg] = useState(null);
   const [showTicket, setShowTicket] = useState(null);
+  const [showQuickPatientDialog, setShowQuickPatientDialog] = useState(false);
+  const [quickPatientInitialName, setQuickPatientInitialName] = useState('');
   const [patientSearch, setPatientSearch] = useState('');
   const debouncedPatientSearch = useDebounce(patientSearch, 400);
   const [quotaInfo, setQuotaInfo] = useState(null); // { current, quota }
@@ -235,6 +238,14 @@ export default function RegistrationsPage() {
     queryFn: () => apiClient.get('/patients', { params: { search: debouncedPatientSearch, limit: 20 } }).then(r => r.data.data),
     enabled: debouncedPatientSearch.trim().length >= 2,
     staleTime: 10000,
+  });
+
+  // Query detail pasien yang sedang dipilih secara langsung
+  const { data: directPatientData } = useQuery({
+    queryKey: ['patient-direct-reg', formData.patientId],
+    queryFn: () => apiClient.get(`/patients/${formData.patientId}`).then(r => r.data.data),
+    enabled: !!formData.patientId,
+    staleTime: 60000,
   });
 
   // Antrian Hari Ini
@@ -290,6 +301,7 @@ export default function RegistrationsPage() {
   }));
 
   const selectedPatientData = patientSearchData?.items?.find(p => p.id === formData.patientId);
+  const activePatient = selectedPatientData || directPatientData;
   const registrations = registrationsData?.items || [];
   const todayQueues = Array.isArray(todayQueuesData) ? todayQueuesData : [];
 
@@ -303,6 +315,21 @@ export default function RegistrationsPage() {
   };
 
   // ─── Handlers ─────────────────────────────────────────────────────────────────
+  const handleOpenQuickPatient = (name = '') => {
+    setQuickPatientInitialName(name);
+    setShowQuickPatientDialog(true);
+  };
+
+  const handlePatientCreated = (newPatient) => {
+    setFormData(prev => ({
+      ...prev,
+      patientId: newPatient.id,
+      paymentMethod: newPatient.insuranceType === 'BPJS' ? 'BPJS' : (newPatient.insuranceType === 'ASURANSI' ? 'ASURANSI_SWASTA' : prev.paymentMethod),
+      bpjsCardNumber: newPatient.bpjsNumber || prev.bpjsCardNumber,
+    }));
+    setPatientSearch(newPatient.name);
+  };
+
   const openForm = () => {
     setFormData({ ...EMPTY_FORM, registrationDate: today });
     setShowForm(true);
@@ -587,9 +614,19 @@ export default function RegistrationsPage() {
 
                   {/* ── Baris 2: Pencarian Pasien ─────────────────────────── */}
                   <div>
-                    <label className="text-[11px] font-semibold block mb-1">
-                      Cari & Pilih Pasien * <span className="text-muted-foreground font-normal">(ketik min. 2 karakter: Nama / No. RM / NIK)</span>
-                    </label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="text-[11px] font-semibold block">
+                        Cari & Pilih Pasien * <span className="text-muted-foreground font-normal">(ketik min. 2 karakter: Nama / No. RM / NIK)</span>
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => handleOpenQuickPatient(patientSearch)}
+                        className="text-[11px] font-semibold text-primary hover:underline flex items-center gap-1 cursor-pointer"
+                      >
+                        <Plus className="w-3 h-3" /> Pasien Baru
+                      </button>
+                    </div>
+
                     <div className="relative mb-2">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                       <Input
@@ -602,7 +639,8 @@ export default function RegistrationsPage() {
                         <div className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                       )}
                     </div>
-                    {patientSearch.length >= 2 && (
+
+                    {patientSearch.length >= 2 && patientOptions.length > 0 && (
                       <SearchableSelect
                         options={patientOptions}
                         value={formData.patientId}
@@ -613,25 +651,50 @@ export default function RegistrationsPage() {
                       />
                     )}
 
+                    {/* Not Found Callout Banner — Muncul jika pasien belum ada di database */}
+                    {!searchingPatient && debouncedPatientSearch.trim().length >= 2 && patientOptions.length === 0 && (
+                      <div className="mt-2 p-3.5 rounded-xl border border-dashed border-primary/40 bg-primary/5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in-0 duration-150">
+                        <div className="flex items-center gap-2.5 text-xs text-foreground">
+                          <div className="w-8 h-8 rounded-lg bg-primary/15 text-primary flex items-center justify-center shrink-0">
+                            <UserPlus className="w-4 h-4" />
+                          </div>
+                          <div>
+                            <p className="font-semibold text-foreground">Pasien belum terdaftar</p>
+                            <p className="text-muted-foreground text-[11px]">
+                              Tidak ada data pasien dengan kata kunci <span className="font-mono font-bold text-primary">"{patientSearch}"</span>
+                            </p>
+                          </div>
+                        </div>
+                        <Button
+                          type="button"
+                          size="sm"
+                          onClick={() => handleOpenQuickPatient(patientSearch)}
+                          className="gap-1.5 shrink-0 text-xs h-8 bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-sm"
+                        >
+                          <Plus className="w-3.5 h-3.5" /> Daftarkan Pasien Baru
+                        </Button>
+                      </div>
+                    )}
+
                     {/* Pasien info card */}
-                    {selectedPatientData && (
+                    {activePatient && (
                       <div className="mt-2 p-3 rounded-xl border border-primary/30 bg-primary/5 flex items-start gap-3">
                         <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center text-primary font-bold text-sm shrink-0">
-                          {selectedPatientData.name?.charAt(0)}
+                          {activePatient.name?.charAt(0)}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-sm text-foreground leading-tight">{selectedPatientData.name}</p>
+                          <p className="font-semibold text-sm text-foreground leading-tight">{activePatient.name}</p>
                           <p className="text-[11px] text-muted-foreground font-mono">
-                            RM: {selectedPatientData.medicalRecordNumber} &bull; {selectedPatientData.gender} &bull; {formatAge(selectedPatientData.birthDate)}
+                            RM: {activePatient.medicalRecordNumber} &bull; {activePatient.gender} &bull; {formatAge(activePatient.birthDate)}
                           </p>
-                          {selectedPatientData.allergiesNotes && (
+                          {activePatient.allergiesNotes && (
                             <div className="mt-1 flex items-center gap-1 text-[10px] text-amber-600 bg-amber-500/10 px-1.5 py-0.5 rounded">
                               <AlertTriangle className="w-3 h-3" />
-                              Alergi: {selectedPatientData.allergiesNotes}
+                              Alergi: {activePatient.allergiesNotes}
                             </div>
                           )}
                         </div>
-                        <Badge variant="outline" className="text-[10px] shrink-0">{selectedPatientData.insuranceType}</Badge>
+                        <Badge variant="outline" className="text-[10px] shrink-0">{activePatient.insuranceType}</Badge>
                       </div>
                     )}
                   </div>
@@ -1083,6 +1146,14 @@ export default function RegistrationsPage() {
           </div>
         </Dialog>
       )}
+
+      {/* ─── MODAL: DAFTAR PASIEN BARU CEPAT (QUICK REGISTRATION) ────────── */}
+      <QuickPatientDialog
+        isOpen={showQuickPatientDialog}
+        onClose={() => setShowQuickPatientDialog(false)}
+        initialName={quickPatientInitialName}
+        onPatientCreated={handlePatientCreated}
+      />
     </AppLayout>
   );
 }
