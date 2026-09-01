@@ -41,7 +41,7 @@ const NAVIGATION_ITEMS = [
     name: 'Rekam Medis (EMR)',
     path: '/encounters',
     icon: Stethoscope,
-    active: false,
+    active: true,
     fase: 'Fase 5',
   },
   {
@@ -97,16 +97,18 @@ export default function AppLayout({ children, title, subtitle, actions }) {
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
           {/* Logo & Klinik Name */}
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center shadow-sm">
-              <span className="text-primary-foreground font-extrabold text-base">K</span>
-            </div>
+            <img
+              src="/icon_klinik.png"
+              alt="Icon Klinik KRIZA"
+              className="w-9 h-9 object-contain shrink-0 rounded-lg drop-shadow-sm"
+            />
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="font-bold text-foreground text-sm tracking-tight leading-none">
                   KRIZA SIMRS
                 </h1>
                 <span className="bg-primary/10 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded">
-                  v0.4.0
+                  v0.5.0
                 </span>
               </div>
               <p className="text-[11px] text-muted-foreground mt-0.5">

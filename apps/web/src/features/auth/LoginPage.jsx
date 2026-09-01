@@ -44,11 +44,13 @@ function LoginPage() {
       <div className="w-full max-w-sm">
         {/* Logo & Title */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 bg-primary rounded-2xl shadow-lg mb-4">
-            <span className="text-primary-foreground font-bold text-2xl">K</span>
-          </div>
-          <h1 className="text-2xl font-semibold text-foreground">KRIZA</h1>
-          <p className="text-muted-foreground text-sm mt-1">Sistem Informasi Manajemen Klinik</p>
+          <img
+            src="/logo_klinik.png"
+            alt="Logo Klinik KRIZA"
+            className="w-20 h-20 object-contain mx-auto mb-4 drop-shadow-md"
+          />
+          <h1 className="text-2xl font-bold text-foreground tracking-tight">KRIZA</h1>
+          <p className="text-muted-foreground text-sm mt-1">Sistem Informasi Manajemen Klinik & RME</p>
         </div>
 
         {/* Card */}

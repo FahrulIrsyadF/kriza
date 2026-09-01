@@ -1,6 +1,6 @@
 const { db } = require('../../db');
-const { users, roles, permissions, userRoles, rolePermissions } = require('../../db/schema');
-const { eq, and, isNull } = require('drizzle-orm');
+const { users, roles, permissions, userRoles, rolePermissions, practitioners } = require('../../db/schema');
+const { eq, and, isNull, ilike } = require('drizzle-orm');
 
 /**
  * Cari user aktif berdasarkan username.
@@ -15,6 +15,50 @@ async function findActiveUserByUsername(username) {
     .limit(1);
 
   return result[0] ?? null;
+}
+
+/**
+ * Ambil data praktisi/dokter yang terhubung dengan akun user.
+ * @param {string} userId
+ * @param {string} [userName]
+ * @returns {Promise<object|null>}
+ */
+async function getUserPractitioner(userId, userName) {
+  // 1. Coba cari by userId FK
+  const byUser = await db
+    .select({
+      id: practitioners.id,
+      code: practitioners.code,
+      name: practitioners.name,
+      title: practitioners.title,
+      specialization: practitioners.specialization,
+      sip: practitioners.sip,
+    })
+    .from(practitioners)
+    .where(and(eq(practitioners.userId, userId), isNull(practitioners.deletedAt), eq(practitioners.isActive, true)))
+    .limit(1);
+
+  if (byUser.length > 0) return byUser[0];
+
+  // 2. Fallback: Cari by matching name jika belum ter-link FK
+  if (userName) {
+    const byName = await db
+      .select({
+        id: practitioners.id,
+        code: practitioners.code,
+        name: practitioners.name,
+        title: practitioners.title,
+        specialization: practitioners.specialization,
+        sip: practitioners.sip,
+      })
+      .from(practitioners)
+      .where(and(ilike(practitioners.name, `%${userName}%`), isNull(practitioners.deletedAt), eq(practitioners.isActive, true)))
+      .limit(1);
+
+    if (byName.length > 0) return byName[0];
+  }
+
+  return null;
 }
 
 /**
@@ -41,8 +85,6 @@ async function getUserRolesAndPermissions(userId) {
     .select({ id: roles.id })
     .from(roles)
     .where(
-      // IN clause dengan roleNames
-      // Drizzle: gunakan inArray
       require('drizzle-orm').inArray(roles.name, roleNames)
     );
 
@@ -83,4 +125,9 @@ async function findUserById(userId) {
   return result[0] ?? null;
 }
 
-module.exports = { findActiveUserByUsername, getUserRolesAndPermissions, findUserById };
+module.exports = {
+  findActiveUserByUsername,
+  getUserRolesAndPermissions,
+  findUserById,
+  getUserPractitioner,
+};

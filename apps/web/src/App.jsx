@@ -5,6 +5,7 @@ import DashboardPage from '@/features/dashboard/DashboardPage'
 import MasterDataPage from '@/features/master/MasterDataPage'
 import PatientsPage from '@/features/patients/PatientsPage'
 import RegistrationsPage from '@/features/registrations/RegistrationsPage'
+import EncountersPage from '@/features/encounters/EncountersPage'
 import NotFoundPage from '@/pages/NotFoundPage'
 
 function App() {
@@ -49,6 +50,16 @@ function App() {
         element={
           <ProtectedRoute>
             <RegistrationsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Rekam Medis Elektronik / RME SOAP (Fase 5) */}
+      <Route
+        path="/encounters"
+        element={
+          <ProtectedRoute>
+            <EncountersPage />
           </ProtectedRoute>
         }
       />

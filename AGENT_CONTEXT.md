@@ -265,17 +265,30 @@ kriza/
 - ✅ Nav item "Pendaftaran & Antrian" aktif di AppLayout, versi diupdate ke v0.4.0
 - ✅ Vite build berhasil 100% (1774 modules)
 
+### [2026-09-01] — Sesi 6: Fase 5 — Rekam Medis Elektronik (RME SOAP), Tindakan & Sistem Rujukan (PCare Ready)
+- ✅ Database Schema: `encounters` (15 col, PMK 24/2022 locking & amendment), `vital_signs` (18 col, auto-BMI calculation, consciousness PCare, triage), `soap_notes` (10 col), `encounter_diagnoses` (8 col, multi-item ICD-10 with Primary/Secondary & Kasus Baru/Lama), `encounter_procedures` (9 col, quantity & tariff), `encounter_referrals` (26 col, internal consult & external referral + BPJS PCare bridging fields: pcareNoRujukan, pcareTaccCode, pcareTaccReason), `encounter_dispositions` (7 col)
+- ✅ Migration generated: `0004_curved_sersi.sql`
+- ✅ Generator: `referral-number.generator.js` → Nomor Rujukan Medis `RUJ-YYYYMMDD-XXXX` unik harian
+- ✅ Repository: `encounters.repository.js` (doctor queue, encounter detail with full joins, vital signs upsert with BMI, SOAP upsert, diagnoses/procedures CRUD, disposition/referral upsert, referral print query)
+- ✅ Service: `encounters.service.js` (auto-BMI calculation & nutritional categories, PMK 24/2022 locking validation, auto-create registration for internal consult, finalize lock with registration/queue status transition to SELESAI, medical amendment workflow, and PCare encounter payload builder)
+- ✅ Zod Schemas: `encounters.schema.js` (start, vital signs, soap, diagnoses, procedures, disposition & referral, finalize, amend, list query)
+- ✅ Routes: `encounters.routes.js` (14 endpoints) & `referrals.routes.js` (2 endpoints) registered in `app.js`
+- ✅ Frontend: `EncountersPage.jsx` (Doctor Queue, patient search, polyclinic filter, stats cards, quick launch), `EncounterWorkspace.jsx` (4-panel clinical RME workspace with TTV auto-BMI visual badge, SOAP with quick presets, ICD-10 combobox, procedures with tariff calc, internal & external referral forms + PCare parameters, autosave draft, and PMK 24/2022 finalize locking), and `ReferralLetterModal.jsx` (Official medical referral letter print preview with letterhead, patient summary, TTV, ICD-10, and doctor signature block)
+- ✅ Nav item "Rekam Medis (EMR)" aktif di AppLayout, versi diupdate ke v0.5.0
+- ✅ Vite build berhasil 100% (1779 modules)
+
 ---
 
 ## Instruksi untuk Agent Berikutnya
 
 1. **Baca file ini sampai habis** sebelum mengerjakan apapun
-2. **Git Branching Strategy:** SELALU lakukan commit dan push ke branch `dev`. Branch `main` diproteksi (*protected*) dan tidak menerima push langsung.
-3. **Fase aktif sekarang adalah FASE 5** — Rekam Medis Elektronik (RME / EMR SOAP) & Encounter
-4. **Update dokumen ini** setelah setiap task selesai
-5. **Gunakan database Dokploy yang sudah aktif di `.env`**
-6. **Update "Log Sesi Kerja"** setelah sesi selesai
+2. **ATURAN KETAT GIT:** JANGAN PERNAH melakukan `git commit` dan `git push` sebelum USER MEMINTA SECARA EKSPLISIT.
+3. **Git Branching Strategy:** Jika diminta commit & push oleh user, SELALU lakukan ke branch `dev`. Branch `main` diproteksi (*protected*).
+4. **Fase aktif selanjutnya adalah FASE 6** — Modul Farmasi & Obat (Resep Elektronik / E-Prescription, Dispensing, Stok Obat)
+5. **Update dokumen ini** setelah setiap task selesai
+6. **Gunakan database Dokploy yang sudah aktif di `.env`**
+7. **Update "Log Sesi Kerja"** setelah sesi selesai
 
 ---
 
-*Last updated: 2026-09-01 | Updated by: Agent (Fase 4 Selesai)*
+*Last updated: 2026-09-01 | Updated by: Agent (Fase 5 Selesai)*

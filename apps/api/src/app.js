@@ -81,6 +81,10 @@ function buildApp(opts = {}) {
 
     // Fase 4: Registrasi Kunjungan & Antrian
     apiRouter.register(require('./modules/registrations/registrations.routes'));
+
+    // Fase 5: Rekam Medis Elektronik (RME SOAP) & Sistem Rujukan
+    apiRouter.register(require('./modules/encounters/encounters.routes'), { prefix: '/encounters' });
+    apiRouter.register(require('./modules/encounters/referrals.routes'), { prefix: '/referrals' });
   }, { prefix: '/api/v1' });
 
   // ─── Error Handler ────────────────────────────────────────────────────────

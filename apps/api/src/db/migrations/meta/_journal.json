@@ -29,6 +29,13 @@
       "when": 1788247296823,
       "tag": "0003_groovy_roxanne_simpson",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1788273436525,
+      "tag": "0004_curved_sersi",
+      "breakpoints": true
     }
   ]
 }

@@ -16,12 +16,16 @@ const patientsSchema = require('./patients.schema');
 // Fase 4 — Registrasi Kunjungan & Antrian
 const registrationsSchema = require('./registrations.schema');
 
+// Fase 5 — Rekam Medis Elektronik (RME SOAP) & Rujukan
+const encountersSchema = require('./encounters.schema');
+
 const schema = {
   ...authSchema,
   ...auditSchema,
   ...masterDataSchema,
   ...patientsSchema,
   ...registrationsSchema,
+  ...encountersSchema,
 };
 
 module.exports = schema;
