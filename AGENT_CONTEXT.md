@@ -270,11 +270,12 @@ kriza/
 ## Instruksi untuk Agent Berikutnya
 
 1. **Baca file ini sampai habis** sebelum mengerjakan apapun
-2. **Fase aktif sekarang adalah FASE 4** — Registrasi Kunjungan & Antrian Poli
-3. **Update dokumen ini** setelah setiap task selesai
-4. **Gunakan database Dokploy yang sudah aktif di `.env`**
-5. **Update "Log Sesi Kerja"** setelah sesi selesai
+2. **Git Branching Strategy:** SELALU lakukan commit dan push ke branch `dev`. Branch `main` diproteksi (*protected*) dan tidak menerima push langsung.
+3. **Fase aktif sekarang adalah FASE 5** — Rekam Medis Elektronik (RME / EMR SOAP) & Encounter
+4. **Update dokumen ini** setelah setiap task selesai
+5. **Gunakan database Dokploy yang sudah aktif di `.env`**
+6. **Update "Log Sesi Kerja"** setelah sesi selesai
 
 ---
 
-*Last updated: 2026-09-01 | Updated by: Agent (Fase 3 Selesai)*
+*Last updated: 2026-09-01 | Updated by: Agent (Fase 4 Selesai)*
