@@ -85,6 +85,12 @@ function buildApp(opts = {}) {
     // Fase 5: Rekam Medis Elektronik (RME SOAP) & Sistem Rujukan
     apiRouter.register(require('./modules/encounters/encounters.routes'), { prefix: '/encounters' });
     apiRouter.register(require('./modules/encounters/referrals.routes'), { prefix: '/referrals' });
+
+    // Fase 6: Farmasi, Resep Elektronik & Manajemen Stok
+    apiRouter.register(require('./modules/pharmacy/pharmacy.routes'), { prefix: '/pharmacy' });
+
+    // Fase 7: Kasir, Billing & Pembayaran
+    apiRouter.register(require('./modules/billing/billing.routes'), { prefix: '/billing' });
   }, { prefix: '/api/v1' });
 
   // ─── Error Handler ────────────────────────────────────────────────────────

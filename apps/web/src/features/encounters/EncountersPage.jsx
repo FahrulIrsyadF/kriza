@@ -330,16 +330,16 @@ export default function EncountersPage() {
 
                           <TableCell>
                             {item.status === 'MENUNGGU' && (
-                              <Badge className="bg-amber-500/15 text-amber-700 border-amber-200 text-[10px]">Menunggu</Badge>
+                              <Badge variant="warning" className="text-[10px]">Menunggu</Badge>
                             )}
                             {item.status === 'DIPANGGIL' && (
-                              <Badge className="bg-blue-500/15 text-blue-700 border-blue-200 text-[10px]">Dipanggil</Badge>
+                              <Badge variant="info" className="text-[10px]">Dipanggil</Badge>
                             )}
                             {item.status === 'DIPERIKSA' && (
-                              <Badge className="bg-purple-500/15 text-purple-700 border-purple-200 text-[10px] animate-pulse">Sedang Diperiksa</Badge>
+                              <Badge variant="purple" className="text-[10px] animate-pulse">Sedang Diperiksa</Badge>
                             )}
                             {item.status === 'SELESAI' && (
-                              <Badge className="bg-green-500/15 text-green-700 border-green-200 text-[10px]">Selesai</Badge>
+                              <Badge variant="success" className="text-[10px]">Selesai</Badge>
                             )}
                           </TableCell>
 

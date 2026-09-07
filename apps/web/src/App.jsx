@@ -6,6 +6,8 @@ import MasterDataPage from '@/features/master/MasterDataPage'
 import PatientsPage from '@/features/patients/PatientsPage'
 import RegistrationsPage from '@/features/registrations/RegistrationsPage'
 import EncountersPage from '@/features/encounters/EncountersPage'
+import PharmacyPage from '@/features/pharmacy/PharmacyPage'
+import BillingPage from '@/features/billing/BillingPage'
 import NotFoundPage from '@/pages/NotFoundPage'
 
 function App() {
@@ -34,14 +36,10 @@ function App() {
         }
       />
 
-      {/* Patients Management (Fase 3) */}
+      {/* Patients Management (Terintegrasi ke dalam Master Data) */}
       <Route
         path="/patients"
-        element={
-          <ProtectedRoute>
-            <PatientsPage />
-          </ProtectedRoute>
-        }
+        element={<Navigate to="/master?tab=patients" replace />}
       />
 
       {/* Registrasi Kunjungan & Antrian (Fase 4) */}
@@ -60,6 +58,26 @@ function App() {
         element={
           <ProtectedRoute>
             <EncountersPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Farmasi, Resep Elektronik & Stok (Fase 6) */}
+      <Route
+        path="/pharmacy"
+        element={
+          <ProtectedRoute>
+            <PharmacyPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Kasir, Billing & Pembayaran (Fase 7) */}
+      <Route
+        path="/billing"
+        element={
+          <ProtectedRoute>
+            <BillingPage />
           </ProtectedRoute>
         }
       />

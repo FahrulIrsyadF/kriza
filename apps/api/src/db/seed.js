@@ -139,9 +139,9 @@ const DRUGS_DATA = [
 ];
 
 const PRACTITIONERS_DATA = [
-  { code: 'DR-001', name: 'dr. Andi Pratama', title: 'dr.', sip: '503/SIP.DU/012/2023', specialization: 'Umum', phone: '081234567890', email: 'dr.andi@klinik.local', polyCode: 'POLI-UMUM' },
-  { code: 'DR-002', name: 'drg. Sarah Melati', title: 'drg.', sip: '503/SIP.DG/045/2023', specialization: 'Gigi & Mulut', phone: '081298765432', email: 'drg.sarah@klinik.local', polyCode: 'POLI-GIGI' },
-  { code: 'DR-003', name: 'dr. Maya Kartika, Sp.DVE', title: 'dr.', sip: '503/SIP.SP/089/2024', specialization: 'Dermatologi & Estetika', phone: '081377889900', email: 'dr.maya@klinik.local', polyCode: 'POLI-ESTETIKA' },
+  { code: 'DR-001', name: 'dr. M. Faisol Abdillah', title: 'dr.', sip: '503/SIP.DU/001/2024', specialization: 'Umum', phone: '081234567891', email: 'dr.faisol@klinikrizani.com', polyCode: 'POLI-UMUM' },
+  { code: 'DR-002', name: 'dr. Fachrudin', title: 'dr.', sip: '503/SIP.DU/002/2024', specialization: 'Umum', phone: '081234567892', email: 'dr.fachrudin@klinikrizani.com', polyCode: 'POLI-UMUM' },
+  { code: 'DR-003', name: 'Drg. Iqbal', title: 'drg.', sip: '503/SIP.DG/003/2024', specialization: 'Gigi & Mulut', phone: '081234567893', email: 'drg.iqbal@klinikrizani.com', polyCode: 'POLI-GIGI' },
 ];
 
 const PROCEDURES_DATA = [

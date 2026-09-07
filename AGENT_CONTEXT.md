@@ -25,11 +25,11 @@
 | 1 | Auth, RBAC, Audit Trail | 🟢 SELESAI | JWT midnight WIB, bcrypt, audit log, seed ✅ |
 | 2 | Master Data | 🟢 SELESAI | Poli, Dokter, Jadwal, Tindakan/Tarif, Obat, ICD-10 ✅ |
 | 3 | Manajemen Pasien | 🟢 SELESAI | Form lengkap 30+ field, Wilayah db_rizani, MRN gen ✅ |
-| 4 | Registrasi & Antrian | 🔴 BELUM MULAI | Fase berikutnya |
-| 5 | Encounter & Rekam Medis | 🔴 BELUM MULAI | |
-| 6 | Resep & Farmasi | 🔴 BELUM MULAI | |
-| 7 | Billing & Pembayaran | 🔴 BELUM MULAI | |
-| 8 | Laporan Operasional | 🔴 BELUM MULAI | |
+| 4 | Registrasi & Antrian | 🟢 SELESAI | Pendaftaran poli, multi-source antrian, MJKN field ✅ |
+| 5 | Encounter & Rekam Medis | 🟢 SELESAI | SOAP, TTV BMI, ICD-10, Tindakan, Rujukan & PCare ✅ |
+| 6 | Resep & Farmasi | 🟢 SELESAI | 113 obat riil, Batch FEFO, Dispensing, Shift Log, SO ✅ |
+| 7 | Billing & Pembayaran | 🟢 SELESAI | Tagihan auto-sync, Multi-payment, Struk/Kuitansi resmi ✅ |
+| 8 | Laporan Operasional | 🔴 BELUM MULAI | Fase berikutnya |
 | 9 | Integrasi BPJS | 🔴 BELUM MULAI | |
 | 10 | Integrasi SATUSEHAT | 🔴 BELUM MULAI | |
 | 11 | Hardening & Production | 🔴 BELUM MULAI | |
@@ -40,28 +40,53 @@
 
 ## Fase Aktif Saat Ini
 
-**FASE 4 — Registrasi Kunjungan & Manajemen Antrian Poli**
+**FASE 8 — Laporan Operasional** (Siap dimulai sesuai instruksi)
 
-### Tasks yang Harus Dilakukan (Fase 4)
+### Tasks Selesai (Fase 7 — Kasir, Billing & Pembayaran):
+- [x] Schema + migrate: `invoices`, `invoice_items`, `payments` (Migration `0006_abnormal_pyro.sql`)
+- [x] Auto-generate invoice dari encounter yang FINALIZED + resep obat farmasi
+- [x] API proses pembayaran atomik (Tunai + kalkulasi kembalian otomatis, Transfer, QRIS, Debit, BPJS, Asuransi)
+- [x] Struk / Kuitansi pembayaran resmi Klinik Pratama Rawat Inap Rizani dengan terbilang & stempel
+- [x] Frontend workspace kasir (`BillingPage.jsx`) dengan KPI pendapatan harian, antrian belum lunas, dan riwayat transaksi
 
-- [ ] Schema + migrate: `registrations` (kunjungan pasien ke poli, dokter, tipe bayar: umum/bpjs/asuransi)
-- [ ] Schema + migrate: `queues` (nomor antrian per poli, per hari, status: MENUNGGU, DIPANGGIL, DIPERIKSA, SELESAI, BATAL)
-- [ ] Generator nomor antrian per poli (misal: A-001 Poli Umum, B-001 Poli Gigi, C-001 Poli Estetika)
-- [ ] Validasi kuota jadwal praktik dokter hari itu
-- [ ] Cek status kunjungan: Pasien Baru vs Pasien Lama
-- [ ] CRUD API Registrasi Kunjungan Pasien
-- [ ] API Panggil Antrian & Update Status Antrian Real-time
-- [ ] Frontend: Halaman Pendaftaran Rawat Jalan & Cetak/Lihat Tiket Antrian
-- [ ] Frontend: Display Antrian Pasien per Poli (Live Queue Board)
+---
 
-### Kriteria Fase 4 Selesai
-- Pendaftaran pasien ke poli menghasilkan nomor antrian berurutan
-- Status antrian dapat diperbarui (Panggil -> Periksa -> Selesai)
-- Kuota harian dokter divalidasi secara otomatis
+## Informasi Resmi Klinik
+
+> **WAJIB**: Selalu gunakan data dari `apps/web/src/lib/clinic-info.js` (`CLINIC_INFO`) sebagai **satu-satunya sumber kebenaran** untuk informasi klinik.
+> JANGAN hardcode nama, alamat, atau kontak klinik di component manapun.
+
+| Field | Nilai |
+|---|---|
+| Nama Singkat | **Klinik Rizani** |
+| Nama Legal/Uppercase | **KLINIK RIZANI** |
+| Alamat | Jalan Raya Surabaya - Situbondo KM 136 Sumberanyar Paiton |
+| Telepon | (0335) 773204 |
+| HP/WhatsApp | 081333352620 |
+| Email | klinikrizani@gmail.com |
+| Kota (tanda tangan) | Paiton |
+| Logo path | `/icon_klinik.png` |
+
+**Panduan import di semua dokumen cetak:**
+```js
+import { CLINIC_INFO, formatClinicContact } from '@/lib/clinic-info';
+// CLINIC_INFO.name → "Klinik Rizani"
+// CLINIC_INFO.legalName → "KLINIK RIZANI"
+// CLINIC_INFO.address → "Jalan Raya Surabaya - Situbondo KM 136 Sumberanyar Paiton"
+// formatClinicContact() → "TELP (0335) 773204 • HP 081333352620 • klinikrizani@gmail.com"
+```
+
+### Dokter Resmi Klinik
+| Kode | Nama Praktisi | Spesialisasi | Unit Poli | Jadwal Standar |
+|---|---|---|---|---|
+| `DR-001` | **dr. M. Faisol Abdillah** | Dokter Umum | Poli Umum | Senin – Sabtu, 08:00 – 14:00 |
+| `DR-002` | **dr. Fachrudin** | Dokter Umum | Poli Umum | Senin – Sabtu, 14:00 – 20:00 |
+| `DR-003` | **Drg. Iqbal** | Dokter Gigi & Mulut | Poli Gigi | Senin – Sabtu, 08:00 – 14:00 |
 
 ---
 
 ## Keputusan Arsitektur yang Sudah Diambil
+
 
 | Keputusan | Detail | Tanggal |
 |---|---|---|
@@ -277,6 +302,22 @@ kriza/
 - ✅ Nav item "Rekam Medis (EMR)" aktif di AppLayout, versi diupdate ke v0.5.0
 - ✅ Vite build berhasil 100% (1779 modules)
 
+### [2026-09-02] — Sesi 7: Fase 6 — Modul Farmasi & Manajemen Obat
+- ✅ Database Schema: `suppliers`, `drug_prices` (multi-tier pricing ready), `drug_batches` (lot/batch tracking with expiry date for FEFO), `shift_stock_logs` & `shift_stock_log_items` (digitalisasi pemantauan shift harian klinik Rizani), `prescriptions` & `prescription_items` (resep elektronik dari dokter), `drug_stock_movements` (append-only mutasi stok), `stock_opnames` & `stock_opname_items` (SO bulanan) + migration `0005_nostalgic_ted_forrester.sql`
+- ✅ Seeding: `pharmacy.seed.js` mengekstrak dan mengimpor **113 item obat riil** lengkap dengan bentuk sediaan, signa default, satuan, stok awal, dan batch saldo awal per Agustus 2026 dari spreadsheet klinik Rizani.
+- ✅ Repository: `pharmacy.repository.js` (FEFO batch auto-allocation, atomic inventory transactions, shift monitoring, stock opname adjustments, live dashboard stats).
+- ✅ Service: `pharmacy.service.js` (Prescription generator `RES-YYYYMMDD-XXXX`, multi-tier fallback pricing resolver, atomic dispensing with auto-shift synchronization, shift open/close state machine, and SO variance auto-reconciliation).
+- ✅ Routes: `pharmacy.routes.js` (23 endpoints) terdaftar di `/api/v1/pharmacy` Fastify.
+- ✅ Frontend Hub: `PharmacyPage.jsx` dengan 4 sub-tab utama:
+  1. `PrescriptionsQueueTab.jsx`: antrian resep pasien real-time, status filter (Pending / Dispensed / All), detail dispensing & verifikasi obat.
+  2. `DrugStocksTab.jsx`: tabel stok 113 obat dengan filter sediaan, filter stok kritis, panel detail batch aktif FEFO, modal penerimaan batch baru, modal penyesuaian stok manual.
+  3. `ShiftMonitoringTab.jsx`: spreadsheet monitor stok shift harian (Pagi/Siang/Malam), input pemakaian non-shift manual, koreksi, auto-sum stok akhir real-time, dan histori shift lampau.
+  4. `StockOpnameTab.jsx`: pembuatan sesi SO baru, lembar hitung fisik dengan kalkulasi selisih warna otomatis, dan tombol finalisasi SO yang otomatis meng-adjust stok batch.
+  5. `PrintEtiketModal.jsx`: template cetak etiket obat resmi stiker pasien.
+  6. `EncounterPrescriptionTab.jsx`: terintegrasi langsung ke `EncounterWorkspace.jsx` agar dokter dapat menulis dan mengirimkan resep elektronik langsung saat pemeriksaan SOAP.
+- ✅ Nav item "Farmasi & Obat" aktif di AppLayout, versi diupdate ke v0.6.0.
+- ✅ Vite build production berhasil 100% (1789 modules).
+
 ---
 
 ## Instruksi untuk Agent Berikutnya
@@ -284,11 +325,24 @@ kriza/
 1. **Baca file ini sampai habis** sebelum mengerjakan apapun
 2. **ATURAN KETAT GIT:** JANGAN PERNAH melakukan `git commit` dan `git push` sebelum USER MEMINTA SECARA EKSPLISIT.
 3. **Git Branching Strategy:** Jika diminta commit & push oleh user, SELALU lakukan ke branch `dev`. Branch `main` diproteksi (*protected*).
-4. **Fase aktif selanjutnya adalah FASE 6** — Modul Farmasi & Obat (Resep Elektronik / E-Prescription, Dispensing, Stok Obat)
+4. **Fase aktif selanjutnya adalah FASE 8** — Laporan Operasional
 5. **Update dokumen ini** setelah setiap task selesai
 6. **Gunakan database Dokploy yang sudah aktif di `.env`**
 7. **Update "Log Sesi Kerja"** setelah sesi selesai
+8. **INFO KLINIK:** SELALU gunakan `CLINIC_INFO` dari `apps/web/src/lib/clinic-info.js`. JANGAN hardcode nama/alamat/kontak klinik di mana pun. Lihat section "Informasi Resmi Klinik" di atas.
+9. **PRINT BEHAVIOR:** Semua modal cetak wajib menggunakan class `printable-area` pada div konten yang ingin dicetak. Class ini diatur oleh `@media print` di `index.css` sehingga hanya area tersebut yang tercetak — bukan screenshot seluruh layar.
+
+### [2026-09-07] — Sesi 9: Hotfix UI — Badge Hover & Button Precision + Info Klinik
+- ✅ `button.jsx`: Tambah varian `size="xs"` (`h-7 rounded-md px-2.5 text-xs gap-1`) ke CVA sehingga tidak jatuh ke default padding
+- ✅ `badge.jsx`: Hapus `hover:bg-primary/80` dari semua variant (badge status informasional tidak boleh berubah warna saat hover). Tambah varian `info`, `purple` untuk status antrian. Refactor `success` → emerald (konsisten dark mode).
+- ✅ `MasterDataPage.jsx`, `EncountersPage.jsx`, `PatientsPage.jsx`: Ganti inline className hack dengan semantic variant (`success`, `warning`, `info`, `purple`)
+- ✅ Buat `apps/web/src/lib/clinic-info.js` — sumber kebenaran tunggal data resmi Klinik Rizani (nama, alamat, telp, HP, email)
+- ✅ `index.css`: Tambah `@media print { .printable-area ... }` — saat mencetak hanya class `.printable-area` yang tampil, menghilangkan bug "cetak = screenshot layar"
+- ✅ `ReceiptPrintModal.jsx`: Rewrite total — data klinik dari `CLINIC_INFO`, div konten bertanda `.printable-area`
+- ✅ `PrintEtiketModal.jsx`: Data klinik dari `CLINIC_INFO`, tambah `.printable-area`
+- ✅ `ReferralLetterModal.jsx`: Data klinik dari `CLINIC_INFO` + `formatClinicContact()`, tambah `.printable-area`
+- ✅ Vite build sukses 0 error
 
 ---
 
-*Last updated: 2026-09-01 | Updated by: Agent (Fase 5 Selesai)*
+*Last updated: 2026-09-07 | Updated by: Agent (Sesi 9 — Hotfix UI + Info Klinik)*

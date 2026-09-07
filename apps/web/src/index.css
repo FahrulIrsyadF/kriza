@@ -95,3 +95,41 @@
     @apply bg-muted-foreground/50;
   }
 }
+
+/* ─── PRINT STYLES ───────────────────────────────────────────────────────── */
+/* Saat mencetak, sembunyikan seluruh UI aplikasi.                            */
+/* Hanya area yang memiliki class .printable-area yang akan dicetak.          */
+/* Gunakan `class="printable-area"` pada div konten kuitansi/surat.           */
+@media print {
+  /* Reset margin halaman */
+  @page {
+    margin: 12mm 15mm;
+    size: A4 portrait;
+  }
+
+  /* Sembunyikan semua elemen body terlebih dahulu */
+  body * {
+    visibility: hidden !important;
+  }
+
+  /* Tampilkan hanya elemen dengan class .printable-area beserta isinya */
+  .printable-area,
+  .printable-area * {
+    visibility: visible !important;
+  }
+
+  /* Posisikan area cetak di pojok kiri atas, full width */
+  .printable-area {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: visible !important;
+    background: white !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+  }
+}
+

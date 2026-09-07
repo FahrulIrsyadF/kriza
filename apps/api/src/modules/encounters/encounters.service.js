@@ -380,6 +380,14 @@ async function finalizeEncounter(encounterId, { notes }, { userId, ipAddress, us
     userAgent,
   });
 
+  // Auto-generate tagihan kasir (Fase 7)
+  try {
+    const billingService = require('../billing/billing.service');
+    await billingService.generateOrSyncInvoice(enc.registrationId, { userId, ipAddress, userAgent });
+  } catch (billingErr) {
+    console.warn('[finalizeEncounter] Auto-generate invoice warning:', billingErr.message);
+  }
+
   return repo.getEncounterById(encounterId);
 }
 

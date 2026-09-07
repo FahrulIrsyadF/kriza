@@ -24,13 +24,6 @@ const NAVIGATION_ITEMS = [
     active: true,
   },
   {
-    name: 'Data Pasien',
-    path: '/patients',
-    icon: Users,
-    active: true,
-    fase: 'Fase 3',
-  },
-  {
     name: 'Pendaftaran & Antrian',
     path: '/registrations',
     icon: ClipboardList,
@@ -48,14 +41,14 @@ const NAVIGATION_ITEMS = [
     name: 'Farmasi & Obat',
     path: '/pharmacy',
     icon: Pill,
-    active: false,
+    active: true,
     fase: 'Fase 6',
   },
   {
     name: 'Kasir & Billing',
     path: '/billing',
     icon: Receipt,
-    active: false,
+    active: true,
     fase: 'Fase 7',
   },
   {
@@ -108,7 +101,7 @@ export default function AppLayout({ children, title, subtitle, actions }) {
                   KRIZA SIMRS
                 </h1>
                 <span className="bg-primary/10 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded">
-                  v0.5.0
+                  v0.7.0
                 </span>
               </div>
               <p className="text-[11px] text-muted-foreground mt-0.5">

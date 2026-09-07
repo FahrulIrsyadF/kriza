@@ -306,15 +306,15 @@ kriza/
 - Pembayaran adalah transaksi — harus atomic
 
 ### Tasks
-- [ ] Schema + migrate billing tables
-- [ ] Auto-generate invoice dari finalized encounter (hitung dari tarif)
-- [ ] API: GET /invoices/:id
-- [ ] API: POST /payments (proses pembayaran, transaction)
-- [ ] API: GET /invoices — list dengan filter status (unpaid/partial/paid)
-- [ ] Receipt generation (PDF atau print-friendly HTML)
-- [ ] Frontend: kasir view — list invoice pending
-- [ ] Frontend: form pembayaran
-- [ ] Frontend: cetak struk/invoice
+- [x] Schema + migrate billing tables (`invoices`, `invoice_items`, `payments`)
+- [x] Auto-generate invoice dari finalized encounter (hitung dari tarif tindakan + resep farmasi)
+- [x] API: GET /invoices/:id
+- [x] API: POST /payments (proses pembayaran atomik dengan kalkulasi kembalian)
+- [x] API: GET /invoices — list dengan filter status (unpaid/partial/paid) dan pencarian
+- [x] Receipt generation (Kuitansi / Struk Kasir Resmi Klinik Rizani dengan Terbilang)
+- [x] Frontend: kasir view — list invoice pending dan KPI pendapatan harian
+- [x] Frontend: form pembayaran (multi-metode: Tunai, Transfer, QRIS, Debit, BPJS, Asuransi)
+- [x] Frontend: cetak struk/invoice (modal & direct print stylesheet)
 
 ---
 

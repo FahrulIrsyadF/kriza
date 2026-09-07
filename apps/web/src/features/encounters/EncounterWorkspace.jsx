@@ -4,7 +4,7 @@ import {
   Activity, FileText, Stethoscope, Plus, Trash2, CheckCircle2,
   AlertTriangle, Lock, ShieldAlert, HeartPulse, Scale, Clock,
   ArrowRight, Printer, Share2, Building, UserCheck, RefreshCw,
-  Sparkles, Save, Edit3, CornerDownRight, Check, X,
+  Sparkles, Save, Edit3, CornerDownRight, Check, X, Pill,
 } from 'lucide-react';
 import { SearchableSelect } from '@/components/ui/searchable-select';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ReferralLetterModal } from './ReferralLetterModal';
+import { EncounterPrescriptionTab } from '@/features/pharmacy/EncounterPrescriptionTab';
 import apiClient from '@/lib/api-client';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -516,6 +517,7 @@ export function EncounterWorkspace({ encounterId, onBack }) {
           { id: 'soap', label: 'SOAP Klinis', icon: FileText, count: soapForm.subjective ? '✓' : null },
           { id: 'diagnosa', label: 'Diagnosa ICD-10', icon: Stethoscope, count: (encounter.diagnoses || []).length },
           { id: 'tindakan', label: 'Tindakan Medis', icon: Activity, count: (encounter.procedures || []).length },
+          { id: 'resep', label: 'Resep Obat', icon: Pill, count: null },
           { id: 'disposisi', label: 'Tindak Lanjut & Rujukan', icon: Share2, count: dispositionForm.dispositionType !== 'PULANG_BEROBAT_JALAN' ? '!' : null },
         ].map((tab) => {
           const Icon = tab.icon;
@@ -1157,7 +1159,12 @@ export function EncounterWorkspace({ encounterId, onBack }) {
         </Card>
       )}
 
-      {/* ─── 7. TAB 5: TINDAK LANJUT & RUJUKAN (PCARE READY) ────────────────── */}
+      {/* ─── 7. TAB 5: RESEP OBAT ELEKTRONIK (FARMASI) ───────────────────────── */}
+      {activeTab === 'resep' && (
+        <EncounterPrescriptionTab encounterId={encounterId} isReadOnly={isFinalized} />
+      )}
+
+      {/* ─── 8. TAB 6: TINDAK LANJUT & RUJUKAN (PCARE READY) ────────────────── */}
       {activeTab === 'disposisi' && (
         <Card className="rounded-2xl shadow-sm">
           <CardHeader className="py-3 border-b border-border bg-muted/20">

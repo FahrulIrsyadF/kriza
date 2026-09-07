@@ -36,6 +36,20 @@
       "when": 1788273436525,
       "tag": "0004_curved_sersi",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1788320856434,
+      "tag": "0005_nostalgic_ted_forrester",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1788744091123,
+      "tag": "0006_abnormal_pyro",
+      "breakpoints": true
     }
   ]
 }

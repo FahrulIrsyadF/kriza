@@ -1,8 +1,9 @@
 import React from 'react';
-import { Printer, X, FileText, CheckCircle2, ShieldAlert } from 'lucide-react';
+import { Printer, X, FileText } from 'lucide-react';
 import { Dialog, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { CLINIC_INFO, formatClinicContact } from '@/lib/clinic-info';
 
 function formatDateIndo(dateStr) {
   if (!dateStr) return '—';
@@ -81,24 +82,28 @@ export function ReferralLetterModal({ isOpen, onClose, referralData }) {
       </DialogHeader>
 
       {/* Surat Rujukan Container (Printable) */}
-      <div id="printable-referral-letter" className="bg-white text-gray-900 font-sans p-6 rounded-xl border border-gray-200 print:border-none print:p-0 text-xs leading-relaxed space-y-4 max-h-[75vh] overflow-y-auto">
+      <div
+        id="printable-referral-letter"
+        className="printable-area bg-white text-gray-900 font-sans p-6 rounded-xl border border-gray-200 print:border-none print:p-0 text-xs leading-relaxed space-y-4 max-h-[75vh] overflow-y-auto print:max-h-none print:overflow-visible"
+      >
         
         {/* Kop Surat Klinik */}
         <div className="border-b-2 border-gray-900 pb-3 flex items-center justify-center gap-4 relative">
           <img
-            src="/logo_klinik.png"
-            alt="Logo Klinik KRIZA"
+            src={CLINIC_INFO.logoPath}
+            alt={`Logo ${CLINIC_INFO.name}`}
             className="w-14 h-14 object-contain shrink-0"
+            onError={(e) => { e.target.style.display = 'none'; }}
           />
           <div className="text-center">
             <h1 className="text-lg font-black tracking-wide uppercase text-gray-900">
-              KLINIK PRATAMA KRIZA MEDIKA
+              {CLINIC_INFO.legalName}
             </h1>
             <p className="text-[11px] text-gray-600">
-              Jl. Raya Pelayanan Kesehatan No. 12, Jawa Timur &bull; Telp: (031) 888-9999 &bull; Email: info@kriza.med
+              {CLINIC_INFO.address}
             </p>
             <p className="text-[10px] text-gray-500 font-mono mt-0.5">
-              Izin Operasional Klinik: 440/123/KP/2024 &bull; Terakreditasi Paripurna
+              {formatClinicContact()}
             </p>
           </div>
         </div>
@@ -132,7 +137,7 @@ export function ReferralLetterModal({ isOpen, onClose, referralData }) {
               <>
                 Dokter Penanggung Jawab {targetPolyclinicName || 'Poli Tujuan'}
                 <br />
-                <span className="text-xs font-semibold text-gray-700">Klinik Pratama KRIZA</span>
+                <span className="text-xs font-semibold text-gray-700">{CLINIC_INFO.name}</span>
               </>
             )}
           </p>
@@ -211,11 +216,11 @@ export function ReferralLetterModal({ isOpen, onClose, referralData }) {
         <div className="pt-4 flex justify-between items-end border-t border-gray-200 text-xs">
           <div className="text-[11px] text-gray-500">
             <p>Transportasi: {transportation || 'Mandiri'}</p>
-            <p className="mt-1">Surat rujukan ini dicetak secara sah melalui SIMRS KRIZA.</p>
+            <p className="mt-1">Surat rujukan ini dicetak secara sah melalui SIMRS {CLINIC_INFO.name}.</p>
           </div>
 
           <div className="text-center w-64">
-            <p className="text-[11px]">Jawa Timur, {formatDateIndo(issuedAt)}</p>
+            <p className="text-[11px]">{CLINIC_INFO.cityForSignature}, {formatDateIndo(issuedAt)}</p>
             <p className="text-[11px] font-medium text-gray-700 mt-0.5">Dokter Pemeriksa,</p>
             <div className="h-16 flex items-center justify-center">
               <span className="text-gray-300 font-serif italic text-xs">[ Tanda Tangan & Cap Digital ]</span>

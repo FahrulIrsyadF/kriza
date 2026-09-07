@@ -112,7 +112,7 @@ function calculateAge(birthDateStr) {
   };
 }
 
-export default function PatientsPage() {
+export default function PatientsPage({ embedded = false }) {
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearchQuery = useDebounce(searchQuery, 400);
   const [page, setPage] = useState(1);
@@ -370,38 +370,43 @@ export default function PatientsPage() {
     });
   };
 
-  return (
-    <AppLayout
-      title="Manajemen Pasien (RME)"
-      subtitle="Pendaftaran pasien baru, pencarian rekam medis, riwayat demografi & klinis"
-      actions={
-        <Button
-          onClick={() => {
-            if (formState.open) {
-              setFormState({ open: false, mode: 'create', data: null });
-            } else {
-              openCreateForm();
-            }
-          }}
-          variant={formState.open ? 'outline' : 'default'}
-          className="gap-2 shadow-sm"
-        >
-          {formState.open ? (
-            <>
-              <X className="w-4 h-4" />
-              Tutup Formulir
-            </>
-          ) : (
-            <>
-              <Plus className="w-4 h-4" />
-              Pasien Baru
-            </>
-          )}
-        </Button>
-      }
-    >
+  const patientContent = (
+    <>
       <div className="w-full flex flex-col gap-6">
-        {/* ─── 1. EXPANDABLE PATIENT FORM CARD (ABOVE SEARCH BAR) ───────────── */}
+      {embedded && (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-card p-4 rounded-xl border border-border shadow-sm">
+          <div>
+            <h3 className="font-bold text-sm text-foreground">Database Master Pasien</h3>
+            <p className="text-xs text-muted-foreground">
+              Pencarian rekam medis, verifikasi NIK/BPJS, dan pendaftaran pasien baru klinik
+            </p>
+          </div>
+          <Button
+            onClick={() => {
+              if (formState.open) {
+                setFormState({ open: false, mode: 'create', data: null });
+              } else {
+                openCreateForm();
+              }
+            }}
+            variant={formState.open ? 'outline' : 'default'}
+            className="gap-2 shadow-sm shrink-0"
+          >
+            {formState.open ? (
+              <>
+                <X className="w-4 h-4" />
+                Tutup Formulir
+              </>
+            ) : (
+              <>
+                <Plus className="w-4 h-4" />
+                Pasien Baru
+              </>
+            )}
+          </Button>
+        </div>
+      )}
+      {/* ─── 1. EXPANDABLE PATIENT FORM CARD (ABOVE SEARCH BAR) ───────────── */}
         {formState.open && (
           <div ref={formCardRef} className="animate-in fade-in slide-in-from-top-4 duration-300">
             <Card className="border-2 border-primary/25 shadow-lg rounded-2xl overflow-hidden bg-card">
@@ -453,15 +458,23 @@ export default function PatientsPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-6 gap-3.5">
                       <div>
                         <label className="text-[11px] font-semibold text-destructive block mb-1">
-                          No. Medrec (RM) *
+                          No. Rekam Medis *
                         </label>
                         <Input
                           value={formData.medicalRecordNumber}
-                          onChange={(e) => setFormData({ ...formData, medicalRecordNumber: e.target.value })}
+                          onChange={(e) => {
+                            // Hanya izinkan angka, max 6 karakter
+                            const val = e.target.value.replace(/\D/g, '').slice(0, 6);
+                            setFormData({ ...formData, medicalRecordNumber: val });
+                          }}
                           placeholder="000001"
-                          className="border-destructive/40 font-mono font-bold text-xs bg-muted/20"
+                          maxLength={6}
+                          pattern="\d{6}"
+                          inputMode="numeric"
+                          className="border-destructive/40 font-mono font-bold text-xs bg-muted/20 tracking-widest"
                           required
                         />
+                        <p className="text-[9px] text-muted-foreground mt-0.5">6 digit angka</p>
                       </div>
 
                       <div className="md:col-span-2">
@@ -983,14 +996,14 @@ export default function PatientsPage() {
                         </TableCell>
                         <TableCell>
                           <Badge
-                            variant="secondary"
-                            className={
+                            variant={
                               p.insuranceType === 'BPJS'
-                                ? 'bg-green-500/15 text-green-700 font-semibold text-[11px]'
+                                ? 'success'
                                 : p.insuranceType === 'ASURANSI'
-                                ? 'bg-purple-500/15 text-purple-700 font-semibold text-[11px]'
-                                : 'text-[11px]'
+                                ? 'purple'
+                                : 'secondary'
                             }
+                            className="text-[11px]"
                           >
                             {p.insuranceType}
                           </Badge>
@@ -1180,6 +1193,45 @@ export default function PatientsPage() {
           </DialogFooter>
         </Dialog>
       )}
+    </>
+  );
+
+  if (embedded) {
+    return patientContent;
+  }
+
+  return (
+    <AppLayout
+      title="Manajemen Pasien (RME)"
+      subtitle="Pendaftaran pasien baru, pencarian rekam medis, riwayat demografi & klinis"
+      actions={
+        <Button
+          onClick={() => {
+            if (formState.open) {
+              setFormState({ open: false, mode: 'create', data: null });
+            } else {
+              openCreateForm();
+            }
+          }}
+          variant={formState.open ? 'outline' : 'default'}
+          className="gap-2 shadow-sm"
+        >
+          {formState.open ? (
+            <>
+              <X className="w-4 h-4" />
+              Tutup Formulir
+            </>
+          ) : (
+            <>
+              <Plus className="w-4 h-4" />
+              Pasien Baru
+            </>
+          )}
+        </Button>
+      }
+    >
+      {patientContent}
     </AppLayout>
   );
 }
+

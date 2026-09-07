@@ -3,8 +3,12 @@ const { z } = require('zod');
 // ─── Patient Creation / Update Schema ─────────────────────────────────────────
 
 const createPatientSchema = z.object({
-  // Medrec (bisa diisi manual atau auto-generate di backend jika kosong)
-  medicalRecordNumber: z.string().max(30).optional(),
+  // Medrec: 6 digit angka murni (000001–999999). Jika kosong, auto-generate di backend.
+  medicalRecordNumber: z
+    .string()
+    .regex(/^\d{6}$/, 'Nomor Rekam Medis harus tepat 6 digit angka (contoh: 000123)')
+    .optional(),
+
   
   // Data Utama
   name: z.string().min(1, 'Nama pasien wajib diisi').max(255),
