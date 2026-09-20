@@ -55,7 +55,7 @@ const NAVIGATION_ITEMS = [
     name: 'Laporan',
     path: '/reports',
     icon: BarChart3,
-    active: false,
+    active: true,
     fase: 'Fase 8',
   },
   {
@@ -101,7 +101,7 @@ export default function AppLayout({ children, title, subtitle, actions }) {
                   KRIZA SIMRS
                 </h1>
                 <span className="bg-primary/10 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded">
-                  v0.7.0
+                  v0.8.0
                 </span>
               </div>
               <p className="text-[11px] text-muted-foreground mt-0.5">

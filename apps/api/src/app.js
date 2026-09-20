@@ -91,6 +91,9 @@ function buildApp(opts = {}) {
 
     // Fase 7: Kasir, Billing & Pembayaran
     apiRouter.register(require('./modules/billing/billing.routes'), { prefix: '/billing' });
+
+    // Fase 8: Laporan Operasional
+    apiRouter.register(require('./modules/reports/reports.routes'), { prefix: '/reports' });
   }, { prefix: '/api/v1' });
 
   // ─── Error Handler ────────────────────────────────────────────────────────

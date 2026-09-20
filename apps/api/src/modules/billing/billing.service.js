@@ -524,6 +524,11 @@ async function getPaymentById(id) {
   return payment;
 }
 
+// ─── 10. Laporan Keuangan Harian Pasien Umum ─────────────────────────────────
+async function getDailyGeneralRevenue(params) {
+  return repo.getDailyGeneralRevenue(params);
+}
+
 module.exports = {
   getDashboardStats,
   getInvoices,
@@ -534,4 +539,5 @@ module.exports = {
   processPayment,
   getPayments,
   getPaymentById,
+  getDailyGeneralRevenue,
 };

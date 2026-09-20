@@ -14,6 +14,7 @@ import apiClient from '@/lib/api-client';
 import { PaymentModal } from './PaymentModal';
 import { ReceiptPrintModal } from './ReceiptPrintModal';
 import { InvoiceDetailModal } from './InvoiceDetailModal';
+import { dialog } from '@/context/DialogContext';
 
 export default function BillingPage() {
   const queryClient = useQueryClient();
@@ -502,7 +503,10 @@ export default function BillingPage() {
                                   const res = await apiClient.get(`/billing/payments/${p.id}`);
                                   setSelectedPaymentReceipt(res.data.data);
                                 } catch (err) {
-                                  alert('Gagal memuat kuitansi');
+                                  dialog.alert('Gagal memuat kuitansi', {
+                                    title: 'Kuitansi Gagal',
+                                    variant: 'danger',
+                                  });
                                 }
                               }}
                               className="h-8 px-2.5 text-xs gap-1 shadow-sm"

@@ -15,6 +15,7 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { EncounterWorkspace } from './EncounterWorkspace';
 import { useAuth } from '@/context/AuthContext';
+import { dialog } from '@/context/DialogContext';
 import apiClient from '@/lib/api-client';
 
 function calculateAge(birthDateStr) {
@@ -88,7 +89,10 @@ export default function EncountersPage() {
       setSearchParams({ id: newEncounter.id });
     },
     onError: (err) => {
-      alert('Gagal memulai pemeriksaan: ' + (err.response?.data?.error?.message || err.message));
+      dialog.alert('Gagal memulai pemeriksaan: ' + (err.response?.data?.error?.message || err.message), {
+        title: 'Pemeriksaan Gagal',
+        variant: 'danger',
+      });
     },
   });
 

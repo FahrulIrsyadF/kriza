@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import apiClient from '@/lib/api-client';
 import AppLayout from '@/components/layout/AppLayout';
+import { dialog } from '@/context/DialogContext';
 import { useDebounce } from '@/hooks/useDebounce';
 import { SearchableSelect } from '@/components/ui/searchable-select';
 import { Button } from '@/components/ui/button';
@@ -1031,12 +1032,16 @@ export default function PatientsPage({ embedded = false }) {
                               size="sm"
                               className="text-destructive hover:bg-destructive/10"
                               title="Nonaktifkan Pasien"
-                              onClick={() => {
-                                if (
-                                  confirm(
-                                    `Yakin ingin menonaktifkan data pasien ${p.name} (RM: ${p.medicalRecordNumber})?`
-                                  )
-                                ) {
+                              onClick={async () => {
+                                const confirmed = await dialog.confirm(
+                                  `Yakin ingin menonaktifkan data pasien ${p.name} (RM: ${p.medicalRecordNumber})?`,
+                                  {
+                                    title: 'Nonaktifkan Pasien',
+                                    variant: 'danger',
+                                    confirmText: 'Ya, Nonaktifkan',
+                                  }
+                                );
+                                if (confirmed) {
                                   deletePatientMutation.mutate(p.id);
                                 }
                               }}

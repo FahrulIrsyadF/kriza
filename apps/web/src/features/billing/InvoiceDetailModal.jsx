@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { formatRupiah } from '@/lib/utils';
 import apiClient from '@/lib/api-client';
+import { dialog } from '@/context/DialogContext';
 
 export function InvoiceDetailModal({ invoiceId, onClose, onPay, onPrintReceipt }) {
   const [invoice, setInvoice] = useState(null);
@@ -42,7 +43,10 @@ export function InvoiceDetailModal({ invoiceId, onClose, onPay, onPrintReceipt }
       setInvoice(res.data.data);
       setIsEditingDiscount(false);
     } catch (err) {
-      alert('Gagal memperbarui diskon: ' + (err.response?.data?.error?.message || err.message));
+      dialog.alert('Gagal memperbarui diskon: ' + (err.response?.data?.error?.message || err.message), {
+        title: 'Gagal Update Diskon',
+        variant: 'danger',
+      });
     } finally {
       setSavingDiscount(false);
     }

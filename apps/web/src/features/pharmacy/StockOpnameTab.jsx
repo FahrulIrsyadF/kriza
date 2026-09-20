@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { dialog } from '@/context/DialogContext';
 import apiClient from '@/lib/api-client';
 
 export function StockOpnameTab() {
@@ -60,7 +61,10 @@ export function StockOpnameTab() {
       flashNotification('Sesi Stock Opname baru berhasil dibuat!');
     },
     onError: (err) => {
-      alert(err.response?.data?.error?.message || 'Gagal membuat sesi Stock Opname');
+      dialog.alert(err.response?.data?.error?.message || 'Gagal membuat sesi Stock Opname', {
+        title: 'Sesi SO Gagal',
+        variant: 'danger',
+      });
     },
   });
 
@@ -83,7 +87,10 @@ export function StockOpnameTab() {
       flashNotification('Data perhitungan fisik berhasil disimpan!');
     },
     onError: (err) => {
-      alert(err.response?.data?.error?.message || 'Gagal menyimpan data SO');
+      dialog.alert(err.response?.data?.error?.message || 'Gagal menyimpan data SO', {
+        title: 'Simpan Gagal',
+        variant: 'danger',
+      });
     },
   });
 
@@ -97,7 +104,10 @@ export function StockOpnameTab() {
       flashNotification('Stock Opname berhasil difinalisasi dan penyesuaian stok telah diterapkan!');
     },
     onError: (err) => {
-      alert(err.response?.data?.error?.message || 'Gagal finalisasi SO');
+      dialog.alert(err.response?.data?.error?.message || 'Gagal finalisasi SO', {
+        title: 'Finalisasi Gagal',
+        variant: 'danger',
+      });
     },
   });
 
@@ -262,8 +272,16 @@ export function StockOpnameTab() {
                   <Button
                     size="sm"
                     className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs shadow-md"
-                    onClick={() => {
-                      if (confirm('Yakin ingin memfinalisasi Stock Opname ini? Semua selisih akan otomatis di-adjust ke stok sistem!')) {
+                    onClick={async () => {
+                      const confirmed = await dialog.confirm(
+                        'Yakin ingin memfinalisasi Stock Opname ini? Semua selisih fisik akan otomatis disesuaikan ke stok sistem!',
+                        {
+                          title: 'Konfirmasi Finalisasi Stock Opname',
+                          variant: 'danger',
+                          confirmText: 'Ya, Finalisasi & Terapkan',
+                        }
+                      );
+                      if (confirmed) {
                         finalizeSOMutation.mutate();
                       }
                     }}

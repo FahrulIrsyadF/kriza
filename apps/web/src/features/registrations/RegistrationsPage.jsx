@@ -20,6 +20,7 @@ import {
 import {
   Dialog, DialogHeader, DialogTitle, DialogClose,
 } from '@/components/ui/dialog';
+import { dialog } from '@/context/DialogContext';
 import apiClient from '@/lib/api-client';
 
 // ─── Constants ──────────────────────────────────────────────────────────────────
@@ -339,8 +340,20 @@ export default function RegistrationsPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.patientId) { alert('Pilih pasien terlebih dahulu'); return; }
-    if (!formData.polyclinicId) { alert('Pilih poliklinik tujuan'); return; }
+    if (!formData.patientId) {
+      dialog.alert('Pilih pasien terlebih dahulu sebelum menyimpan pendaftaran.', {
+        title: 'Pasien Belum Dipilih',
+        variant: 'warning',
+      });
+      return;
+    }
+    if (!formData.polyclinicId) {
+      dialog.alert('Pilih poliklinik tujuan terlebih dahulu.', {
+        title: 'Poliklinik Belum Dipilih',
+        variant: 'warning',
+      });
+      return;
+    }
 
     const payload = {
       ...formData,
@@ -640,15 +653,51 @@ export default function RegistrationsPage() {
                       )}
                     </div>
 
-                    {patientSearch.length >= 2 && patientOptions.length > 0 && (
-                      <SearchableSelect
-                        options={patientOptions}
-                        value={formData.patientId}
-                        onChange={(val, raw) => setFormData(prev => ({ ...prev, patientId: val }))}
-                        placeholder="Pilih pasien dari hasil pencarian..."
-                        searchPlaceholder="Filter hasil..."
-                        emptyMessage="Pasien tidak ditemukan"
-                      />
+                    {/* Hasil Pencarian Langsung (Langsung muncul list nama tanpa tombol dropdown perantara) */}
+                    {patientSearch.trim().length >= 2 && patientOptions.length > 0 && (
+                      <div className="border border-border rounded-xl bg-card shadow-md overflow-hidden divide-y divide-border/60 max-h-60 overflow-y-auto mb-2">
+                        <div className="bg-muted/40 px-3 py-1.5 text-[10px] font-bold text-muted-foreground uppercase tracking-wider flex items-center justify-between">
+                          <span>Hasil Pencarian ({patientOptions.length} pasien ditemukan)</span>
+                          <span className="font-normal lowercase text-[10px]">klik nama untuk memilih</span>
+                        </div>
+                        {patientOptions.map((opt) => {
+                          const p = opt.raw;
+                          const isSelected = formData.patientId === p.id;
+                          return (
+                            <button
+                              key={p.id}
+                              type="button"
+                              onClick={() => {
+                                setFormData((prev) => ({ ...prev, patientId: p.id }));
+                                setPatientSearch('');
+                              }}
+                              className={`w-full text-left p-2.5 hover:bg-primary/10 transition-colors flex items-center justify-between gap-3 group cursor-pointer ${
+                                isSelected ? 'bg-primary/10' : ''
+                              }`}
+                            >
+                              <div className="min-w-0">
+                                <p className="text-xs font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
+                                  <span>{p.name}</span>
+                                  {isSelected && (
+                                    <span className="text-[10px] text-primary font-semibold bg-primary/15 px-1.5 py-0.5 rounded">
+                                      Terpilih
+                                    </span>
+                                  )}
+                                </p>
+                                <p className="text-[11px] text-muted-foreground font-mono mt-0.5">
+                                  RM: <span className="text-foreground font-semibold">{p.medicalRecordNumber}</span>
+                                  {p.identityNumber ? ` • NIK: ${p.identityNumber}` : ''}
+                                  {p.gender ? ` • ${p.gender}` : ''}
+                                  {p.birthDate ? ` • ${formatAge(p.birthDate)}` : ''}
+                                </p>
+                              </div>
+                              <Badge variant="outline" className="text-[10px] shrink-0 font-medium">
+                                {p.insuranceType || 'UMUM'}
+                              </Badge>
+                            </button>
+                          );
+                        })}
+                      </div>
                     )}
 
                     {/* Not Found Callout Banner — Muncul jika pasien belum ada di database */}
@@ -683,8 +732,20 @@ export default function RegistrationsPage() {
                           {activePatient.name?.charAt(0)}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-sm text-foreground leading-tight">{activePatient.name}</p>
-                          <p className="text-[11px] text-muted-foreground font-mono">
+                          <div className="flex items-center justify-between">
+                            <p className="font-semibold text-sm text-foreground leading-tight">{activePatient.name}</p>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setFormData((prev) => ({ ...prev, patientId: '' }));
+                                setPatientSearch('');
+                              }}
+                              className="text-[11px] font-semibold text-destructive hover:underline cursor-pointer"
+                            >
+                              Ganti Pasien
+                            </button>
+                          </div>
+                          <p className="text-[11px] text-muted-foreground font-mono mt-0.5">
                             RM: {activePatient.medicalRecordNumber} &bull; {activePatient.gender} &bull; {formatAge(activePatient.birthDate)}
                           </p>
                           {activePatient.allergiesNotes && (
@@ -958,8 +1019,12 @@ export default function RegistrationsPage() {
                                   size="sm"
                                   title="Batalkan"
                                   className="text-destructive hover:bg-destructive/10"
-                                  onClick={() => {
-                                    const reason = prompt('Alasan pembatalan (opsional):');
+                                  onClick={async () => {
+                                    const reason = await dialog.prompt('Masukkan alasan pembatalan pendaftaran (opsional):', {
+                                      title: 'Konfirmasi Pembatalan Pendaftaran',
+                                      placeholder: 'Contoh: Pasien berhalangan / membatalkan kunjungan...',
+                                      confirmText: 'Batalkan Pendaftaran',
+                                    });
                                     if (reason !== null) {
                                       cancelMutation.mutate({ id: reg.id, reason });
                                     }

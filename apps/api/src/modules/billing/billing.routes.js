@@ -23,6 +23,13 @@ async function billingRoutes(app) {
     return reply.send({ success: true, data: stats });
   });
 
+  // ─── Daily General Patient Revenue (Dashboard) ──────────────────────────────
+  app.get('/daily-general-revenue', async (request, reply) => {
+    const { date } = request.query;
+    const data = await service.getDailyGeneralRevenue({ date });
+    return reply.send({ success: true, data });
+  });
+
   // ─── Invoices ────────────────────────────────────────────────────────────────
   app.get('/invoices', async (request, reply) => {
     const parsedQuery = schemas.queryInvoicesSchema.safeParse(request.query);

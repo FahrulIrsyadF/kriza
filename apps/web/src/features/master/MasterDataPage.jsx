@@ -20,6 +20,7 @@ import {
 import apiClient from '@/lib/api-client';
 import AppLayout from '@/components/layout/AppLayout';
 import PatientsPage from '@/features/patients/PatientsPage';
+import { dialog } from '@/context/DialogContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -404,8 +405,16 @@ export default function MasterDataPage() {
                             variant="ghost"
                             size="sm"
                             className="text-destructive hover:bg-destructive/10"
-                            onClick={() => {
-                              if (confirm(`Yakin ingin menonaktifkan ${p.name}?`)) {
+                            onClick={async () => {
+                              const confirmed = await dialog.confirm(
+                                `Yakin ingin menonaktifkan ${p.name}?`,
+                                {
+                                  title: 'Nonaktifkan Poliklinik',
+                                  variant: 'danger',
+                                  confirmText: 'Ya, Nonaktifkan',
+                                }
+                              );
+                              if (confirmed) {
                                 deletePolyMutation.mutate(p.id);
                               }
                             }}
@@ -579,12 +588,16 @@ export default function MasterDataPage() {
                               variant="ghost"
                               size="icon"
                               className="h-6 w-6 text-destructive hover:bg-destructive/10"
-                              onClick={() => {
-                                if (
-                                  confirm(
-                                    `Hapus jadwal praktik ${s.practitionerName} hari ${DAYS_MAP[s.dayOfWeek]}?`
-                                  )
-                                ) {
+                              onClick={async () => {
+                                const confirmed = await dialog.confirm(
+                                  `Hapus jadwal praktik ${s.practitionerName} hari ${DAYS_MAP[s.dayOfWeek]}?`,
+                                  {
+                                    title: 'Hapus Jadwal Praktik',
+                                    variant: 'danger',
+                                    confirmText: 'Ya, Hapus Jadwal',
+                                  }
+                                );
+                                if (confirmed) {
                                   deleteScheduleMutation.mutate(s.id);
                                 }
                               }}

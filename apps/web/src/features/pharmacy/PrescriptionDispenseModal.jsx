@@ -7,6 +7,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { PrintEtiketModal } from './PrintEtiketModal';
+import { dialog } from '@/context/DialogContext';
 import apiClient from '@/lib/api-client';
 
 export function PrescriptionDispenseModal({ prescriptionId, onClose }) {
@@ -215,10 +216,10 @@ export function PrescriptionDispenseModal({ prescriptionId, onClose }) {
                             </span>{' '}
                             <span className="text-muted-foreground">{item.unit}</span>
                           </td>
-                          <td className="px-4 py-3 text-right font-mono text-muted-foreground">
+                          <td className="px-4 py-3 text-right font-mono text-muted-foreground whitespace-nowrap">
                             Rp {Number(item.unitPrice || 0).toLocaleString('id-ID')}
                           </td>
-                          <td className="px-4 py-3 text-right font-mono font-bold text-foreground">
+                          <td className="px-4 py-3 text-right font-mono font-bold text-foreground whitespace-nowrap">
                             Rp {Number(item.subtotal || 0).toLocaleString('id-ID')}
                           </td>
                           <td className="px-4 py-3 text-center">
@@ -242,11 +243,11 @@ export function PrescriptionDispenseModal({ prescriptionId, onClose }) {
                   </tbody>
                   <tfoot className="bg-muted/40 border-t border-border font-bold">
                     <tr>
-                      <td colSpan={5} className="px-4 py-2.5 text-right text-xs uppercase text-muted-foreground">
+                      <td colSpan={5} className="px-4 py-3 text-right text-xs uppercase text-muted-foreground whitespace-nowrap">
                         Total Biaya Resep:
                       </td>
-                      <td className="px-4 py-2.5 text-right font-mono text-sm text-primary">
-                        Rp {totalPrice.toLocaleString('id-ID')}
+                      <td className="px-4 py-3 text-right font-mono text-sm text-primary font-extrabold whitespace-nowrap">
+                        Rp {Number(totalPrice || 0).toLocaleString('id-ID')}
                       </td>
                       <td></td>
                     </tr>
@@ -275,9 +276,13 @@ export function PrescriptionDispenseModal({ prescriptionId, onClose }) {
                   variant="ghost"
                   size="sm"
                   className="text-destructive hover:bg-destructive/10 hover:text-destructive text-xs"
-                  onClick={() => {
-                    const reason = prompt('Masukkan alasan pembatalan resep:');
-                    if (reason) cancelMutation.mutate(reason);
+                  onClick={async () => {
+                    const reason = await dialog.prompt('Masukkan alasan pembatalan resep:', {
+                      title: 'Batalkan Resep Farmasi',
+                      placeholder: 'Contoh: Pasien menolak obat / diganti resep baru...',
+                      confirmText: 'Batalkan Resep',
+                    });
+                    if (reason && reason.trim()) cancelMutation.mutate(reason.trim());
                   }}
                   disabled={cancelMutation.isPending}
                 >

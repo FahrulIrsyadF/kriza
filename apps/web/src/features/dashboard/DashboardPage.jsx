@@ -17,16 +17,17 @@ import apiClient from '@/lib/api-client';
 import AppLayout from '@/components/layout/AppLayout';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { GeneralRevenueSection } from './GeneralRevenueSection';
 
 const FASE_PROGRESS = [
   { fase: '0', nama: 'Scaffolding & Fondasi', status: 'done' },
   { fase: '1', nama: 'Auth, RBAC, Audit Trail', status: 'done' },
   { fase: '2', nama: 'Master Data (Poli, Dokter, Tarif, Obat)', status: 'done' },
   { fase: '3', nama: 'Manajemen Pasien & Wilayah (RME)', status: 'done' },
-  { fase: '4', nama: 'Registrasi & Antrian Poli', status: 'upcoming' },
-  { fase: '5', nama: 'Encounter & Rekam Medis (SOAP)', status: 'upcoming' },
-  { fase: '6', nama: 'Resep & Farmasi', status: 'upcoming' },
-  { fase: '7', nama: 'Billing & Pembayaran', status: 'upcoming' },
+  { fase: '4', nama: 'Registrasi & Antrian Poli', status: 'done' },
+  { fase: '5', nama: 'Encounter & Rekam Medis (SOAP)', status: 'done' },
+  { fase: '6', nama: 'Resep & Farmasi', status: 'done' },
+  { fase: '7', nama: 'Billing & Pembayaran', status: 'done' },
 ];
 
 function StatCard({ icon: Icon, label, value, color, linkTo }) {
@@ -51,6 +52,7 @@ function StatCard({ icon: Icon, label, value, color, linkTo }) {
 
 export default function DashboardPage() {
   const { user } = useAuth();
+  const todayStr = new Date().toISOString().substring(0, 10);
 
   const { data: polyclinics = [] } = useQuery({
     queryKey: ['polyclinics'],
@@ -67,6 +69,25 @@ export default function DashboardPage() {
       return res.data.data.pagination.total || 0;
     },
   });
+
+  // Query antrian & registrasi hari ini untuk mengisi stat card
+  const { data: todayRegsData } = useQuery({
+    queryKey: ['today-registrations', todayStr],
+    queryFn: async () => {
+      const res = await apiClient.get('/registrations', { params: { date: todayStr, limit: 100 } });
+      return res.data.data;
+    },
+    refetchInterval: 30000,
+  });
+
+  const todayRegs = Array.isArray(todayRegsData?.items)
+    ? todayRegsData.items
+    : Array.isArray(todayRegsData)
+    ? todayRegsData
+    : [];
+  const totalRegsToday = todayRegsData?.pagination?.total ?? todayRegs.length;
+  const activeEncounters = todayRegs.filter((r) => r.status === 'DIPERIKSA').length;
+  const waitingQueue = todayRegs.filter((r) => r.status === 'MENUNGGU').length;
 
   return (
     <AppLayout>
@@ -125,22 +146,28 @@ export default function DashboardPage() {
         <StatCard
           icon={Calendar}
           label="Total Registrasi Hari Ini"
-          value="—"
+          value={totalRegsToday}
           color="bg-green-500/15 text-green-700"
+          linkTo="/registrations"
         />
         <StatCard
           icon={Activity}
           label="Encounter Aktif (SOAP)"
-          value="—"
+          value={activeEncounters}
           color="bg-purple-500/15 text-purple-700"
+          linkTo="/encounters"
         />
         <StatCard
           icon={Clock}
           label="Antrian Menunggu"
-          value="—"
+          value={waitingQueue}
           color="bg-orange-500/15 text-orange-700"
+          linkTo="/registrations"
         />
       </div>
+
+      {/* ─── Laporan Keuangan Harian Pasien Umum ──────────────────────────────── */}
+      <GeneralRevenueSection />
 
       {/* Main Grid: Poli & Progress */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

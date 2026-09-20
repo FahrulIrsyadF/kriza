@@ -29,8 +29,8 @@
 | 5 | Encounter & Rekam Medis | 🟢 SELESAI | SOAP, TTV BMI, ICD-10, Tindakan, Rujukan & PCare ✅ |
 | 6 | Resep & Farmasi | 🟢 SELESAI | 113 obat riil, Batch FEFO, Dispensing, Shift Log, SO ✅ |
 | 7 | Billing & Pembayaran | 🟢 SELESAI | Tagihan auto-sync, Multi-payment, Struk/Kuitansi resmi ✅ |
-| 8 | Laporan Operasional | 🔴 BELUM MULAI | Fase berikutnya |
-| 9 | Integrasi BPJS | 🔴 BELUM MULAI | |
+| 8 | Laporan Operasional | 🟢 SELESAI | 6 Endpoint agregasi, Excel .xlsx export, print resmi ✅ |
+| 9 | Integrasi BPJS | 🔴 BELUM MULAI | Ref: docs/bpjs-pcare-reference.md |
 | 10 | Integrasi SATUSEHAT | 🔴 BELUM MULAI | |
 | 11 | Hardening & Production | 🔴 BELUM MULAI | |
 
@@ -40,14 +40,14 @@
 
 ## Fase Aktif Saat Ini
 
-**FASE 8 — Laporan Operasional** (Siap dimulai sesuai instruksi)
+**FASE 9 — Integrasi BPJS (P-Care & VClaim)** (Siap dimulai sesuai instruksi)
 
-### Tasks Selesai (Fase 7 — Kasir, Billing & Pembayaran):
-- [x] Schema + migrate: `invoices`, `invoice_items`, `payments` (Migration `0006_abnormal_pyro.sql`)
-- [x] Auto-generate invoice dari encounter yang FINALIZED + resep obat farmasi
-- [x] API proses pembayaran atomik (Tunai + kalkulasi kembalian otomatis, Transfer, QRIS, Debit, BPJS, Asuransi)
-- [x] Struk / Kuitansi pembayaran resmi Klinik Pratama Rawat Inap Rizani dengan terbilang & stempel
-- [x] Frontend workspace kasir (`BillingPage.jsx`) dengan KPI pendapatan harian, antrian belum lunas, dan riwayat transaksi
+### Tasks Selesai (Fase 8 — Laporan Operasional):
+- [x] Backend API Reports (`/api/v1/reports/*`): 6 endpoint teragregasi (overview, visits, revenue, morbidity, pharmacy, bpjs)
+- [x] Zero-dependency Micro Visualizer (TrendBarChart, HorizontalBarMetric, SegmentedDistributionBar) menjaga bundle size & 0 error build
+- [x] Ekspor Microsoft Excel (.xlsx) via dynamic import SheetJS
+- [x] Modal cetak resmi ber-kop `CLINIC_INFO`, titi mangsa Paiton, dan print stylesheet `.printable-area`
+- [x] Workspace frontend `ReportsPage.jsx` dengan 5 tab laporan lengkap, filter preset tanggal, dan menu navigasi aktif v0.8.0
 
 ---
 
@@ -337,12 +337,22 @@ kriza/
 - ✅ `badge.jsx`: Hapus `hover:bg-primary/80` dari semua variant (badge status informasional tidak boleh berubah warna saat hover). Tambah varian `info`, `purple` untuk status antrian. Refactor `success` → emerald (konsisten dark mode).
 - ✅ `MasterDataPage.jsx`, `EncountersPage.jsx`, `PatientsPage.jsx`: Ganti inline className hack dengan semantic variant (`success`, `warning`, `info`, `purple`)
 - ✅ Buat `apps/web/src/lib/clinic-info.js` — sumber kebenaran tunggal data resmi Klinik Rizani (nama, alamat, telp, HP, email)
-- ✅ `index.css`: Tambah `@media print { .printable-area ... }` — saat mencetak hanya class `.printable-area` yang tampil, menghilangkan bug "cetak = screenshot layar"
-- ✅ `ReceiptPrintModal.jsx`: Rewrite total — data klinik dari `CLINIC_INFO`, div konten bertanda `.printable-area`
-- ✅ `PrintEtiketModal.jsx`: Data klinik dari `CLINIC_INFO`, tambah `.printable-area`
-- ✅ `ReferralLetterModal.jsx`: Data klinik dari `CLINIC_INFO` + `formatClinicContact()`, tambah `.printable-area`
-- ✅ Vite build sukses 0 error
+### [2026-09-10] — Sesi 10: Fase 8 — Laporan Operasional & Analitik
+- ✅ Backend: `reports.schema.js`, `reports.repository.js`, `reports.service.js`, `reports.routes.js` (6 endpoint: overview, visits, revenue, morbidity, pharmacy, bpjs)
+- ✅ Registered `/api/v1/reports` di `app.js` terproteksi auth sesi JWT
+- ✅ Micro Visualizer: `ReportVisuals.jsx` (TrendBarChart native SVG, HorizontalBarMetric, SegmentedDistributionBar) — 0 dependencies, 0 bundle bloat, zero-lag render
+- ✅ Ekspor Microsoft Excel (.xlsx): `export-excel.js` dengan dynamic import `xlsx` (code-split, tidak membebani initial bundle)
+- ✅ Modal Cetak Resmi: `ReportPrintModal.jsx` menggunakan `CLINIC_INFO`, logo resmi, class `.printable-area`, dan titi mangsa Paiton
+- ✅ Frontend Workspace: `ReportsPage.jsx` dengan 5 tab laporan terpadu:
+  1. `VisitsReportTab.jsx`: volume kunjungan harian, distribusi poli, filter pasien baru/lama, penjamin, tabel registrasi
+  2. `RevenueReportTab.jsx`: omzet kasir, penerimaan vs piutang, metode bayar (Tunai, QRIS, Transfer, Debit, BPJS), tabel kuitansi
+  3. `MorbidityReportTab.jsx`: 10 & 20 besar diagnosa ICD-10 WHO, kasus baru vs lama, persentase
+  4. `PharmacyReportTab.jsx`: valuasi aset obat (HNA & jual), top obat diresepkan, radar stok kritis & mendekati ED (< 90 hari)
+  5. `BpjsReportTab.jsx`: rekonsiliasi pelayanan BPJS faskes primer, rasio rujukan keluar (indikator KBK), audit diagnosa
+- ✅ Menu navigasi "Laporan" aktif di `AppLayout.jsx`, versi sistem dinaikkan ke `v0.8.0`
+- ✅ Vite production build berhasil 100% tanpa error (4.80s)
+- 🔜 Siap lanjut ke Fase 9: Integrasi BPJS (P-Care & VClaim)
 
 ---
 
-*Last updated: 2026-09-07 | Updated by: Agent (Sesi 9 — Hotfix UI + Info Klinik)*
+*Last updated: 2026-09-10 | Updated by: Agent (Sesi 10 — Fase 8 Laporan Operasional)*

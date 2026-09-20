@@ -331,11 +331,11 @@ kriza/
 - Laporan BPJS (untuk klaim, dipakai lagi di Fase 9)
 
 ### Tasks
-- [ ] Query-query laporan dengan proper indexing
-- [ ] API endpoint laporan dengan date range filtering
-- [ ] Export CSV/Excel untuk laporan
-- [ ] Frontend: dashboard dengan charts (gunakan recharts)
-- [ ] Frontend: halaman laporan dengan filter dan export
+- [x] Query-query laporan dengan proper indexing (SQL aggregasi Drizzle ORM efisien)
+- [x] API endpoint laporan dengan date range filtering (/api/v1/reports/*)
+- [x] Export Excel (.xlsx) dengan SheetJS code-split on-demand & Cetak Laporan Resmi
+- [x] Frontend: dashboard dengan charts (Micro Visualizer native SVG & Tailwind responsif)
+- [x] Frontend: halaman laporan dengan filter dan export (ReportsPage.jsx 5 tab terpadu)
 
 ---
 

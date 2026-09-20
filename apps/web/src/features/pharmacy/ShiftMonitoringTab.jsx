@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { dialog } from '@/context/DialogContext';
 import apiClient from '@/lib/api-client';
 
 export function ShiftMonitoringTab() {
@@ -59,7 +60,10 @@ export function ShiftMonitoringTab() {
       flashMessage('Shift baru berhasil dibuka!');
     },
     onError: (err) => {
-      alert(err.response?.data?.error?.message || 'Gagal membuka shift');
+      dialog.alert(err.response?.data?.error?.message || 'Gagal membuka shift', {
+        title: 'Gagal Buka Shift',
+        variant: 'danger',
+      });
     },
   });
 
@@ -80,7 +84,10 @@ export function ShiftMonitoringTab() {
       flashMessage('Perubahan pemakaian non-shift berhasil disimpan!');
     },
     onError: (err) => {
-      alert(err.response?.data?.error?.message || 'Gagal menyimpan perubahan shift');
+      dialog.alert(err.response?.data?.error?.message || 'Gagal menyimpan perubahan shift', {
+        title: 'Gagal Simpan Shift',
+        variant: 'danger',
+      });
     },
   });
 
@@ -94,7 +101,10 @@ export function ShiftMonitoringTab() {
       flashMessage('Shift berhasil ditutup dan stok akhir telah dibekukan!');
     },
     onError: (err) => {
-      alert(err.response?.data?.error?.message || 'Gagal menutup shift');
+      dialog.alert(err.response?.data?.error?.message || 'Gagal menutup shift', {
+        title: 'Gagal Tutup Shift',
+        variant: 'danger',
+      });
     },
   });
 
@@ -192,8 +202,16 @@ export function ShiftMonitoringTab() {
             <Button
               size="sm"
               variant="destructive"
-              onClick={() => {
-                if (confirm(`Yakin ingin menutup shift ${activeShift.shiftType} dan membekukan stok akhir?`)) {
+              onClick={async () => {
+                const confirmed = await dialog.confirm(
+                  `Yakin ingin menutup shift ${activeShift.shiftType} dan membekukan stok akhir?`,
+                  {
+                    title: 'Konfirmasi Penutupan Shift',
+                    variant: 'danger',
+                    confirmText: 'Ya, Tutup Shift',
+                  }
+                );
+                if (confirmed) {
                   closeShiftMutation.mutate();
                 }
               }}

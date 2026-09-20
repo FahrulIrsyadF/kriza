@@ -1,6 +1,14 @@
 const repo = require('./pharmacy.repository');
 const { db } = require('../../db');
-const { prescriptions, drugBatches, drugs, shiftStockLogs, shiftStockLogItems, drugStockMovements } = require('../../db/schema');
+const {
+  prescriptions,
+  prescriptionItems,
+  drugBatches,
+  drugs,
+  shiftStockLogs,
+  shiftStockLogItems,
+  drugStockMovements,
+} = require('../../db/schema');
 const { eq, and, sql, desc, asc } = require('drizzle-orm');
 
 // ─── Helper: Generator Nomor Resep (RES-YYYYMMDD-XXXX) ────────────────────────
@@ -345,6 +353,41 @@ async function dispensePrescription(id, body, context) {
               referenceId: prescription.id,
               prescriptionItemId: item.id,
               reason: `Dispensing Resep ${prescription.prescriptionNumber} (Override Stok Habis)`,
+              movedBy: context.userId || null,
+            },
+            tx
+          );
+        } else {
+          // Jika obat belum pernah memiliki batch sama sekali di database, buat batch default
+          const defaultExpiry = new Date();
+          defaultExpiry.setFullYear(defaultExpiry.getFullYear() + 2);
+          const [newBatch] = await tx
+            .insert(drugBatches)
+            .values({
+              drugId: item.drugId,
+              batchNumber: 'BATCH-DEFAULT',
+              expiryDate: defaultExpiry.toISOString().slice(0, 10),
+              initialQty: 0,
+              currentQty: -remainingToAllocate,
+              isActive: true,
+              notes: 'Auto-created by dispensing engine',
+            })
+            .returning();
+
+          primaryBatchId = newBatch.id;
+
+          await repo.recordStockMovement(
+            {
+              batchId: primaryBatchId,
+              drugId: item.drugId,
+              movementType: 'DISPENSING_RESEP',
+              quantity: -remainingToAllocate,
+              quantityBefore: 0,
+              quantityAfter: -remainingToAllocate,
+              referenceType: 'PRESCRIPTION',
+              referenceId: prescription.id,
+              prescriptionItemId: item.id,
+              reason: `Dispensing Resep ${prescription.prescriptionNumber} (Auto-batch)`,
               movedBy: context.userId || null,
             },
             tx

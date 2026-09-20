@@ -239,25 +239,17 @@ async function getPrescriptionsQueue({ status, date, limit = 50, offset = 0 } = 
       patientName: patients.name,
       patientMrn: patients.medicalRecordNumber,
       patientGender: patients.gender,
-      patientDob: patients.dateOfBirth,
+      patientDob: patients.birthDate,
       practitionerName: practitioners.name,
       polyclinicName: polyclinics.name,
-      itemCount: sql`COUNT(${prescriptionItems.id})::int`,
+      itemCount: sql`COALESCE((SELECT COUNT(*)::int FROM prescription_items WHERE prescription_items.prescription_id = ${prescriptions.id}), 0)`,
     })
     .from(prescriptions)
     .innerJoin(encounters, eq(prescriptions.encounterId, encounters.id))
     .innerJoin(patients, eq(prescriptions.patientId, patients.id))
     .innerJoin(practitioners, eq(prescriptions.practitionerId, practitioners.id))
     .leftJoin(polyclinics, eq(encounters.polyclinicId, polyclinics.id))
-    .leftJoin(prescriptionItems, eq(prescriptionItems.prescriptionId, prescriptions.id))
     .where(whereClause)
-    .groupBy(
-      prescriptions.id,
-      encounters.id,
-      patients.id,
-      practitioners.id,
-      polyclinics.id
-    )
     .orderBy(desc(prescriptions.createdAt))
     .limit(limit)
     .offset(offset);
@@ -281,7 +273,7 @@ async function getPrescriptionById(id) {
       patientName: patients.name,
       patientMrn: patients.medicalRecordNumber,
       patientGender: patients.gender,
-      patientDob: patients.dateOfBirth,
+      patientDob: patients.birthDate,
       patientPhone: patients.phone,
       practitionerName: practitioners.name,
       polyclinicName: polyclinics.name,
