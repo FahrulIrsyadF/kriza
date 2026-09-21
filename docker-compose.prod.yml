@@ -10,7 +10,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-kriza}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD wajib diisi di .env}
     volumes:
-      - kriza_pgdata_prod:/var/lib/postgresql/data
+      # postgres 18+ menyimpan data di subdirektori per-versi, mount di parent-nya
+      - kriza_pgdata_prod:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-kriza} -d ${POSTGRES_DB:-kriza}"]
       interval: 10s
