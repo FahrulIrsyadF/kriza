@@ -2,12 +2,12 @@ import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from '@/context/AuthContext'
 
 /**
- * Membungkus route yang butuh auth.
+ * Membungkus route yang butuh auth dan hak akses (RBAC).
  * Jika belum login → redirect ke /login.
- * Jika sedang loading initial check → tampilkan loading state.
+ * Jika tidak punya izin yang diminta → redirect ke /dashboard.
  */
-function ProtectedRoute({ children }) {
-  const { isAuthenticated, isLoading } = useAuth()
+function ProtectedRoute({ children, requiredPermission }) {
+  const { user, isAuthenticated, isLoading } = useAuth()
   const location = useLocation()
 
   if (isLoading) {
@@ -24,6 +24,18 @@ function ProtectedRoute({ children }) {
   if (!isAuthenticated) {
     // Simpan URL yang dituju agar bisa redirect balik setelah login
     return <Navigate to="/login" state={{ from: location }} replace />
+  }
+
+  // Pengecekan izin (RBAC) jika rute membutuhkan permission tertentu
+  if (requiredPermission) {
+    const userRoles = user?.roles || []
+    const userPermissions = user?.permissions || []
+    const isAdmin = userRoles.includes('admin')
+    const hasAccess = isAdmin || userPermissions.includes(requiredPermission)
+
+    if (!hasAccess) {
+      return <Navigate to="/dashboard" replace />
+    }
   }
 
   return children

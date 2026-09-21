@@ -18,26 +18,26 @@ async function patientRoutes(app) {
   // ─── 1. Patients Management ─────────────────────────────────────────────────
 
   // List pasien (search, filter, pagination)
-  app.get('/patients', async (request, reply) => {
+  app.get('/patients', { preHandler: [app.authorize('patients:read')] }, async (request, reply) => {
     const query = schemas.patientListQuerySchema.parse(request.query);
     const result = await service.listPatients(query);
     return reply.send({ success: true, data: result });
   });
 
   // Preview next Medrec (Nomor RM)
-  app.get('/patients/next-mrn', async (request, reply) => {
+  app.get('/patients/next-mrn', { preHandler: [app.authorize('patients:read')] }, async (request, reply) => {
     const result = await service.getNextMRN();
     return reply.send({ success: true, data: result });
   });
 
   // Detail pasien by ID
-  app.get('/patients/:id', async (request, reply) => {
+  app.get('/patients/:id', { preHandler: [app.authorize('patients:read')] }, async (request, reply) => {
     const item = await service.findPatient(request.params.id);
     return reply.send({ success: true, data: item });
   });
 
   // Registrasi pasien baru
-  app.post('/patients', async (request, reply) => {
+  app.post('/patients', { preHandler: [app.authorize('patients:write')] }, async (request, reply) => {
     const body = schemas.createPatientSchema.parse(request.body);
     const created = await service.registerPatient(body, getContext(request));
     return reply.status(201).send({
@@ -48,7 +48,7 @@ async function patientRoutes(app) {
   });
 
   // Update data pasien
-  app.put('/patients/:id', async (request, reply) => {
+  app.put('/patients/:id', { preHandler: [app.authorize('patients:write')] }, async (request, reply) => {
     const body = schemas.updatePatientSchema.parse(request.body);
     const updated = await service.editPatient(request.params.id, body, getContext(request));
     return reply.send({
@@ -59,7 +59,7 @@ async function patientRoutes(app) {
   });
 
   // Soft delete pasien
-  app.delete('/patients/:id', async (request, reply) => {
+  app.delete('/patients/:id', { preHandler: [app.authorize('patients:delete')] }, async (request, reply) => {
     await service.removePatient(request.params.id, getContext(request));
     return reply.send({
       success: true,
@@ -69,22 +69,22 @@ async function patientRoutes(app) {
 
   // ─── 2. Wilayah Hierarchy (Cascade Dropdowns) ──────────────────────────────
 
-  app.get('/wilayah/provinsi', async (request, reply) => {
+  app.get('/wilayah/provinsi', { preHandler: [app.authorize('patients:read', 'patients:write')] }, async (request, reply) => {
     const items = await service.getProvinsi();
     return reply.send({ success: true, data: items });
   });
 
-  app.get('/wilayah/kabupaten/:provinsiId', async (request, reply) => {
+  app.get('/wilayah/kabupaten/:provinsiId', { preHandler: [app.authorize('patients:read', 'patients:write')] }, async (request, reply) => {
     const items = await service.getKabupaten(request.params.provinsiId);
     return reply.send({ success: true, data: items });
   });
 
-  app.get('/wilayah/kecamatan/:kabupatenId', async (request, reply) => {
+  app.get('/wilayah/kecamatan/:kabupatenId', { preHandler: [app.authorize('patients:read', 'patients:write')] }, async (request, reply) => {
     const items = await service.getKecamatan(request.params.kabupatenId);
     return reply.send({ success: true, data: items });
   });
 
-  app.get('/wilayah/kelurahan/:kecamatanId', async (request, reply) => {
+  app.get('/wilayah/kelurahan/:kecamatanId', { preHandler: [app.authorize('patients:read', 'patients:write')] }, async (request, reply) => {
     const items = await service.getKelurahan(request.params.kecamatanId);
     return reply.send({ success: true, data: items });
   });

@@ -12,7 +12,7 @@ async function referralRoutes(app) {
 
   // ─── 1. List Rujukan (Filter Tanggal, Tipe, Search) ──────────────────────────
   // GET /api/v1/referrals?date=...&referralType=INTERNAL|EXTERNAL&search=...
-  app.get('/', async (request, reply) => {
+  app.get('/', { preHandler: [app.authorize('encounters:read')] }, async (request, reply) => {
     const query = schemas.listReferralQuerySchema.parse(request.query);
     const result = await service.listReferrals(query);
     return reply.send({ success: true, data: result });
@@ -20,7 +20,7 @@ async function referralRoutes(app) {
 
   // ─── 2. Data Lengkap Cetak Surat Rujukan Medis Resmi ─────────────────────────
   // GET /api/v1/referrals/:id/print
-  app.get('/:id/print', async (request, reply) => {
+  app.get('/:id/print', { preHandler: [app.authorize('encounters:read')] }, async (request, reply) => {
     const data = await service.getReferralForPrint(request.params.id);
     return reply.send({ success: true, data });
   });

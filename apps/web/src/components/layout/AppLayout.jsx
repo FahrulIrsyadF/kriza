@@ -22,6 +22,7 @@ const NAVIGATION_ITEMS = [
     path: '/dashboard',
     icon: LayoutDashboard,
     active: true,
+    permission: null, // Terbuka untuk semua user yang login
   },
   {
     name: 'Pendaftaran & Antrian',
@@ -29,6 +30,7 @@ const NAVIGATION_ITEMS = [
     icon: ClipboardList,
     active: true,
     fase: 'Fase 4',
+    permission: 'registrations:read',
   },
   {
     name: 'Rekam Medis (EMR)',
@@ -36,6 +38,7 @@ const NAVIGATION_ITEMS = [
     icon: Stethoscope,
     active: true,
     fase: 'Fase 5',
+    permission: 'encounters:read',
   },
   {
     name: 'Farmasi & Obat',
@@ -43,6 +46,7 @@ const NAVIGATION_ITEMS = [
     icon: Pill,
     active: true,
     fase: 'Fase 6',
+    permission: 'pharmacy:read',
   },
   {
     name: 'Kasir & Billing',
@@ -50,6 +54,7 @@ const NAVIGATION_ITEMS = [
     icon: Receipt,
     active: true,
     fase: 'Fase 7',
+    permission: 'billing:read',
   },
   {
     name: 'Laporan',
@@ -57,6 +62,7 @@ const NAVIGATION_ITEMS = [
     icon: BarChart3,
     active: true,
     fase: 'Fase 8',
+    permission: 'reports:read',
   },
   {
     name: 'Master Data',
@@ -64,6 +70,7 @@ const NAVIGATION_ITEMS = [
     icon: Database,
     active: true,
     fase: 'Fase 2',
+    permission: 'masterdata:read',
   },
 ];
 
@@ -174,9 +181,20 @@ export default function AppLayout({ children, title, subtitle, actions }) {
       {/* ─── 2. DEDICATED NAVBAR (Distinct Sub-Bar for Menu Navigation) ──────── */}
       <nav className="border-b border-border bg-muted/40 sticky top-0 z-20 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 flex items-center gap-1 overflow-x-auto py-1.5 no-scrollbar">
-          {NAVIGATION_ITEMS.map((item) => {
-            const Icon = item.icon;
-            const isCurrent = location.pathname === item.path || location.pathname.startsWith(`${item.path}/`);
+          {(() => {
+            const userRoles = user?.roles || [];
+            const userPermissions = user?.permissions || [];
+            const isAdmin = userRoles.includes('admin');
+
+            const visibleItems = NAVIGATION_ITEMS.filter((item) => {
+              if (!item.permission) return true;
+              if (isAdmin) return true;
+              return userPermissions.includes(item.permission);
+            });
+
+            return visibleItems.map((item) => {
+              const Icon = item.icon;
+              const isCurrent = location.pathname === item.path || location.pathname.startsWith(`${item.path}/`);
 
             if (!item.active) {
               return (
@@ -210,8 +228,9 @@ export default function AppLayout({ children, title, subtitle, actions }) {
                   <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                 )}
               </Link>
-            );
-          })}
+              );
+            });
+          })()}
         </div>
       </nav>
 

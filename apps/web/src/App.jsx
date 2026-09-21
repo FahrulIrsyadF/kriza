@@ -31,7 +31,7 @@ function App() {
       <Route
         path="/master"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermission="masterdata:read">
             <MasterDataPage />
           </ProtectedRoute>
         }
@@ -47,7 +47,7 @@ function App() {
       <Route
         path="/registrations"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermission="registrations:read">
             <RegistrationsPage />
           </ProtectedRoute>
         }
@@ -57,7 +57,7 @@ function App() {
       <Route
         path="/encounters"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermission="encounters:read">
             <EncountersPage />
           </ProtectedRoute>
         }
@@ -67,7 +67,7 @@ function App() {
       <Route
         path="/pharmacy"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermission="pharmacy:read">
             <PharmacyPage />
           </ProtectedRoute>
         }
@@ -77,7 +77,7 @@ function App() {
       <Route
         path="/billing"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermission="billing:read">
             <BillingPage />
           </ProtectedRoute>
         }
@@ -87,7 +87,7 @@ function App() {
       <Route
         path="/reports"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermission="reports:read">
             <ReportsPage />
           </ProtectedRoute>
         }

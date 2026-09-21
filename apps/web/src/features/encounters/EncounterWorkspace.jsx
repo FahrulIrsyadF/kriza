@@ -744,11 +744,28 @@ export function EncounterWorkspace({ encounterId, onBack }) {
     raw: i,
   }));
 
-  const procedureOptions = procedureList.map((p) => ({
-    id: p.id,
-    name: `${p.code ? p.code + ' - ' : ''}${p.name} (Rp ${Number(p.tariff || 0).toLocaleString('id-ID')})`,
-    raw: p,
-  }));
+  // PERBAIKAN: Ambil tarif tindakan berdasarkan penjamin kunjungan (paymentMethod), fallback ke master pasien
+  const patientInsuranceType = (encounter?.paymentMethod || encounter?.patientInsuranceType || 'UMUM').toUpperCase();
+  const procedureOptions = procedureList.map((p) => {
+    const matchedRate =
+      (p.rates || []).find((r) => r.rateTypeCode?.toUpperCase() === patientInsuranceType) ||
+      (p.rates || []).find((r) => r.rateTypeCode?.toUpperCase() === 'UMUM') ||
+      p.rates?.[0];
+
+    const tariff = matchedRate ? Number(matchedRate.tariff || 0) : 0;
+
+    return {
+      id: p.id,
+      code: p.code,
+      name: `${p.code ? p.code + ' - ' : ''}${p.name} (Rp ${tariff.toLocaleString('id-ID')})`,
+      procedureName: p.name,
+      tariff,
+      raw: {
+        ...p,
+        tariff,
+      },
+    };
+  });
 
   const polyclinicOptions = polyclinicList.map((p) => ({ id: p.id, name: p.name }));
   const practitionerOptions = practitionerList.map((p) => ({
@@ -771,7 +788,7 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                 RM: {encounter.patientMrn}
               </span>
               <Badge variant="outline" className="text-[10px]">
-                {encounter.patientInsuranceType} {encounter.patientBpjsNumber ? `(${encounter.patientBpjsNumber})` : ''}
+                {encounter.paymentMethod || encounter.patientInsuranceType} {encounter.patientBpjsNumber ? `(${encounter.patientBpjsNumber})` : ''}
               </Badge>
               {isFinalized && (
                 <Badge className="bg-green-600 text-white gap-1 text-[10px]">
@@ -1537,9 +1554,9 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                           setProcInput({
                             ...procInput,
                             procedureId: val,
-                            procedureCode: raw?.code || '',
-                            procedureName: raw?.name || val,
-                            tariff: raw?.tariff || 0,
+                            procedureCode: raw?.code || raw?.raw?.code || '',
+                            procedureName: raw?.procedureName || raw?.raw?.name || val,
+                            tariff: raw?.tariff ?? raw?.raw?.tariff ?? 0,
                           })
                         }
                         placeholder="Pilih tindakan dari tarif klinik..."

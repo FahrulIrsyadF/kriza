@@ -8,8 +8,9 @@ const schemas = require('./reports.schema');
  * @param {import('fastify').FastifyInstance} app
  */
 async function reportsRoutes(app) {
-  // Semua rute laporan wajib autentikasi
+  // Semua rute laporan wajib autentikasi dan izin reports:read
   app.addHook('preHandler', app.authenticate);
+  app.addHook('preHandler', app.authorize('reports:read'));
 
   // 1. Overview Executive KPIs
   app.get('/overview', async (request, reply) => {

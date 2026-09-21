@@ -117,20 +117,24 @@ export default function DashboardPage() {
         </div>
 
         <div className="flex items-center gap-3">
-          <Link
-            to="/patients"
-            className="inline-flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 text-xs font-semibold px-4 py-2.5 rounded-xl transition-all shadow-sm"
-          >
-            <UserPlus className="w-4 h-4" />
-            Pendaftaran Pasien
-          </Link>
-          <Link
-            to="/master"
-            className="inline-flex items-center gap-2 border border-border bg-card hover:bg-muted text-foreground text-xs font-semibold px-4 py-2.5 rounded-xl transition-all shadow-sm"
-          >
-            <Building2 className="w-4 h-4" />
-            Master Data
-          </Link>
+          {(user?.roles?.includes('admin') || user?.permissions?.includes('patients:write')) && (
+            <Link
+              to="/patients"
+              className="inline-flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 text-xs font-semibold px-4 py-2.5 rounded-xl transition-all shadow-sm"
+            >
+              <UserPlus className="w-4 h-4" />
+              Pendaftaran Pasien
+            </Link>
+          )}
+          {(user?.roles?.includes('admin') || user?.permissions?.includes('masterdata:read')) && (
+            <Link
+              to="/master"
+              className="inline-flex items-center gap-2 border border-border bg-card hover:bg-muted text-foreground text-xs font-semibold px-4 py-2.5 rounded-xl transition-all shadow-sm"
+            >
+              <Building2 className="w-4 h-4" />
+              Master Data
+            </Link>
+          )}
         </div>
       </div>
 
@@ -167,7 +171,9 @@ export default function DashboardPage() {
       </div>
 
       {/* ─── Laporan Keuangan Harian Pasien Umum ──────────────────────────────── */}
-      <GeneralRevenueSection />
+      {(user?.roles?.includes('admin') || user?.permissions?.includes('billing:read')) && (
+        <GeneralRevenueSection />
+      )}
 
       {/* Main Grid: Poli & Progress */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

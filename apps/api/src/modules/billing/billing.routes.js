@@ -17,21 +17,21 @@ async function billingRoutes(app) {
   });
 
   // ─── Dashboard Stats ─────────────────────────────────────────────────────────
-  app.get('/stats', async (request, reply) => {
+  app.get('/stats', { preHandler: [app.authorize('billing:read')] }, async (request, reply) => {
     const { date } = request.query;
     const stats = await service.getDashboardStats({ date });
     return reply.send({ success: true, data: stats });
   });
 
   // ─── Daily General Patient Revenue (Dashboard) ──────────────────────────────
-  app.get('/daily-general-revenue', async (request, reply) => {
+  app.get('/daily-general-revenue', { preHandler: [app.authorize('billing:read')] }, async (request, reply) => {
     const { date } = request.query;
     const data = await service.getDailyGeneralRevenue({ date });
     return reply.send({ success: true, data });
   });
 
   // ─── Invoices ────────────────────────────────────────────────────────────────
-  app.get('/invoices', async (request, reply) => {
+  app.get('/invoices', { preHandler: [app.authorize('billing:read')] }, async (request, reply) => {
     const parsedQuery = schemas.queryInvoicesSchema.safeParse(request.query);
     if (!parsedQuery.success) {
       return reply.status(400).send({
@@ -61,14 +61,14 @@ async function billingRoutes(app) {
     });
   });
 
-  app.get('/invoices/:id', async (request, reply) => {
+  app.get('/invoices/:id', { preHandler: [app.authorize('billing:read')] }, async (request, reply) => {
     const { id } = request.params;
     const invoice = await service.getInvoiceById(id);
     return reply.send({ success: true, data: invoice });
   });
 
   // Sync / Generate invoice from registration/encounter
-  app.post('/invoices/sync/:registrationId', async (request, reply) => {
+  app.post('/invoices/sync/:registrationId', { preHandler: [app.authorize('billing:write')] }, async (request, reply) => {
     const { registrationId } = request.params;
     const context = getContext(request);
     const invoice = await service.generateOrSyncInvoice(registrationId, context);
@@ -80,7 +80,7 @@ async function billingRoutes(app) {
   });
 
   // Create manual invoice
-  app.post('/invoices', async (request, reply) => {
+  app.post('/invoices', { preHandler: [app.authorize('billing:write')] }, async (request, reply) => {
     const parsedBody = schemas.createInvoiceSchema.safeParse(request.body);
     if (!parsedBody.success) {
       return reply.status(400).send({
@@ -99,7 +99,7 @@ async function billingRoutes(app) {
   });
 
   // Update invoice
-  app.put('/invoices/:id', async (request, reply) => {
+  app.put('/invoices/:id', { preHandler: [app.authorize('billing:write')] }, async (request, reply) => {
     const { id } = request.params;
     const parsedBody = schemas.updateInvoiceSchema.safeParse(request.body);
     if (!parsedBody.success) {
@@ -119,7 +119,7 @@ async function billingRoutes(app) {
   });
 
   // ─── Payments ────────────────────────────────────────────────────────────────
-  app.post('/payments', async (request, reply) => {
+  app.post('/payments', { preHandler: [app.authorize('billing:write')] }, async (request, reply) => {
     const parsedBody = schemas.createPaymentSchema.safeParse(request.body);
     if (!parsedBody.success) {
       return reply.status(400).send({
@@ -137,7 +137,7 @@ async function billingRoutes(app) {
     });
   });
 
-  app.get('/payments', async (request, reply) => {
+  app.get('/payments', { preHandler: [app.authorize('billing:read')] }, async (request, reply) => {
     const parsedQuery = schemas.queryPaymentsSchema.safeParse(request.query);
     if (!parsedQuery.success) {
       return reply.status(400).send({
@@ -167,7 +167,7 @@ async function billingRoutes(app) {
     });
   });
 
-  app.get('/payments/:id', async (request, reply) => {
+  app.get('/payments/:id', { preHandler: [app.authorize('billing:read')] }, async (request, reply) => {
     const { id } = request.params;
     const payment = await service.getPaymentById(id);
     return reply.send({ success: true, data: payment });

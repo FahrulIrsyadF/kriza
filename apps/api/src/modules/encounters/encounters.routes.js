@@ -18,7 +18,7 @@ async function encounterRoutes(app) {
 
   // ─── 1. Antrian Pasien Khusus Dokter Hari Ini ──────────────────────────────
   // GET /api/v1/encounters/queue?polyclinicId=...&practitionerId=...&date=...
-  app.get('/queue', async (request, reply) => {
+  app.get('/queue', { preHandler: [app.authorize('encounters:read')] }, async (request, reply) => {
     const { polyclinicId, practitionerId, date } = request.query;
     const items = await service.getDoctorQueue({ polyclinicId, practitionerId, date });
     return reply.send({ success: true, data: items });
@@ -26,21 +26,21 @@ async function encounterRoutes(app) {
 
   // ─── 2. Cek Encounter Berdasarkan ID Registrasi ────────────────────────────
   // GET /api/v1/encounters/by-registration/:registrationId
-  app.get('/by-registration/:registrationId', async (request, reply) => {
+  app.get('/by-registration/:registrationId', { preHandler: [app.authorize('encounters:read')] }, async (request, reply) => {
     const enc = await service.getEncounterByRegistration(request.params.registrationId);
     return reply.send({ success: true, data: enc });
   });
 
   // ─── 3. Detail Encounter Lengkap By ID ─────────────────────────────────────
   // GET /api/v1/encounters/:id
-  app.get('/:id', async (request, reply) => {
+  app.get('/:id', { preHandler: [app.authorize('encounters:read')] }, async (request, reply) => {
     const enc = await service.getEncounter(request.params.id);
     return reply.send({ success: true, data: enc });
   });
 
   // ─── 4. Mulai Encounter Baru (Dokter klik "Mulai Periksa") ─────────────────
   // POST /api/v1/encounters
-  app.post('/', async (request, reply) => {
+  app.post('/', { preHandler: [app.authorize('encounters:write')] }, async (request, reply) => {
     const body = schemas.startEncounterSchema.parse(request.body);
     const enc = await service.startEncounter(body, getContext(request));
     return reply.status(201).send({
@@ -52,7 +52,7 @@ async function encounterRoutes(app) {
 
   // ─── 5. Simpan / Update TTV & Antropometri ─────────────────────────────────
   // PUT /api/v1/encounters/:id/vital-signs
-  app.put('/:id/vital-signs', async (request, reply) => {
+  app.put('/:id/vital-signs', { preHandler: [app.authorize('encounters:write')] }, async (request, reply) => {
     const body = schemas.updateVitalSignsSchema.parse(request.body);
     const saved = await service.saveVitalSigns(request.params.id, body, getContext(request));
     return reply.send({
@@ -64,7 +64,7 @@ async function encounterRoutes(app) {
 
   // ─── 6. Simpan / Update Catatan SOAP ───────────────────────────────────────
   // PUT /api/v1/encounters/:id/soap
-  app.put('/:id/soap', async (request, reply) => {
+  app.put('/:id/soap', { preHandler: [app.authorize('encounters:write')] }, async (request, reply) => {
     const body = schemas.updateSoapSchema.parse(request.body);
     const saved = await service.saveSoapNotes(request.params.id, body, getContext(request));
     return reply.send({
@@ -76,7 +76,7 @@ async function encounterRoutes(app) {
 
   // ─── 7. Tambah Diagnosa ICD-10 ─────────────────────────────────────────────
   // POST /api/v1/encounters/:id/diagnoses
-  app.post('/:id/diagnoses', async (request, reply) => {
+  app.post('/:id/diagnoses', { preHandler: [app.authorize('encounters:write')] }, async (request, reply) => {
     const body = schemas.addDiagnosisSchema.parse(request.body);
     const created = await service.addDiagnosis(request.params.id, body, getContext(request));
     return reply.status(201).send({
@@ -88,7 +88,7 @@ async function encounterRoutes(app) {
 
   // ─── 8. Hapus Diagnosa ICD-10 ──────────────────────────────────────────────
   // DELETE /api/v1/encounters/:id/diagnoses/:diagnosisId
-  app.delete('/:id/diagnoses/:diagnosisId', async (request, reply) => {
+  app.delete('/:id/diagnoses/:diagnosisId', { preHandler: [app.authorize('encounters:write')] }, async (request, reply) => {
     await service.removeDiagnosis(request.params.id, request.params.diagnosisId, getContext(request));
     return reply.send({
       success: true,
@@ -98,7 +98,7 @@ async function encounterRoutes(app) {
 
   // ─── 9. Tambah Tindakan Medis ──────────────────────────────────────────────
   // POST /api/v1/encounters/:id/procedures
-  app.post('/:id/procedures', async (request, reply) => {
+  app.post('/:id/procedures', { preHandler: [app.authorize('encounters:write')] }, async (request, reply) => {
     const body = schemas.addProcedureSchema.parse(request.body);
     const created = await service.addProcedure(request.params.id, body, getContext(request));
     return reply.status(201).send({
@@ -110,7 +110,7 @@ async function encounterRoutes(app) {
 
   // ─── 10. Hapus Tindakan Medis ──────────────────────────────────────────────
   // DELETE /api/v1/encounters/:id/procedures/:procedureId
-  app.delete('/:id/procedures/:procedureId', async (request, reply) => {
+  app.delete('/:id/procedures/:procedureId', { preHandler: [app.authorize('encounters:write')] }, async (request, reply) => {
     await service.removeProcedure(request.params.id, request.params.procedureId, getContext(request));
     return reply.send({
       success: true,
@@ -120,7 +120,7 @@ async function encounterRoutes(app) {
 
   // ─── 11. Simpan Status Pulang / Disposisi & Rujukan ─────────────────────────
   // PUT /api/v1/encounters/:id/disposition
-  app.put('/:id/disposition', async (request, reply) => {
+  app.put('/:id/disposition', { preHandler: [app.authorize('encounters:write')] }, async (request, reply) => {
     const body = schemas.saveDispositionSchema.parse(request.body);
     const result = await service.saveDisposition(request.params.id, body, getContext(request));
     return reply.send({
@@ -132,7 +132,7 @@ async function encounterRoutes(app) {
 
   // ─── 12. Finalisasi & Kunci Rekam Medis (SELESAI) ───────────────────────────
   // POST /api/v1/encounters/:id/finalize
-  app.post('/:id/finalize', async (request, reply) => {
+  app.post('/:id/finalize', { preHandler: [app.authorize('encounters:finalize')] }, async (request, reply) => {
     const body = schemas.finalizeEncounterSchema.parse(request.body || {});
     const finalized = await service.finalizeEncounter(request.params.id, body, getContext(request));
     return reply.send({
@@ -144,7 +144,7 @@ async function encounterRoutes(app) {
 
   // ─── 13. Amandemen Rekam Medis Terkunci ─────────────────────────────────────
   // POST /api/v1/encounters/:id/amend
-  app.post('/:id/amend', async (request, reply) => {
+  app.post('/:id/amend', { preHandler: [app.authorize('encounters:finalize')] }, async (request, reply) => {
     const body = schemas.amendEncounterSchema.parse(request.body);
     const amended = await service.amendEncounter(request.params.id, body, getContext(request));
     return reply.status(201).send({
@@ -156,7 +156,7 @@ async function encounterRoutes(app) {
 
   // ─── 14. Preview Payload Bridging BPJS PCare ──────────────────────────────
   // GET /api/v1/encounters/:id/pcare-preview
-  app.get('/:id/pcare-preview', async (request, reply) => {
+  app.get('/:id/pcare-preview', { preHandler: [app.authorize('encounters:read')] }, async (request, reply) => {
     const enc = await service.getEncounter(request.params.id);
     const payload = service.buildPCareEncounterPayload(enc);
     return reply.send({ success: true, data: payload });

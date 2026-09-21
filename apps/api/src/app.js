@@ -60,6 +60,43 @@ function buildApp(opts = {}) {
     }
   });
 
+  // ─── RBAC Authorization Decorator ──────────────────────────────────────────
+  // Dipasang di routes yang butuh proteksi izin spesifik:
+  // { preHandler: [app.authorize('encounters:write')] }
+  app.decorate('authorize', function (...requiredPermissions) {
+    return async function (request, reply) {
+      if (!request.user) {
+        return reply.status(401).send({
+          success: false,
+          error: {
+            code: 'UNAUTHORIZED',
+            message: 'Sesi tidak valid atau belum login.',
+          },
+        });
+      }
+
+      const userRoles = request.user.roles || [];
+      const userPermissions = request.user.permissions || [];
+
+      // Role admin memiliki hak akses penuh ke seluruh resource
+      if (userRoles.includes('admin')) {
+        return;
+      }
+
+      // User harus memiliki minimal salah satu permission yang diminta
+      const hasPermission = requiredPermissions.some((perm) => userPermissions.includes(perm));
+      if (!hasPermission) {
+        return reply.status(403).send({
+          success: false,
+          error: {
+            code: 'FORBIDDEN',
+            message: `Akses ditolak: Anda tidak memiliki izin (${requiredPermissions.join(', ')}).`,
+          },
+        });
+      }
+    };
+  });
+
   // ─── Routes ───────────────────────────────────────────────────────────────
   app.get('/health', async () => ({
     status: 'ok',
