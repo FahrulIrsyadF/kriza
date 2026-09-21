@@ -19,6 +19,10 @@ const envSchema = z.object({
   JWT_SECRET: z.string().min(32, 'JWT_SECRET minimal 32 karakter'),
   // Timezone klinik untuk kalkulasi expire token
   CLINIC_TIMEZONE_OFFSET: z.coerce.number().default(7), // WIB = UTC+7
+  // Cookie 'secure' hanya boleh aktif kalau diakses via HTTPS.
+  // Deployment internal via IP + HTTP harus false, kalau tidak browser
+  // menolak menyimpan cookie sesi dan semua request jadi 401.
+  COOKIE_SECURE: z.enum(['true', 'false']).default('false').transform((v) => v === 'true'),
 });
 
 const parsed = envSchema.safeParse(process.env);

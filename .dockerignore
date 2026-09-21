@@ -1,0 +1,13 @@
+node_modules
+**/node_modules
+.git
+.gitignore
+apps/web/dist
+dist
+build
+.env
+.env.*
+*.log
+docs
+implementation_plan.md
+AGENT_CONTEXT.md
