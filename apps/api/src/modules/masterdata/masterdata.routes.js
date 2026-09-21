@@ -6,8 +6,15 @@ const schemas = require('./masterdata.schema');
  * @param {import('fastify').FastifyInstance} app
  */
 async function masterDataRoutes(app) {
-  // Semua master data routes memerlukan user login
+  // Semua master data routes memerlukan user login dan hak akses masterdata
   app.addHook('preHandler', app.authenticate);
+  app.addHook('preHandler', async (request, reply) => {
+    if (request.method === 'GET') {
+      await app.authorize('masterdata:read')(request, reply);
+    } else {
+      await app.authorize('masterdata:write')(request, reply);
+    }
+  });
 
   // Helper context logger
   const getContext = (request) => ({

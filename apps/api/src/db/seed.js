@@ -41,6 +41,8 @@ const ROLES_DATA = [
   { name: 'admin', displayName: 'Administrator', description: 'Akses penuh ke seluruh sistem' },
   { name: 'dokter', displayName: 'Dokter', description: 'Akses klinis: encounter, diagnosa, resep' },
   { name: 'perawat', displayName: 'Perawat', description: 'Akses pendaftaran, TTV, antrian' },
+  { name: 'farmasi', displayName: 'Petugas Farmasi', description: 'Akses resep elektronik, dispensing, dan stok obat' },
+  { name: 'kasir', displayName: 'Kasir', description: 'Akses billing, pembayaran, dan invoice' },
 ];
 
 const PERMISSIONS_DATA = [
@@ -62,6 +64,7 @@ const PERMISSIONS_DATA = [
   { action: 'encounters:finalize', description: 'Finalisasi rekam medis' },
   // Pharmacy
   { action: 'pharmacy:read', description: 'Melihat resep dan stok' },
+  { action: 'pharmacy:write', description: 'Membuat / meresepkan obat ke farmasi' },
   { action: 'pharmacy:dispense', description: 'Proses dispensing obat' },
   { action: 'pharmacy:stock', description: 'Kelola stok obat' },
   // Billing
@@ -80,7 +83,7 @@ const ROLE_PERMISSIONS = {
     'patients:read',
     'registrations:read',
     'encounters:read', 'encounters:write', 'encounters:finalize',
-    'pharmacy:read',
+    'pharmacy:read', 'pharmacy:write',
     'billing:read',
     'masterdata:read',
   ],
@@ -91,14 +94,58 @@ const ROLE_PERMISSIONS = {
     'billing:read',
     'masterdata:read',
   ],
+  farmasi: [
+    'patients:read',
+    'pharmacy:read', 'pharmacy:dispense', 'pharmacy:stock',
+    'masterdata:read',
+  ],
+  kasir: [
+    'patients:read',
+    'registrations:read',
+    'billing:read', 'billing:write',
+    'reports:read',
+    'masterdata:read',
+  ],
 };
 
-const DEFAULT_ADMIN = {
-  username: 'admin',
-  name: 'Administrator KRIZA',
-  password: 'Admin@KRIZA2024',
-  email: 'admin@klinik.local',
-};
+const DEFAULT_USERS = [
+  {
+    username: 'admin',
+    name: 'Administrator KRIZA',
+    password: 'admin123',
+    email: 'admin@klinik.local',
+    role: 'admin',
+  },
+  {
+    username: 'dokter',
+    name: 'dr. M. Faisol Abdillah',
+    password: 'dokter123',
+    email: 'dr.faisol@klinikrizani.com',
+    role: 'dokter',
+    practitionerCode: 'DR-001',
+  },
+  {
+    username: 'perawat',
+    name: 'Ns. Siti Nurhaliza',
+    password: 'perawat123',
+    email: 'perawat@klinikrizani.com',
+    role: 'perawat',
+  },
+  {
+    username: 'farmasi',
+    name: 'Apt. Budi Santoso, S.Farm',
+    password: 'farmasi123',
+    email: 'farmasi@klinikrizani.com',
+    role: 'farmasi',
+  },
+  {
+    username: 'kasir',
+    name: 'Dewi Lestari',
+    password: 'kasir123',
+    email: 'kasir@klinikrizani.com',
+    role: 'kasir',
+  },
+];
 
 // ─── Master Data ──────────────────────────────────────────────────────────────
 
@@ -139,9 +186,9 @@ const DRUGS_DATA = [
 ];
 
 const PRACTITIONERS_DATA = [
-  { code: 'DR-001', name: 'dr. Andi Pratama', title: 'dr.', sip: '503/SIP.DU/012/2023', specialization: 'Umum', phone: '081234567890', email: 'dr.andi@klinik.local', polyCode: 'POLI-UMUM' },
-  { code: 'DR-002', name: 'drg. Sarah Melati', title: 'drg.', sip: '503/SIP.DG/045/2023', specialization: 'Gigi & Mulut', phone: '081298765432', email: 'drg.sarah@klinik.local', polyCode: 'POLI-GIGI' },
-  { code: 'DR-003', name: 'dr. Maya Kartika, Sp.DVE', title: 'dr.', sip: '503/SIP.SP/089/2024', specialization: 'Dermatologi & Estetika', phone: '081377889900', email: 'dr.maya@klinik.local', polyCode: 'POLI-ESTETIKA' },
+  { code: 'DR-001', name: 'dr. M. Faisol Abdillah', title: 'dr.', sip: '503/SIP.DU/001/2024', specialization: 'Umum', phone: '081234567891', email: 'dr.faisol@klinikrizani.com', polyCode: 'POLI-UMUM' },
+  { code: 'DR-002', name: 'dr. Fachrudin', title: 'dr.', sip: '503/SIP.DU/002/2024', specialization: 'Umum', phone: '081234567892', email: 'dr.fachrudin@klinikrizani.com', polyCode: 'POLI-UMUM' },
+  { code: 'DR-003', name: 'Drg. Iqbal', title: 'drg.', sip: '503/SIP.DG/003/2024', specialization: 'Gigi & Mulut', phone: '081234567893', email: 'drg.iqbal@klinikrizani.com', polyCode: 'POLI-GIGI' },
 ];
 
 const PROCEDURES_DATA = [
@@ -228,23 +275,39 @@ async function seed() {
   }
   console.log('     ✓ Permissions dikonfigurasi');
 
-  // 4. Admin user
-  console.log('   → Membuat user admin default...');
-  const existingAdmin = await db.select().from(users).where(eq(users.username, DEFAULT_ADMIN.username)).limit(1);
-  if (existingAdmin.length === 0) {
-    const passwordHash = await bcrypt.hash(DEFAULT_ADMIN.password, 12);
-    const [adminUser] = await db.insert(users).values({
-      username: DEFAULT_ADMIN.username,
-      name: DEFAULT_ADMIN.name,
-      passwordHash,
-      email: DEFAULT_ADMIN.email,
-    }).returning();
+  // 4. Default Users
+  console.log('   → Menyiapkan akun default (admin, dokter, perawat, farmasi, kasir)...');
+  const createdUsers = {};
+  for (const u of DEFAULT_USERS) {
+    const existing = await db.select().from(users).where(eq(users.username, u.username)).limit(1);
+    const passwordHash = await bcrypt.hash(u.password, 12);
+    let userRecord;
 
-    const adminRole = createdRoles['admin'];
-    if (adminRole) {
-      await db.insert(userRoles).values({ userId: adminUser.id, roleId: adminRole.id }).onConflictDoNothing();
+    if (existing.length === 0) {
+      const [newUser] = await db.insert(users).values({
+        username: u.username,
+        name: u.name,
+        passwordHash,
+        email: u.email,
+        isActive: true,
+      }).returning();
+      userRecord = newUser;
+      console.log(`     ✓ User '${u.username}' dibuat (password: ${u.password})`);
+    } else {
+      // Update password dan profil jika user sudah ada sebelumnya
+      const [updatedUser] = await db.update(users)
+        .set({ passwordHash, name: u.name, email: u.email, isActive: true, updatedAt: new Date() })
+        .where(eq(users.id, existing[0].id))
+        .returning();
+      userRecord = updatedUser;
+      console.log(`     ✓ User '${u.username}' diperbarui (password: ${u.password})`);
     }
-    console.log(`     ✓ User admin dibuat`);
+    createdUsers[u.username] = userRecord;
+
+    const roleObj = createdRoles[u.role];
+    if (roleObj && userRecord) {
+      await db.insert(userRoles).values({ userId: userRecord.id, roleId: roleObj.id }).onConflictDoNothing();
+    }
   }
 
   // 5. Master Poliklinik
@@ -347,6 +410,15 @@ async function seed() {
         console.log(`       - Jadwal praktik disiapkan untuk ${pr.name}`);
       }
     }
+  }
+
+  // Tautkan akun user 'dokter' dengan praktisi DR-001 (dr. M. Faisol Abdillah)
+  const dokterUser = createdUsers['dokter'];
+  if (dokterUser) {
+    await db.update(practitioners)
+      .set({ userId: dokterUser.id })
+      .where(eq(practitioners.code, 'DR-001'));
+    console.log(`     ✓ Akun 'dokter' ditautkan ke praktisi DR-001 (dr. M. Faisol Abdillah)`);
   }
 
   // 10. Procedures & Service Rates

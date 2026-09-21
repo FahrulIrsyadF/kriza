@@ -60,6 +60,43 @@ function buildApp(opts = {}) {
     }
   });
 
+  // ─── RBAC Authorization Decorator ──────────────────────────────────────────
+  // Dipasang di routes yang butuh proteksi izin spesifik:
+  // { preHandler: [app.authorize('encounters:write')] }
+  app.decorate('authorize', function (...requiredPermissions) {
+    return async function (request, reply) {
+      if (!request.user) {
+        return reply.status(401).send({
+          success: false,
+          error: {
+            code: 'UNAUTHORIZED',
+            message: 'Sesi tidak valid atau belum login.',
+          },
+        });
+      }
+
+      const userRoles = request.user.roles || [];
+      const userPermissions = request.user.permissions || [];
+
+      // Role admin memiliki hak akses penuh ke seluruh resource
+      if (userRoles.includes('admin')) {
+        return;
+      }
+
+      // User harus memiliki minimal salah satu permission yang diminta
+      const hasPermission = requiredPermissions.some((perm) => userPermissions.includes(perm));
+      if (!hasPermission) {
+        return reply.status(403).send({
+          success: false,
+          error: {
+            code: 'FORBIDDEN',
+            message: `Akses ditolak: Anda tidak memiliki izin (${requiredPermissions.join(', ')}).`,
+          },
+        });
+      }
+    };
+  });
+
   // ─── Routes ───────────────────────────────────────────────────────────────
   app.get('/health', async () => ({
     status: 'ok',
@@ -81,6 +118,19 @@ function buildApp(opts = {}) {
 
     // Fase 4: Registrasi Kunjungan & Antrian
     apiRouter.register(require('./modules/registrations/registrations.routes'));
+
+    // Fase 5: Rekam Medis Elektronik (RME SOAP) & Sistem Rujukan
+    apiRouter.register(require('./modules/encounters/encounters.routes'), { prefix: '/encounters' });
+    apiRouter.register(require('./modules/encounters/referrals.routes'), { prefix: '/referrals' });
+
+    // Fase 6: Farmasi, Resep Elektronik & Manajemen Stok
+    apiRouter.register(require('./modules/pharmacy/pharmacy.routes'), { prefix: '/pharmacy' });
+
+    // Fase 7: Kasir, Billing & Pembayaran
+    apiRouter.register(require('./modules/billing/billing.routes'), { prefix: '/billing' });
+
+    // Fase 8: Laporan Operasional
+    apiRouter.register(require('./modules/reports/reports.routes'), { prefix: '/reports' });
   }, { prefix: '/api/v1' });
 
   // ─── Error Handler ────────────────────────────────────────────────────────

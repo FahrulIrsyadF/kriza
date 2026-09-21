@@ -22,13 +22,7 @@ const NAVIGATION_ITEMS = [
     path: '/dashboard',
     icon: LayoutDashboard,
     active: true,
-  },
-  {
-    name: 'Data Pasien',
-    path: '/patients',
-    icon: Users,
-    active: true,
-    fase: 'Fase 3',
+    permission: null, // Terbuka untuk semua user yang login
   },
   {
     name: 'Pendaftaran & Antrian',
@@ -36,34 +30,39 @@ const NAVIGATION_ITEMS = [
     icon: ClipboardList,
     active: true,
     fase: 'Fase 4',
+    permission: 'registrations:read',
   },
   {
     name: 'Rekam Medis (EMR)',
     path: '/encounters',
     icon: Stethoscope,
-    active: false,
+    active: true,
     fase: 'Fase 5',
+    permission: 'encounters:read',
   },
   {
     name: 'Farmasi & Obat',
     path: '/pharmacy',
     icon: Pill,
-    active: false,
+    active: true,
     fase: 'Fase 6',
+    permission: 'pharmacy:read',
   },
   {
     name: 'Kasir & Billing',
     path: '/billing',
     icon: Receipt,
-    active: false,
+    active: true,
     fase: 'Fase 7',
+    permission: 'billing:read',
   },
   {
     name: 'Laporan',
     path: '/reports',
     icon: BarChart3,
-    active: false,
+    active: true,
     fase: 'Fase 8',
+    permission: 'reports:read',
   },
   {
     name: 'Master Data',
@@ -71,6 +70,7 @@ const NAVIGATION_ITEMS = [
     icon: Database,
     active: true,
     fase: 'Fase 2',
+    permission: 'masterdata:read',
   },
 ];
 
@@ -97,16 +97,18 @@ export default function AppLayout({ children, title, subtitle, actions }) {
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
           {/* Logo & Klinik Name */}
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center shadow-sm">
-              <span className="text-primary-foreground font-extrabold text-base">K</span>
-            </div>
+            <img
+              src="/icon_klinik.png"
+              alt="Icon Klinik KRIZA"
+              className="w-9 h-9 object-contain shrink-0 rounded-lg drop-shadow-sm"
+            />
             <div>
               <div className="flex items-center gap-2">
                 <h1 className="font-bold text-foreground text-sm tracking-tight leading-none">
                   KRIZA SIMRS
                 </h1>
                 <span className="bg-primary/10 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded">
-                  v0.4.0
+                  v0.8.0
                 </span>
               </div>
               <p className="text-[11px] text-muted-foreground mt-0.5">
@@ -179,9 +181,20 @@ export default function AppLayout({ children, title, subtitle, actions }) {
       {/* ─── 2. DEDICATED NAVBAR (Distinct Sub-Bar for Menu Navigation) ──────── */}
       <nav className="border-b border-border bg-muted/40 sticky top-0 z-20 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-6 flex items-center gap-1 overflow-x-auto py-1.5 no-scrollbar">
-          {NAVIGATION_ITEMS.map((item) => {
-            const Icon = item.icon;
-            const isCurrent = location.pathname === item.path || location.pathname.startsWith(`${item.path}/`);
+          {(() => {
+            const userRoles = user?.roles || [];
+            const userPermissions = user?.permissions || [];
+            const isAdmin = userRoles.includes('admin');
+
+            const visibleItems = NAVIGATION_ITEMS.filter((item) => {
+              if (!item.permission) return true;
+              if (isAdmin) return true;
+              return userPermissions.includes(item.permission);
+            });
+
+            return visibleItems.map((item) => {
+              const Icon = item.icon;
+              const isCurrent = location.pathname === item.path || location.pathname.startsWith(`${item.path}/`);
 
             if (!item.active) {
               return (
@@ -215,8 +228,9 @@ export default function AppLayout({ children, title, subtitle, actions }) {
                   <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                 )}
               </Link>
-            );
-          })}
+              );
+            });
+          })()}
         </div>
       </nav>
 

@@ -93,12 +93,17 @@ const drugs = pgTable('drugs', {
   code: varchar('code', { length: 50 }).unique().notNull(), // 'OBT-001'
   name: varchar('name', { length: 255 }).notNull(),
   genericName: varchar('generic_name', { length: 255 }),
+  dosageForm: varchar('dosage_form', { length: 50 }).default('TABLET').notNull(), // 'TABLET', 'KAPSUL', 'SIRUP', 'SALEP', dll
   category: varchar('category', { length: 50 }).default('Obat Bebas').notNull(), // 'Obat Bebas', 'Obat Bebas Terbatas', 'Obat Keras', 'Alkes', 'Kosmetik Medis'
   unitId: uuid('unit_id').references(() => drugUnits.id, { onDelete: 'set null' }),
-  basePrice: numeric('base_price', { precision: 12, scale: 2 }).default('0').notNull(), // Harga beli dasar
-  sellingPrice: numeric('selling_price', { precision: 12, scale: 2 }).default('0').notNull(), // Harga jual
+  basePrice: numeric('base_price', { precision: 12, scale: 2 }).default('0').notNull(), // HNA / Harga beli dasar
+  sellingPrice: numeric('selling_price', { precision: 12, scale: 2 }).default('0').notNull(), // Harga jual umum
+  defaultMarkupPercent: numeric('default_markup_percent', { precision: 5, scale: 2 }).default('0').notNull(), // Margin markup default (%)
   minStock: integer('min_stock').default(10).notNull(),
   currentStock: integer('current_stock').default(0).notNull(),
+  bpjsDrugCode: varchar('bpjs_drug_code', { length: 50 }),
+  defaultSigna: varchar('default_signa', { length: 100 }),
+  manufacturer: varchar('manufacturer', { length: 100 }),
   requiresPrescription: boolean('requires_prescription').default(false).notNull(),
   isActive: boolean('is_active').default(true).notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).default(sql`now()`).notNull(),

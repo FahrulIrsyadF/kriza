@@ -25,12 +25,12 @@
 | 1 | Auth, RBAC, Audit Trail | 🟢 SELESAI | JWT midnight WIB, bcrypt, audit log, seed ✅ |
 | 2 | Master Data | 🟢 SELESAI | Poli, Dokter, Jadwal, Tindakan/Tarif, Obat, ICD-10 ✅ |
 | 3 | Manajemen Pasien | 🟢 SELESAI | Form lengkap 30+ field, Wilayah db_rizani, MRN gen ✅ |
-| 4 | Registrasi & Antrian | 🔴 BELUM MULAI | Fase berikutnya |
-| 5 | Encounter & Rekam Medis | 🔴 BELUM MULAI | |
-| 6 | Resep & Farmasi | 🔴 BELUM MULAI | |
-| 7 | Billing & Pembayaran | 🔴 BELUM MULAI | |
-| 8 | Laporan Operasional | 🔴 BELUM MULAI | |
-| 9 | Integrasi BPJS | 🔴 BELUM MULAI | |
+| 4 | Registrasi & Antrian | 🟢 SELESAI | Pendaftaran poli, multi-source antrian, MJKN field ✅ |
+| 5 | Encounter & Rekam Medis | 🟢 SELESAI | SOAP, TTV BMI, ICD-10, Tindakan, Rujukan & PCare ✅ |
+| 6 | Resep & Farmasi | 🟢 SELESAI | 113 obat riil, Batch FEFO, Dispensing, Shift Log, SO ✅ |
+| 7 | Billing & Pembayaran | 🟢 SELESAI | Tagihan auto-sync, Multi-payment, Struk/Kuitansi resmi ✅ |
+| 8 | Laporan Operasional | 🟢 SELESAI | 6 Endpoint agregasi, Excel .xlsx export, print resmi ✅ |
+| 9 | Integrasi BPJS | 🔴 BELUM MULAI | Ref: docs/bpjs-pcare-reference.md |
 | 10 | Integrasi SATUSEHAT | 🔴 BELUM MULAI | |
 | 11 | Hardening & Production | 🔴 BELUM MULAI | |
 
@@ -40,28 +40,53 @@
 
 ## Fase Aktif Saat Ini
 
-**FASE 4 — Registrasi Kunjungan & Manajemen Antrian Poli**
+**FASE 9 — Integrasi BPJS (P-Care & VClaim)** (Siap dimulai sesuai instruksi)
 
-### Tasks yang Harus Dilakukan (Fase 4)
+### Tasks Selesai (Fase 8 — Laporan Operasional):
+- [x] Backend API Reports (`/api/v1/reports/*`): 6 endpoint teragregasi (overview, visits, revenue, morbidity, pharmacy, bpjs)
+- [x] Zero-dependency Micro Visualizer (TrendBarChart, HorizontalBarMetric, SegmentedDistributionBar) menjaga bundle size & 0 error build
+- [x] Ekspor Microsoft Excel (.xlsx) via dynamic import SheetJS
+- [x] Modal cetak resmi ber-kop `CLINIC_INFO`, titi mangsa Paiton, dan print stylesheet `.printable-area`
+- [x] Workspace frontend `ReportsPage.jsx` dengan 5 tab laporan lengkap, filter preset tanggal, dan menu navigasi aktif v0.8.0
 
-- [ ] Schema + migrate: `registrations` (kunjungan pasien ke poli, dokter, tipe bayar: umum/bpjs/asuransi)
-- [ ] Schema + migrate: `queues` (nomor antrian per poli, per hari, status: MENUNGGU, DIPANGGIL, DIPERIKSA, SELESAI, BATAL)
-- [ ] Generator nomor antrian per poli (misal: A-001 Poli Umum, B-001 Poli Gigi, C-001 Poli Estetika)
-- [ ] Validasi kuota jadwal praktik dokter hari itu
-- [ ] Cek status kunjungan: Pasien Baru vs Pasien Lama
-- [ ] CRUD API Registrasi Kunjungan Pasien
-- [ ] API Panggil Antrian & Update Status Antrian Real-time
-- [ ] Frontend: Halaman Pendaftaran Rawat Jalan & Cetak/Lihat Tiket Antrian
-- [ ] Frontend: Display Antrian Pasien per Poli (Live Queue Board)
+---
 
-### Kriteria Fase 4 Selesai
-- Pendaftaran pasien ke poli menghasilkan nomor antrian berurutan
-- Status antrian dapat diperbarui (Panggil -> Periksa -> Selesai)
-- Kuota harian dokter divalidasi secara otomatis
+## Informasi Resmi Klinik
+
+> **WAJIB**: Selalu gunakan data dari `apps/web/src/lib/clinic-info.js` (`CLINIC_INFO`) sebagai **satu-satunya sumber kebenaran** untuk informasi klinik.
+> JANGAN hardcode nama, alamat, atau kontak klinik di component manapun.
+
+| Field | Nilai |
+|---|---|
+| Nama Singkat | **Klinik Rizani** |
+| Nama Legal/Uppercase | **KLINIK RIZANI** |
+| Alamat | Jalan Raya Surabaya - Situbondo KM 136 Sumberanyar Paiton |
+| Telepon | (0335) 773204 |
+| HP/WhatsApp | 081333352620 |
+| Email | klinikrizani@gmail.com |
+| Kota (tanda tangan) | Paiton |
+| Logo path | `/icon_klinik.png` |
+
+**Panduan import di semua dokumen cetak:**
+```js
+import { CLINIC_INFO, formatClinicContact } from '@/lib/clinic-info';
+// CLINIC_INFO.name → "Klinik Rizani"
+// CLINIC_INFO.legalName → "KLINIK RIZANI"
+// CLINIC_INFO.address → "Jalan Raya Surabaya - Situbondo KM 136 Sumberanyar Paiton"
+// formatClinicContact() → "TELP (0335) 773204 • HP 081333352620 • klinikrizani@gmail.com"
+```
+
+### Dokter Resmi Klinik
+| Kode | Nama Praktisi | Spesialisasi | Unit Poli | Jadwal Standar |
+|---|---|---|---|---|
+| `DR-001` | **dr. M. Faisol Abdillah** | Dokter Umum | Poli Umum | Senin – Sabtu, 08:00 – 14:00 |
+| `DR-002` | **dr. Fachrudin** | Dokter Umum | Poli Umum | Senin – Sabtu, 14:00 – 20:00 |
+| `DR-003` | **Drg. Iqbal** | Dokter Gigi & Mulut | Poli Gigi | Senin – Sabtu, 08:00 – 14:00 |
 
 ---
 
 ## Keputusan Arsitektur yang Sudah Diambil
+
 
 | Keputusan | Detail | Tanggal |
 |---|---|---|
@@ -265,16 +290,69 @@ kriza/
 - ✅ Nav item "Pendaftaran & Antrian" aktif di AppLayout, versi diupdate ke v0.4.0
 - ✅ Vite build berhasil 100% (1774 modules)
 
+### [2026-09-01] — Sesi 6: Fase 5 — Rekam Medis Elektronik (RME SOAP), Tindakan & Sistem Rujukan (PCare Ready)
+- ✅ Database Schema: `encounters` (15 col, PMK 24/2022 locking & amendment), `vital_signs` (18 col, auto-BMI calculation, consciousness PCare, triage), `soap_notes` (10 col), `encounter_diagnoses` (8 col, multi-item ICD-10 with Primary/Secondary & Kasus Baru/Lama), `encounter_procedures` (9 col, quantity & tariff), `encounter_referrals` (26 col, internal consult & external referral + BPJS PCare bridging fields: pcareNoRujukan, pcareTaccCode, pcareTaccReason), `encounter_dispositions` (7 col)
+- ✅ Migration generated: `0004_curved_sersi.sql`
+- ✅ Generator: `referral-number.generator.js` → Nomor Rujukan Medis `RUJ-YYYYMMDD-XXXX` unik harian
+- ✅ Repository: `encounters.repository.js` (doctor queue, encounter detail with full joins, vital signs upsert with BMI, SOAP upsert, diagnoses/procedures CRUD, disposition/referral upsert, referral print query)
+- ✅ Service: `encounters.service.js` (auto-BMI calculation & nutritional categories, PMK 24/2022 locking validation, auto-create registration for internal consult, finalize lock with registration/queue status transition to SELESAI, medical amendment workflow, and PCare encounter payload builder)
+- ✅ Zod Schemas: `encounters.schema.js` (start, vital signs, soap, diagnoses, procedures, disposition & referral, finalize, amend, list query)
+- ✅ Routes: `encounters.routes.js` (14 endpoints) & `referrals.routes.js` (2 endpoints) registered in `app.js`
+- ✅ Frontend: `EncountersPage.jsx` (Doctor Queue, patient search, polyclinic filter, stats cards, quick launch), `EncounterWorkspace.jsx` (4-panel clinical RME workspace with TTV auto-BMI visual badge, SOAP with quick presets, ICD-10 combobox, procedures with tariff calc, internal & external referral forms + PCare parameters, autosave draft, and PMK 24/2022 finalize locking), and `ReferralLetterModal.jsx` (Official medical referral letter print preview with letterhead, patient summary, TTV, ICD-10, and doctor signature block)
+- ✅ Nav item "Rekam Medis (EMR)" aktif di AppLayout, versi diupdate ke v0.5.0
+- ✅ Vite build berhasil 100% (1779 modules)
+
+### [2026-09-02] — Sesi 7: Fase 6 — Modul Farmasi & Manajemen Obat
+- ✅ Database Schema: `suppliers`, `drug_prices` (multi-tier pricing ready), `drug_batches` (lot/batch tracking with expiry date for FEFO), `shift_stock_logs` & `shift_stock_log_items` (digitalisasi pemantauan shift harian klinik Rizani), `prescriptions` & `prescription_items` (resep elektronik dari dokter), `drug_stock_movements` (append-only mutasi stok), `stock_opnames` & `stock_opname_items` (SO bulanan) + migration `0005_nostalgic_ted_forrester.sql`
+- ✅ Seeding: `pharmacy.seed.js` mengekstrak dan mengimpor **113 item obat riil** lengkap dengan bentuk sediaan, signa default, satuan, stok awal, dan batch saldo awal per Agustus 2026 dari spreadsheet klinik Rizani.
+- ✅ Repository: `pharmacy.repository.js` (FEFO batch auto-allocation, atomic inventory transactions, shift monitoring, stock opname adjustments, live dashboard stats).
+- ✅ Service: `pharmacy.service.js` (Prescription generator `RES-YYYYMMDD-XXXX`, multi-tier fallback pricing resolver, atomic dispensing with auto-shift synchronization, shift open/close state machine, and SO variance auto-reconciliation).
+- ✅ Routes: `pharmacy.routes.js` (23 endpoints) terdaftar di `/api/v1/pharmacy` Fastify.
+- ✅ Frontend Hub: `PharmacyPage.jsx` dengan 4 sub-tab utama:
+  1. `PrescriptionsQueueTab.jsx`: antrian resep pasien real-time, status filter (Pending / Dispensed / All), detail dispensing & verifikasi obat.
+  2. `DrugStocksTab.jsx`: tabel stok 113 obat dengan filter sediaan, filter stok kritis, panel detail batch aktif FEFO, modal penerimaan batch baru, modal penyesuaian stok manual.
+  3. `ShiftMonitoringTab.jsx`: spreadsheet monitor stok shift harian (Pagi/Siang/Malam), input pemakaian non-shift manual, koreksi, auto-sum stok akhir real-time, dan histori shift lampau.
+  4. `StockOpnameTab.jsx`: pembuatan sesi SO baru, lembar hitung fisik dengan kalkulasi selisih warna otomatis, dan tombol finalisasi SO yang otomatis meng-adjust stok batch.
+  5. `PrintEtiketModal.jsx`: template cetak etiket obat resmi stiker pasien.
+  6. `EncounterPrescriptionTab.jsx`: terintegrasi langsung ke `EncounterWorkspace.jsx` agar dokter dapat menulis dan mengirimkan resep elektronik langsung saat pemeriksaan SOAP.
+- ✅ Nav item "Farmasi & Obat" aktif di AppLayout, versi diupdate ke v0.6.0.
+- ✅ Vite build production berhasil 100% (1789 modules).
+
 ---
 
 ## Instruksi untuk Agent Berikutnya
 
 1. **Baca file ini sampai habis** sebelum mengerjakan apapun
-2. **Fase aktif sekarang adalah FASE 4** — Registrasi Kunjungan & Antrian Poli
-3. **Update dokumen ini** setelah setiap task selesai
-4. **Gunakan database Dokploy yang sudah aktif di `.env`**
-5. **Update "Log Sesi Kerja"** setelah sesi selesai
+2. **ATURAN KETAT GIT:** JANGAN PERNAH melakukan `git commit` dan `git push` sebelum USER MEMINTA SECARA EKSPLISIT.
+3. **Git Branching Strategy:** Jika diminta commit & push oleh user, SELALU lakukan ke branch `dev`. Branch `main` diproteksi (*protected*).
+4. **Fase aktif selanjutnya adalah FASE 8** — Laporan Operasional
+5. **Update dokumen ini** setelah setiap task selesai
+6. **Gunakan database Dokploy yang sudah aktif di `.env`**
+7. **Update "Log Sesi Kerja"** setelah sesi selesai
+8. **INFO KLINIK:** SELALU gunakan `CLINIC_INFO` dari `apps/web/src/lib/clinic-info.js`. JANGAN hardcode nama/alamat/kontak klinik di mana pun. Lihat section "Informasi Resmi Klinik" di atas.
+9. **PRINT BEHAVIOR:** Semua modal cetak wajib menggunakan class `printable-area` pada div konten yang ingin dicetak. Class ini diatur oleh `@media print` di `index.css` sehingga hanya area tersebut yang tercetak — bukan screenshot seluruh layar.
+
+### [2026-09-07] — Sesi 9: Hotfix UI — Badge Hover & Button Precision + Info Klinik
+- ✅ `button.jsx`: Tambah varian `size="xs"` (`h-7 rounded-md px-2.5 text-xs gap-1`) ke CVA sehingga tidak jatuh ke default padding
+- ✅ `badge.jsx`: Hapus `hover:bg-primary/80` dari semua variant (badge status informasional tidak boleh berubah warna saat hover). Tambah varian `info`, `purple` untuk status antrian. Refactor `success` → emerald (konsisten dark mode).
+- ✅ `MasterDataPage.jsx`, `EncountersPage.jsx`, `PatientsPage.jsx`: Ganti inline className hack dengan semantic variant (`success`, `warning`, `info`, `purple`)
+- ✅ Buat `apps/web/src/lib/clinic-info.js` — sumber kebenaran tunggal data resmi Klinik Rizani (nama, alamat, telp, HP, email)
+### [2026-09-10] — Sesi 10: Fase 8 — Laporan Operasional & Analitik
+- ✅ Backend: `reports.schema.js`, `reports.repository.js`, `reports.service.js`, `reports.routes.js` (6 endpoint: overview, visits, revenue, morbidity, pharmacy, bpjs)
+- ✅ Registered `/api/v1/reports` di `app.js` terproteksi auth sesi JWT
+- ✅ Micro Visualizer: `ReportVisuals.jsx` (TrendBarChart native SVG, HorizontalBarMetric, SegmentedDistributionBar) — 0 dependencies, 0 bundle bloat, zero-lag render
+- ✅ Ekspor Microsoft Excel (.xlsx): `export-excel.js` dengan dynamic import `xlsx` (code-split, tidak membebani initial bundle)
+- ✅ Modal Cetak Resmi: `ReportPrintModal.jsx` menggunakan `CLINIC_INFO`, logo resmi, class `.printable-area`, dan titi mangsa Paiton
+- ✅ Frontend Workspace: `ReportsPage.jsx` dengan 5 tab laporan terpadu:
+  1. `VisitsReportTab.jsx`: volume kunjungan harian, distribusi poli, filter pasien baru/lama, penjamin, tabel registrasi
+  2. `RevenueReportTab.jsx`: omzet kasir, penerimaan vs piutang, metode bayar (Tunai, QRIS, Transfer, Debit, BPJS), tabel kuitansi
+  3. `MorbidityReportTab.jsx`: 10 & 20 besar diagnosa ICD-10 WHO, kasus baru vs lama, persentase
+  4. `PharmacyReportTab.jsx`: valuasi aset obat (HNA & jual), top obat diresepkan, radar stok kritis & mendekati ED (< 90 hari)
+  5. `BpjsReportTab.jsx`: rekonsiliasi pelayanan BPJS faskes primer, rasio rujukan keluar (indikator KBK), audit diagnosa
+- ✅ Menu navigasi "Laporan" aktif di `AppLayout.jsx`, versi sistem dinaikkan ke `v0.8.0`
+- ✅ Vite production build berhasil 100% tanpa error (4.80s)
+- 🔜 Siap lanjut ke Fase 9: Integrasi BPJS (P-Care & VClaim)
 
 ---
 
-*Last updated: 2026-09-01 | Updated by: Agent (Fase 3 Selesai)*
+*Last updated: 2026-09-10 | Updated by: Agent (Sesi 10 — Fase 8 Laporan Operasional)*

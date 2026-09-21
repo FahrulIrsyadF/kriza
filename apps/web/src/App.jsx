@@ -5,6 +5,10 @@ import DashboardPage from '@/features/dashboard/DashboardPage'
 import MasterDataPage from '@/features/master/MasterDataPage'
 import PatientsPage from '@/features/patients/PatientsPage'
 import RegistrationsPage from '@/features/registrations/RegistrationsPage'
+import EncountersPage from '@/features/encounters/EncountersPage'
+import PharmacyPage from '@/features/pharmacy/PharmacyPage'
+import BillingPage from '@/features/billing/BillingPage'
+import ReportsPage from '@/features/reports/ReportsPage'
 import NotFoundPage from '@/pages/NotFoundPage'
 
 function App() {
@@ -27,28 +31,64 @@ function App() {
       <Route
         path="/master"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermission="masterdata:read">
             <MasterDataPage />
           </ProtectedRoute>
         }
       />
 
-      {/* Patients Management (Fase 3) */}
+      {/* Patients Management (Terintegrasi ke dalam Master Data) */}
       <Route
         path="/patients"
-        element={
-          <ProtectedRoute>
-            <PatientsPage />
-          </ProtectedRoute>
-        }
+        element={<Navigate to="/master?tab=patients" replace />}
       />
 
       {/* Registrasi Kunjungan & Antrian (Fase 4) */}
       <Route
         path="/registrations"
         element={
-          <ProtectedRoute>
+          <ProtectedRoute requiredPermission="registrations:read">
             <RegistrationsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Rekam Medis Elektronik / RME SOAP (Fase 5) */}
+      <Route
+        path="/encounters"
+        element={
+          <ProtectedRoute requiredPermission="encounters:read">
+            <EncountersPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Farmasi, Resep Elektronik & Stok (Fase 6) */}
+      <Route
+        path="/pharmacy"
+        element={
+          <ProtectedRoute requiredPermission="pharmacy:read">
+            <PharmacyPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Kasir, Billing & Pembayaran (Fase 7) */}
+      <Route
+        path="/billing"
+        element={
+          <ProtectedRoute requiredPermission="billing:read">
+            <BillingPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Laporan Operasional & Analitik (Fase 8) */}
+      <Route
+        path="/reports"
+        element={
+          <ProtectedRoute requiredPermission="reports:read">
+            <ReportsPage />
           </ProtectedRoute>
         }
       />

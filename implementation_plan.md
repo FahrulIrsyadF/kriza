@@ -306,15 +306,15 @@ kriza/
 - Pembayaran adalah transaksi — harus atomic
 
 ### Tasks
-- [ ] Schema + migrate billing tables
-- [ ] Auto-generate invoice dari finalized encounter (hitung dari tarif)
-- [ ] API: GET /invoices/:id
-- [ ] API: POST /payments (proses pembayaran, transaction)
-- [ ] API: GET /invoices — list dengan filter status (unpaid/partial/paid)
-- [ ] Receipt generation (PDF atau print-friendly HTML)
-- [ ] Frontend: kasir view — list invoice pending
-- [ ] Frontend: form pembayaran
-- [ ] Frontend: cetak struk/invoice
+- [x] Schema + migrate billing tables (`invoices`, `invoice_items`, `payments`)
+- [x] Auto-generate invoice dari finalized encounter (hitung dari tarif tindakan + resep farmasi)
+- [x] API: GET /invoices/:id
+- [x] API: POST /payments (proses pembayaran atomik dengan kalkulasi kembalian)
+- [x] API: GET /invoices — list dengan filter status (unpaid/partial/paid) dan pencarian
+- [x] Receipt generation (Kuitansi / Struk Kasir Resmi Klinik Rizani dengan Terbilang)
+- [x] Frontend: kasir view — list invoice pending dan KPI pendapatan harian
+- [x] Frontend: form pembayaran (multi-metode: Tunai, Transfer, QRIS, Debit, BPJS, Asuransi)
+- [x] Frontend: cetak struk/invoice (modal & direct print stylesheet)
 
 ---
 
@@ -331,11 +331,11 @@ kriza/
 - Laporan BPJS (untuk klaim, dipakai lagi di Fase 9)
 
 ### Tasks
-- [ ] Query-query laporan dengan proper indexing
-- [ ] API endpoint laporan dengan date range filtering
-- [ ] Export CSV/Excel untuk laporan
-- [ ] Frontend: dashboard dengan charts (gunakan recharts)
-- [ ] Frontend: halaman laporan dengan filter dan export
+- [x] Query-query laporan dengan proper indexing (SQL aggregasi Drizzle ORM efisien)
+- [x] API endpoint laporan dengan date range filtering (/api/v1/reports/*)
+- [x] Export Excel (.xlsx) dengan SheetJS code-split on-demand & Cetak Laporan Resmi
+- [x] Frontend: dashboard dengan charts (Micro Visualizer native SVG & Tailwind responsif)
+- [x] Frontend: halaman laporan dengan filter dan export (ReportsPage.jsx 5 tab terpadu)
 
 ---
 

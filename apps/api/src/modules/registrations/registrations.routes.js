@@ -16,14 +16,14 @@ async function registrationRoutes(app) {
 
   // ─── 1. List Registrations per Tanggal / Poli / Status ──────────────────────
   // GET /api/v1/registrations?date=2026-09-01&polyclinicId=...&status=MENUNGGU
-  app.get('/registrations', async (request, reply) => {
+  app.get('/registrations', { preHandler: [app.authorize('registrations:read')] }, async (request, reply) => {
     const query = schemas.listRegistrationQuerySchema.parse(request.query);
     const result = await service.listRegistrations(query);
     return reply.send({ success: true, data: result });
   });
 
   // ─── 2. Preview Nomor Registrasi Berikutnya ───────────────────────────────
-  app.get('/registrations/next-number', async (request, reply) => {
+  app.get('/registrations/next-number', { preHandler: [app.authorize('registrations:read')] }, async (request, reply) => {
     const { date } = request.query;
     const nextNumber = await service.getNextRegistrationNumber(date);
     return reply.send({ success: true, data: { nextRegistrationNumber: nextNumber } });
@@ -31,20 +31,20 @@ async function registrationRoutes(app) {
 
   // ─── 3. Today's Active Queue per Poli ────────────────────────────────────
   // GET /api/v1/queues/today?polyclinicId=...&date=2026-09-01
-  app.get('/queues/today', async (request, reply) => {
+  app.get('/queues/today', { preHandler: [app.authorize('registrations:read')] }, async (request, reply) => {
     const query = schemas.todayQueueQuerySchema.parse(request.query);
     const result = await service.getTodayQueues(query.polyclinicId, query.date);
     return reply.send({ success: true, data: result });
   });
 
   // ─── 4. Detail Registrasi by ID ──────────────────────────────────────────
-  app.get('/registrations/:id', async (request, reply) => {
+  app.get('/registrations/:id', { preHandler: [app.authorize('registrations:read')] }, async (request, reply) => {
     const reg = await service.findRegistration(request.params.id);
     return reply.send({ success: true, data: reg });
   });
 
   // ─── 5. Daftarkan Kunjungan Baru (Loket / MJKN / Telepon) ────────────────
-  app.post('/registrations', async (request, reply) => {
+  app.post('/registrations', { preHandler: [app.authorize('registrations:write')] }, async (request, reply) => {
     const body = schemas.createRegistrationSchema.parse(request.body);
     const created = await service.createRegistration(body, getContext(request));
     return reply.status(201).send({
@@ -55,14 +55,14 @@ async function registrationRoutes(app) {
   });
 
   // ─── 6. Update Data Registrasi (Penjamin, Keluhan, Catatan, dll) ─────────
-  app.put('/registrations/:id', async (request, reply) => {
+  app.put('/registrations/:id', { preHandler: [app.authorize('registrations:write')] }, async (request, reply) => {
     const body = schemas.updateRegistrationSchema.parse(request.body);
     const updated = await service.updateRegistration(request.params.id, body, getContext(request));
     return reply.send({ success: true, data: updated, message: 'Data registrasi berhasil diperbarui' });
   });
 
   // ─── 7. Batalkan Registrasi ───────────────────────────────────────────────
-  app.delete('/registrations/:id', async (request, reply) => {
+  app.delete('/registrations/:id', { preHandler: [app.authorize('registrations:write')] }, async (request, reply) => {
     const body = schemas.cancelRegistrationSchema.parse(request.body || {});
     await service.cancelRegistration(request.params.id, body, getContext(request));
     return reply.send({ success: true, message: 'Registrasi berhasil dibatalkan' });
@@ -70,7 +70,7 @@ async function registrationRoutes(app) {
 
   // ─── 8. Aksi Status Antrian (Panggil / Periksa / Selesai / Lewat) ────────
   // PUT /api/v1/registrations/:id/queue-action
-  app.put('/registrations/:id/queue-action', async (request, reply) => {
+  app.put('/registrations/:id/queue-action', { preHandler: [app.authorize('registrations:manage', 'registrations:write')] }, async (request, reply) => {
     const body = schemas.updateQueueStatusSchema.parse(request.body);
     const result = await service.updateQueueAction(request.params.id, body, getContext(request));
     return reply.send({ success: true, data: result, message: result.message });

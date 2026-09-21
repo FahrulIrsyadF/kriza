@@ -1,5 +1,10 @@
 const bcrypt = require('bcryptjs');
-const { findActiveUserByUsername, getUserRolesAndPermissions, findUserById } = require('./auth.repository');
+const {
+  findActiveUserByUsername,
+  getUserRolesAndPermissions,
+  findUserById,
+  getUserPractitioner,
+} = require('./auth.repository');
 const { logAudit } = require('../../shared/utils/audit');
 const { getNextMidnight, getSecondsUntilMidnight } = require('../../shared/utils/token');
 const env = require('../../config/env');
@@ -7,21 +12,12 @@ const env = require('../../config/env');
 /**
  * Proses login.
  * Verifikasi kredensial, kembalikan JWT payload dan waktu expire.
- *
- * @param {object} params
- * @param {string} params.username
- * @param {string} params.password
- * @param {string|null} params.ipAddress
- * @param {string|null} params.userAgent
- * @returns {Promise<{ user: object, payload: object, expiresAt: Date }>}
- * @throws {Error} dengan statusCode 401 jika kredensial salah
  */
 async function login({ username, password, ipAddress, userAgent }) {
   // 1. Cari user
   const user = await findActiveUserByUsername(username);
 
   if (!user) {
-    // Audit login gagal (user tidak ditemukan)
     await logAudit({
       action: 'LOGIN_FAILED',
       entityType: 'auth',
@@ -54,8 +50,11 @@ async function login({ username, password, ipAddress, userAgent }) {
     throw err;
   }
 
-  // 3. Ambil roles & permissions
-  const { roles, permissions } = await getUserRolesAndPermissions(user.id);
+  // 3. Ambil roles, permissions, dan link data dokter/praktisi jika ada
+  const [{ roles, permissions }, practitioner] = await Promise.all([
+    getUserRolesAndPermissions(user.id),
+    getUserPractitioner(user.id, user.name),
+  ]);
 
   // 4. Hitung expire: tengah malam WIB berikutnya
   const expiresAt = getNextMidnight(env.CLINIC_TIMEZONE_OFFSET);
@@ -68,7 +67,7 @@ async function login({ username, password, ipAddress, userAgent }) {
     username: user.username,
     roles,
     permissions,
-    // exp di-set via expiresIn saat sign
+    practitionerId: practitioner?.id || null,
   };
 
   // 6. Audit login sukses
@@ -77,7 +76,7 @@ async function login({ username, password, ipAddress, userAgent }) {
     action: 'LOGIN',
     entityType: 'auth',
     entityId: user.id,
-    newValues: { roles, sessionExpiresAt: expiresAt.toISOString() },
+    newValues: { roles, practitionerId: practitioner?.id, sessionExpiresAt: expiresAt.toISOString() },
     ipAddress,
     userAgent,
   });
@@ -89,6 +88,7 @@ async function login({ username, password, ipAddress, userAgent }) {
       username: user.username,
       roles,
       permissions,
+      practitioner,
     },
     payload,
     expiresAt,
@@ -122,9 +122,12 @@ async function getMe(userId) {
     throw err;
   }
 
-  const { roles, permissions } = await getUserRolesAndPermissions(userId);
+  const [{ roles, permissions }, practitioner] = await Promise.all([
+    getUserRolesAndPermissions(userId),
+    getUserPractitioner(userId, user.name),
+  ]);
 
-  return { ...user, roles, permissions };
+  return { ...user, roles, permissions, practitioner };
 }
 
 module.exports = { login, logout, getMe };
