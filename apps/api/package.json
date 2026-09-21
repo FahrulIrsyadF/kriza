@@ -20,11 +20,11 @@
     "@fastify/jwt": "^9.0.3",
     "bcryptjs": "^2.4.3",
     "drizzle-orm": "^0.38.4",
+    "dotenv": "^16.5.0",
     "pg": "^8.13.3",
     "zod": "^3.24.4"
   },
   "devDependencies": {
-    "dotenv": "^16.5.0",
     "drizzle-kit": "^0.30.4",
     "nodemon": "^3.1.9",
     "pino-pretty": "^13.0.0"

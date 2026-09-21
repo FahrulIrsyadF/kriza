@@ -82,7 +82,8 @@ export default function AppLayout({ children, title, subtitle, actions }) {
   const { data: health, isError } = useQuery({
     queryKey: ['health'],
     queryFn: async () => {
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+      // Tanpa VITE_API_URL: path relatif, di-proxy vite (dev) atau nginx (produksi)
+      const apiUrl = import.meta.env.VITE_API_URL || '';
       const res = await apiClient.get(`${apiUrl}/health`, { baseURL: '' });
       return res.data;
     },
