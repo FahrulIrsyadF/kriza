@@ -9,6 +9,7 @@ const {
   drugUnits,
   drugs,
   icd10Codes,
+  labProcedures,
 } = require('../../db/schema');
 const { eq, and, isNull, ilike, or, sql, desc, asc } = require('drizzle-orm');
 
@@ -337,7 +338,90 @@ async function deleteProcedure(id) {
   return deleted || null;
 }
 
-// ─── 5. Rate Types & Drug Units ──────────────────────────────────────────────
+// ─── 5. Lab Procedures ───────────────────────────────────────────────────────
+// Tarif lab disimpan inline per baris (bukan lewat serviceRates) karena satu
+// pemeriksaan punya rincian komponen sendiri: jasa dokter, petugas, perujuk, BHP.
+
+async function getLabProcedures({ search, category, serviceClass, isActive, page = 1, limit = 50 }) {
+  const conditions = [isNull(labProcedures.deletedAt)];
+
+  if (category) conditions.push(eq(labProcedures.category, category));
+  if (serviceClass) conditions.push(eq(labProcedures.serviceClass, serviceClass));
+  if (isActive === 'true') conditions.push(eq(labProcedures.isActive, true));
+  if (isActive === 'false') conditions.push(eq(labProcedures.isActive, false));
+  if (search) {
+    conditions.push(or(ilike(labProcedures.name, `%${search}%`), ilike(labProcedures.code, `%${search}%`)));
+  }
+
+  const whereClause = and(...conditions);
+
+  const [items, totalCount] = await Promise.all([
+    db
+      .select()
+      .from(labProcedures)
+      .where(whereClause)
+      .limit(limit)
+      .offset((page - 1) * limit)
+      .orderBy(asc(labProcedures.name)),
+    db.select({ count: sql`count(*)` }).from(labProcedures).where(whereClause),
+  ]);
+
+  return {
+    items,
+    pagination: {
+      page,
+      limit,
+      total: Number(totalCount[0]?.count || 0),
+      totalPages: Math.ceil(Number(totalCount[0]?.count || 0) / limit),
+    },
+  };
+}
+
+async function getLabProcedureById(id) {
+  const result = await db
+    .select()
+    .from(labProcedures)
+    .where(and(eq(labProcedures.id, id), isNull(labProcedures.deletedAt)))
+    .limit(1);
+  return result[0] || null;
+}
+
+async function createLabProcedure(data) {
+  const [created] = await db.insert(labProcedures).values(toMoneyStrings(data)).returning();
+  return created;
+}
+
+async function updateLabProcedure(id, data) {
+  const [updated] = await db
+    .update(labProcedures)
+    .set({ ...toMoneyStrings(data), updatedAt: new Date() })
+    .where(and(eq(labProcedures.id, id), isNull(labProcedures.deletedAt)))
+    .returning();
+  return updated || null;
+}
+
+async function deleteLabProcedure(id) {
+  const [deleted] = await db
+    .update(labProcedures)
+    .set({ deletedAt: new Date(), isActive: false })
+    .where(and(eq(labProcedures.id, id), isNull(labProcedures.deletedAt)))
+    .returning();
+  return deleted || null;
+}
+
+// drizzle numeric minta string, sementara zod sudah mengubahnya jadi number
+const MONEY_FIELDS = ['hospitalShare', 'consumableFee', 'referrerFee', 'doctorFee',
+  'staffFee', 'ksoFee', 'managementFee', 'totalTariff'];
+
+function toMoneyStrings(data) {
+  const out = { ...data };
+  for (const f of MONEY_FIELDS) {
+    if (out[f] !== undefined && out[f] !== null) out[f] = String(out[f]);
+  }
+  return out;
+}
+
+// ─── 6. Rate Types & Drug Units ──────────────────────────────────────────────
 
 async function getRateTypes() {
   return db.select().from(rateTypes).orderBy(asc(rateTypes.name));
@@ -506,6 +590,11 @@ module.exports = {
   createProcedure,
   updateProcedure,
   deleteProcedure,
+  getLabProcedures,
+  getLabProcedureById,
+  createLabProcedure,
+  updateLabProcedure,
+  deleteLabProcedure,
   getRateTypes,
   getDrugUnits,
   getDrugs,

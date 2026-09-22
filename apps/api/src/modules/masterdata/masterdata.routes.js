@@ -137,7 +137,37 @@ async function masterDataRoutes(app) {
     return reply.send({ success: true, message: 'Tindakan berhasil dinonaktifkan' });
   });
 
-  // ─── 5. Meta References: Rate Types & Drug Units ───────────────────────────
+  // ─── 5. Lab Procedures ─────────────────────────────────────────────────────
+
+  app.get('/lab-procedures', async (request, reply) => {
+    const query = schemas.labListQuerySchema.parse(request.query);
+    const result = await service.listLabProcedures(query);
+    return reply.send({ success: true, data: result });
+  });
+
+  app.get('/lab-procedures/:id', async (request, reply) => {
+    const item = await service.findLabProcedure(request.params.id);
+    return reply.send({ success: true, data: item });
+  });
+
+  app.post('/lab-procedures', async (request, reply) => {
+    const body = schemas.createLabProcedureSchema.parse(request.body);
+    const created = await service.addLabProcedure(body, getContext(request));
+    return reply.status(201).send({ success: true, data: created, message: 'Pemeriksaan lab berhasil ditambahkan' });
+  });
+
+  app.put('/lab-procedures/:id', async (request, reply) => {
+    const body = schemas.updateLabProcedureSchema.parse(request.body);
+    const updated = await service.editLabProcedure(request.params.id, body, getContext(request));
+    return reply.send({ success: true, data: updated, message: 'Pemeriksaan lab berhasil diubah' });
+  });
+
+  app.delete('/lab-procedures/:id', async (request, reply) => {
+    await service.removeLabProcedure(request.params.id, getContext(request));
+    return reply.send({ success: true, message: 'Pemeriksaan lab berhasil dinonaktifkan' });
+  });
+
+  // ─── 6. Meta References: Rate Types & Drug Units ───────────────────────────
 
   app.get('/rate-types', async (request, reply) => {
     const items = await service.listRateTypes();

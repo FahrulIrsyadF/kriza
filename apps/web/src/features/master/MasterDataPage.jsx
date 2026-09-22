@@ -16,6 +16,7 @@ import {
   AlertCircle,
   Sparkles,
   Users,
+  FlaskConical,
 } from 'lucide-react';
 import apiClient from '@/lib/api-client';
 import AppLayout from '@/components/layout/AppLayout';
@@ -54,6 +55,7 @@ const DAYS_MAP = {
 export default function MasterDataPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get('tab') || 'polyclinics';
+  const [labCategory, setLabCategory] = useState('');
   const setActiveTab = (tab) => setSearchParams({ tab });
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -101,6 +103,17 @@ export default function MasterDataPage() {
       return res.data.data.items;
     },
     enabled: activeTab === 'procedures',
+  });
+
+  const { data: labData, isLoading: loadingLab } = useQuery({
+    queryKey: ['lab-procedures', searchQuery, labCategory],
+    queryFn: async () => {
+      const res = await apiClient.get('/master/lab-procedures', {
+        params: { search: searchQuery, limit: 100, ...(labCategory ? { category: labCategory } : {}) },
+      });
+      return res.data.data.items;
+    },
+    enabled: activeTab === 'lab',
   });
 
   const { data: drugsData, isLoading: loadingDrugs } = useQuery({
@@ -276,6 +289,18 @@ export default function MasterDataPage() {
           </button>
 
           <button
+            onClick={() => { setActiveTab('lab'); setSearchQuery(''); }}
+            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+              activeTab === 'lab'
+                ? 'bg-primary text-primary-foreground shadow-sm'
+                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+            }`}
+          >
+            <FlaskConical className="w-4 h-4" />
+            Laboratorium
+          </button>
+
+          <button
             onClick={() => { setActiveTab('drugs'); setSearchQuery(''); }}
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
               activeTab === 'drugs'
@@ -315,6 +340,8 @@ export default function MasterDataPage() {
                     ? 'tindakan / layanan...'
                     : activeTab === 'drugs'
                     ? 'nama obat, generik...'
+                    : activeTab === 'lab'
+                    ? 'nama / kode pemeriksaan lab...'
                     : 'kode atau diagnosa...'
                 }`}
                 value={searchQuery}
@@ -323,7 +350,7 @@ export default function MasterDataPage() {
               />
             </div>
 
-            {activeTab !== 'icd10' && (
+            {activeTab !== 'icd10' && activeTab !== 'lab' && (
               <Button
                 onClick={() => {
                   if (activeTab === 'polyclinics') setPolyModal({ open: true, mode: 'create', data: null });
@@ -697,6 +724,93 @@ export default function MasterDataPage() {
                         </TableRow>
                       );
                     })
+                  )}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* TAB: Laboratorium */}
+        {activeTab === 'lab' && (
+          <Card>
+            <CardHeader className="py-4">
+              <CardTitle className="text-base flex items-center gap-2">
+                <FlaskConical className="w-4 h-4 text-primary" />
+                Pemeriksaan Laboratorium & Tarif
+              </CardTitle>
+              <div className="flex items-center gap-2 pt-2">
+                {[
+                  { value: '', label: 'Semua' },
+                  { value: 'PK', label: 'Patologi Klinik' },
+                  { value: 'PA', label: 'Patologi Anatomi' },
+                  { value: 'MB', label: 'Mikrobiologi' },
+                ].map((c) => (
+                  <button
+                    key={c.value}
+                    onClick={() => setLabCategory(c.value)}
+                    className={`px-3 py-1 rounded-lg text-xs font-medium transition-all ${
+                      labCategory === c.value
+                        ? 'bg-primary text-primary-foreground'
+                        : 'text-muted-foreground hover:bg-muted/50'
+                    }`}
+                  >
+                    {c.label}
+                  </button>
+                ))}
+              </div>
+            </CardHeader>
+            <CardContent className="p-0">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Kode</TableHead>
+                    <TableHead>Nama Pemeriksaan</TableHead>
+                    <TableHead>Kategori</TableHead>
+                    <TableHead>Kelas</TableHead>
+                    <TableHead className="text-right">Jasa Dokter</TableHead>
+                    <TableHead className="text-right">Jasa Petugas</TableHead>
+                    <TableHead className="text-right">Perujuk</TableHead>
+                    <TableHead className="text-right">BHP</TableHead>
+                    <TableHead className="text-right">Total Tarif</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {loadingLab ? (
+                    <TableRow>
+                      <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
+                        Memuat data pemeriksaan lab...
+                      </TableCell>
+                    </TableRow>
+                  ) : labData?.length === 0 ? (
+                    <TableRow>
+                      <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
+                        Belum ada data pemeriksaan lab
+                      </TableCell>
+                    </TableRow>
+                  ) : (
+                    labData?.map((lab) => (
+                      <TableRow key={lab.id} className={lab.isActive ? '' : 'opacity-50'}>
+                        <TableCell className="font-mono text-xs">{lab.code}</TableCell>
+                        <TableCell className="font-medium">
+                          {lab.name}
+                          {!lab.isActive && (
+                            <Badge variant="outline" className="ml-2 text-[10px]">Nonaktif</Badge>
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          <Badge variant="outline" className="text-xs">{lab.category}</Badge>
+                        </TableCell>
+                        <TableCell className="text-xs text-muted-foreground">
+                          {lab.serviceClass || '—'}
+                        </TableCell>
+                        <TableCell className="text-right text-xs text-muted-foreground">{formatRupiah(lab.doctorFee)}</TableCell>
+                        <TableCell className="text-right text-xs text-muted-foreground">{formatRupiah(lab.staffFee)}</TableCell>
+                        <TableCell className="text-right text-xs text-muted-foreground">{formatRupiah(lab.referrerFee)}</TableCell>
+                        <TableCell className="text-right text-xs text-muted-foreground">{formatRupiah(lab.consumableFee)}</TableCell>
+                        <TableCell className="text-right font-semibold text-sm">{formatRupiah(lab.totalTariff)}</TableCell>
+                      </TableRow>
+                    ))
                   )}
                 </TableBody>
               </Table>

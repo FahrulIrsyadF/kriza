@@ -56,6 +56,28 @@ const createProcedureSchema = z.object({
 
 const updateProcedureSchema = createProcedureSchema.partial();
 
+// ─── Lab Procedure Schemas ───────────────────────────────────────────────────
+const money = z.coerce.number().min(0, 'Tarif tidak boleh negatif').default(0);
+
+const createLabProcedureSchema = z.object({
+  code: z.string().min(2, 'Kode pemeriksaan minimal 2 karakter').max(20).toUpperCase(),
+  name: z.string().min(2, 'Nama pemeriksaan minimal 2 karakter').max(150),
+  category: z.enum(['PK', 'PA', 'MB']).default('PK'), // Patologi Klinik / Anatomi / Mikrobiologi
+  serviceClass: z.string().max(20).optional().nullable(),
+  payerCode: z.string().max(3).optional().nullable(),
+  hospitalShare: money,
+  consumableFee: money,
+  referrerFee: money,
+  doctorFee: money,
+  staffFee: money,
+  ksoFee: money,
+  managementFee: money,
+  totalTariff: money,
+  isActive: z.boolean().default(true),
+});
+
+const updateLabProcedureSchema = createLabProcedureSchema.partial();
+
 // ─── Drug Schemas ────────────────────────────────────────────────────────────
 const createDrugSchema = z.object({
   code: z.string().min(2).max(50).toUpperCase(),
@@ -83,6 +105,10 @@ const listQuerySchema = z.object({
   isActive: z.enum(['true', 'false', 'all']).default('all'),
 });
 
+const labListQuerySchema = listQuerySchema.extend({
+  serviceClass: z.string().optional(),
+});
+
 module.exports = {
   createPolyclinicSchema,
   updatePolyclinicSchema,
@@ -92,7 +118,10 @@ module.exports = {
   updateScheduleSchema,
   createProcedureSchema,
   updateProcedureSchema,
+  createLabProcedureSchema,
+  updateLabProcedureSchema,
   createDrugSchema,
   updateDrugSchema,
   listQuerySchema,
+  labListQuerySchema,
 };

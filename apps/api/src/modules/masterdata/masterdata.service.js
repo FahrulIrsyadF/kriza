@@ -242,6 +242,67 @@ async function removeProcedure(id, { userId, ipAddress, userAgent }) {
   return deleted;
 }
 
+// ─── Lab Procedures Service ───────────────────────────────────────────────────
+
+async function listLabProcedures(params) {
+  return repo.getLabProcedures(params);
+}
+
+async function findLabProcedure(id) {
+  const item = await repo.getLabProcedureById(id);
+  if (!item) {
+    const err = new Error('Pemeriksaan laboratorium tidak ditemukan');
+    err.statusCode = 404;
+    throw err;
+  }
+  return item;
+}
+
+async function addLabProcedure(data, { userId, ipAddress, userAgent }) {
+  const created = await repo.createLabProcedure(data);
+  await logAudit({
+    userId,
+    action: 'CREATE',
+    entityType: 'lab_procedures',
+    entityId: created.id,
+    newValues: created,
+    ipAddress,
+    userAgent,
+  });
+  return created;
+}
+
+async function editLabProcedure(id, data, { userId, ipAddress, userAgent }) {
+  const old = await findLabProcedure(id);
+  const updated = await repo.updateLabProcedure(id, data);
+  await logAudit({
+    userId,
+    action: 'UPDATE',
+    entityType: 'lab_procedures',
+    entityId: id,
+    oldValues: old,
+    newValues: updated,
+    ipAddress,
+    userAgent,
+  });
+  return updated;
+}
+
+async function removeLabProcedure(id, { userId, ipAddress, userAgent }) {
+  const old = await findLabProcedure(id);
+  const deleted = await repo.deleteLabProcedure(id);
+  await logAudit({
+    userId,
+    action: 'DELETE',
+    entityType: 'lab_procedures',
+    entityId: id,
+    oldValues: old,
+    ipAddress,
+    userAgent,
+  });
+  return deleted;
+}
+
 // ─── Rate Types & Drug Units Service ──────────────────────────────────────────
 
 async function listRateTypes() {
@@ -339,6 +400,11 @@ module.exports = {
   addProcedure,
   editProcedure,
   removeProcedure,
+  listLabProcedures,
+  findLabProcedure,
+  addLabProcedure,
+  editLabProcedure,
+  removeLabProcedure,
   listRateTypes,
   listDrugUnits,
   listDrugs,
