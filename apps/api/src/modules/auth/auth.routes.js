@@ -1,3 +1,4 @@
+const env = require('../../config/env');
 const { login, logout, getMe } = require('./auth.service');
 const { loginSchema } = require('./auth.schema');
 
@@ -38,7 +39,7 @@ async function authRoutes(app) {
     // Set httpOnly cookie — browser attach otomatis, aman dari XSS
     reply.setCookie('kriza_session', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: env.COOKIE_SECURE,
       sameSite: 'lax',
       path: '/',
       expires: expiresAt, // Cookie juga expire tengah malam

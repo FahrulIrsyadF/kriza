@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:16-alpine
+    image: postgres:18-alpine
     container_name: kriza_db
     restart: unless-stopped
     environment:
@@ -10,13 +10,66 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - kriza_pgdata:/var/lib/postgresql/data
+      # postgres 18+ menyimpan data di subdirektori per-versi, mount di parent-nya
+      - kriza_pgdata:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U kriza -d kriza_dev"]
       interval: 10s
       timeout: 5s
       retries: 5
 
+  api:
+    image: node:22-alpine
+    container_name: kriza_api
+    restart: unless-stopped
+    working_dir: /app
+    command: sh -c "npm install && npm run db:migrate && npm run dev:api"
+    environment:
+      DATABASE_URL: postgresql://kriza:kriza_secret@postgres:5432/kriza_dev
+      PORT: 3001
+      NODE_ENV: development
+      JWT_SECRET: ${JWT_SECRET:-dev_secret_minimal_32_karakter_ganti_di_produksi}
+      CLINIC_TIMEZONE_OFFSET: ${CLINIC_TIMEZONE_OFFSET:-7}
+    ports:
+      - "3001:3001"
+    volumes:
+      - .:/app
+      - kriza_node_modules:/app/node_modules
+      - /app/apps/api/node_modules
+      - /app/apps/web/node_modules
+      - /app/packages/shared/node_modules
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3001/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 120s
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    image: node:22-alpine
+    container_name: kriza_web
+    restart: unless-stopped
+    working_dir: /app
+    command: npm run dev:web
+    environment:
+      VITE_PROXY_TARGET: http://api:3001
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - kriza_node_modules:/app/node_modules
+      - /app/apps/api/node_modules
+      - /app/apps/web/node_modules
+      - /app/packages/shared/node_modules
+    depends_on:
+      api:
+        condition: service_healthy
+
 volumes:
   kriza_pgdata:
     name: kriza_pgdata
+  kriza_node_modules:
+    name: kriza_node_modules

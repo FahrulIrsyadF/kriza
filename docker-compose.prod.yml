@@ -1,0 +1,60 @@
+# Produksi/staging. Semua secret dibaca dari file .env di sebelah file ini.
+# Jalankan: docker compose -f docker-compose.prod.yml up -d --build
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: kriza_db_prod
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-kriza}
+      POSTGRES_USER: ${POSTGRES_USER:-kriza}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD wajib diisi di .env}
+    volumes:
+      # postgres 18+ menyimpan data di subdirektori per-versi, mount di parent-nya
+      - kriza_pgdata_prod:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-kriza} -d ${POSTGRES_DB:-kriza}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: kriza_api_prod
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-kriza}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-kriza}
+      NODE_ENV: production
+      PORT: 3001
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET wajib diisi, minimal 32 karakter}
+      CLINIC_TIMEZONE_OFFSET: ${CLINIC_TIMEZONE_OFFSET:-7}
+      # Akses internal via HTTP biasa -> harus false. Set true kalau sudah HTTPS.
+      COOKIE_SECURE: ${COOKIE_SECURE:-false}
+    healthcheck:
+      # 127.0.0.1 bukan localhost: busybox wget coba ::1 duluan, fastify bind IPv4 saja
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:3001/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: kriza_web_prod
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-5000}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  kriza_pgdata_prod:
+    name: kriza_pgdata_prod
