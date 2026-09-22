@@ -120,6 +120,32 @@ const icd10Codes = pgTable('icd10_codes', {
   isTerminal: boolean('is_terminal').default(true).notNull(),
 });
 
+// ─── 9. Pemeriksaan Laboratorium ──────────────────────────────────────────────
+// Dipisah dari `procedures` karena tarif lab dirinci per komponen (jasa dokter,
+// petugas, perujuk, BHP) dan satu pemeriksaan bisa punya beberapa baris tarif
+// berbeda per kelas. Sumber: tabel jns_perawatan_lab SIMRS Khanza.
+const labProcedures = pgTable('lab_procedures', {
+  id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
+  code: varchar('code', { length: 20 }).unique().notNull(), // '100-RJ', '101-K.3'
+  name: varchar('name', { length: 150 }).notNull(),
+  category: varchar('category', { length: 2 }).default('PK').notNull(), // PK: Patologi Klinik, PA: Patologi Anatomi, MB: Mikrobiologi
+  serviceClass: varchar('service_class', { length: 20 }), // 'Kelas 1', 'Rawat Jalan', 'Kelas VIP'
+  payerCode: varchar('payer_code', { length: 3 }), // penjamin di sumber; mayoritas kosong
+  // Komponen tarif — totalTariff adalah yang ditagihkan ke pasien
+  hospitalShare: numeric('hospital_share', { precision: 14, scale: 2 }).default('0').notNull(),
+  consumableFee: numeric('consumable_fee', { precision: 14, scale: 2 }).default('0').notNull(), // BHP
+  referrerFee: numeric('referrer_fee', { precision: 14, scale: 2 }).default('0').notNull(),
+  doctorFee: numeric('doctor_fee', { precision: 14, scale: 2 }).default('0').notNull(),
+  staffFee: numeric('staff_fee', { precision: 14, scale: 2 }).default('0').notNull(),
+  ksoFee: numeric('kso_fee', { precision: 14, scale: 2 }).default('0').notNull(),
+  managementFee: numeric('management_fee', { precision: 14, scale: 2 }).default('0').notNull(),
+  totalTariff: numeric('total_tariff', { precision: 14, scale: 2 }).default('0').notNull(),
+  isActive: boolean('is_active').default(true).notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).default(sql`now()`).notNull(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).default(sql`now()`).notNull(),
+  deletedAt: timestamp('deleted_at', { withTimezone: true }),
+});
+
 // ─── Relations ───────────────────────────────────────────────────────────────
 const practitionersRelations = relations(practitioners, ({ one, many }) => ({
   user: one(users, { fields: [practitioners.userId], references: [users.id] }),
@@ -160,6 +186,7 @@ module.exports = {
   drugUnits,
   drugs,
   icd10Codes,
+  labProcedures,
   practitionersRelations,
   polyclinicsRelations,
   schedulesRelations,
