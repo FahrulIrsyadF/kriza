@@ -67,6 +67,8 @@ export default function MasterDataPage() {
   const [procedureModal, setProcedureModal] = useState({ open: false, mode: 'create', data: null });
   const [drugModal, setDrugModal] = useState({ open: false, mode: 'create', data: null });
   const [scheduleModal, setScheduleModal] = useState({ open: false, mode: 'create', data: null });
+  const [labModal, setLabModal] = useState({ open: false, mode: 'create', data: null });
+  const [labFees, setLabFees] = useState({});
 
   // ─── Queries ────────────────────────────────────────────────────────────────
   const { data: polyclinicsData, isLoading: loadingPolys } = useQuery({
@@ -205,6 +207,19 @@ export default function MasterDataPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['procedures'] });
       setProcedureModal({ open: false, mode: 'create', data: null });
+    },
+  });
+
+  const labMutation = useMutation({
+    mutationFn: async (payload) => {
+      if (labModal.mode === 'edit') {
+        return apiClient.put(`/master/lab-procedures/${labModal.data.id}`, payload);
+      }
+      return apiClient.post('/master/lab-procedures', payload);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['lab-procedures'] });
+      setLabModal({ open: false, mode: 'create', data: null });
     },
   });
 
@@ -350,13 +365,14 @@ export default function MasterDataPage() {
               />
             </div>
 
-            {activeTab !== 'icd10' && activeTab !== 'lab' && (
+            {activeTab !== 'icd10' && (
               <Button
                 onClick={() => {
                   if (activeTab === 'polyclinics') setPolyModal({ open: true, mode: 'create', data: null });
                   if (activeTab === 'practitioners') setPractitionerModal({ open: true, mode: 'create', data: null });
                   if (activeTab === 'procedures') setProcedureModal({ open: true, mode: 'create', data: null });
                   if (activeTab === 'drugs') setDrugModal({ open: true, mode: 'create', data: null });
+                  if (activeTab === 'lab') { setLabFees({}); setLabModal({ open: true, mode: 'create', data: null }); }
                 }}
                 className="w-full sm:w-auto gap-2"
               >
@@ -368,6 +384,8 @@ export default function MasterDataPage() {
                   ? 'Dokter'
                   : activeTab === 'procedures'
                   ? 'Tindakan'
+                  : activeTab === 'lab'
+                  ? 'Pemeriksaan Lab'
                   : 'Obat'}
               </Button>
             )}
@@ -773,18 +791,19 @@ export default function MasterDataPage() {
                     <TableHead className="text-right">Perujuk</TableHead>
                     <TableHead className="text-right">BHP</TableHead>
                     <TableHead className="text-right">Total Tarif</TableHead>
+                    <TableHead className="text-right">Aksi</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {loadingLab ? (
                     <TableRow>
-                      <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
+                      <TableCell colSpan={10} className="text-center py-8 text-muted-foreground">
                         Memuat data pemeriksaan lab...
                       </TableCell>
                     </TableRow>
                   ) : labData?.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={9} className="text-center py-8 text-muted-foreground">
+                      <TableCell colSpan={10} className="text-center py-8 text-muted-foreground">
                         Belum ada data pemeriksaan lab
                       </TableCell>
                     </TableRow>
@@ -809,6 +828,15 @@ export default function MasterDataPage() {
                         <TableCell className="text-right text-xs text-muted-foreground">{formatRupiah(lab.referrerFee)}</TableCell>
                         <TableCell className="text-right text-xs text-muted-foreground">{formatRupiah(lab.consumableFee)}</TableCell>
                         <TableCell className="text-right font-semibold text-sm">{formatRupiah(lab.totalTariff)}</TableCell>
+                        <TableCell className="text-right">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => { setLabFees(lab); setLabModal({ open: true, mode: 'edit', data: lab }); }}
+                          >
+                            <Edit2 className="w-3.5 h-3.5" />
+                          </Button>
+                        </TableCell>
                       </TableRow>
                     ))
                   )}
@@ -987,6 +1015,177 @@ export default function MasterDataPage() {
             </Button>
             <Button type="submit" disabled={polyMutation.isPending}>
               {polyMutation.isPending ? 'Menyimpan...' : 'Simpan'}
+            </Button>
+          </DialogFooter>
+        </form>
+      </Dialog>
+
+      {/* ─── MODAL: PEMERIKSAAN LAB ───────────────────────────────────────── */}
+      <Dialog open={labModal.open} onOpenChange={(open) => setLabModal({ ...labModal, open })}>
+        <DialogClose onClick={() => setLabModal({ ...labModal, open: false })} />
+        <DialogHeader>
+          <DialogTitle>
+            {labModal.mode === 'edit' ? 'Ubah Pemeriksaan Lab' : 'Tambah Pemeriksaan Lab'}
+          </DialogTitle>
+        </DialogHeader>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const f = new FormData(e.target);
+            const angka = (k) => Number(f.get(k) || 0);
+            labMutation.mutate({
+              code: f.get('code'),
+              name: f.get('name'),
+              category: f.get('category'),
+              serviceClass: f.get('serviceClass') || null,
+              payerCode: f.get('payerCode') || null,
+              hospitalShare: angka('hospitalShare'),
+              consumableFee: angka('consumableFee'),
+              referrerFee: angka('referrerFee'),
+              doctorFee: angka('doctorFee'),
+              staffFee: angka('staffFee'),
+              ksoFee: angka('ksoFee'),
+              managementFee: angka('managementFee'),
+              totalTariff: angka('totalTariff'),
+              isActive: f.get('isActive') === 'on',
+            });
+          }}
+          className="space-y-4 my-2"
+        >
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-xs font-semibold block mb-1">Kode Pemeriksaan</label>
+              <Input name="code" defaultValue={labModal.data?.code || ''} placeholder="100-RJ" required />
+            </div>
+            <div>
+              <label className="text-xs font-semibold block mb-1">Kategori</label>
+              <select
+                name="category"
+                defaultValue={labModal.data?.category || 'PK'}
+                className="w-full h-10 px-3 rounded-lg border border-input bg-background text-sm"
+              >
+                <option value="PK">PK — Patologi Klinik</option>
+                <option value="PA">PA — Patologi Anatomi</option>
+                <option value="MB">MB — Mikrobiologi</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="text-xs font-semibold block mb-1">Nama Pemeriksaan</label>
+            <Input name="name" defaultValue={labModal.data?.name || ''} placeholder="Hematologi Darah Rutin" required />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="text-xs font-semibold block mb-1">Kelas Layanan</label>
+              <select
+                name="serviceClass"
+                defaultValue={labModal.data?.serviceClass || ''}
+                className="w-full h-10 px-3 rounded-lg border border-input bg-background text-sm"
+              >
+                <option value="">— Tidak ditentukan —</option>
+                {['Rawat Jalan', 'Kelas 1', 'Kelas 2', 'Kelas 3', 'Kelas Utama', 'Kelas VIP', 'Kelas VVIP'].map((k) => (
+                  <option key={k} value={k}>{k}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="text-xs font-semibold block mb-1">Kode Penjamin</label>
+              <Input name="payerCode" defaultValue={labModal.data?.payerCode || ''} placeholder="opsional" maxLength={3} />
+            </div>
+          </div>
+
+          <div className="border-t border-border pt-3">
+            <p className="text-xs font-semibold mb-2">Komponen Tarif</p>
+            <div className="grid grid-cols-2 gap-3">
+              {[
+                ['doctorFee', 'Jasa Dokter'],
+                ['staffFee', 'Jasa Petugas'],
+                ['referrerFee', 'Jasa Perujuk'],
+                ['consumableFee', 'BHP'],
+                ['hospitalShare', 'Bagian RS'],
+                ['ksoFee', 'KSO'],
+                ['managementFee', 'Manajemen'],
+              ].map(([nama, label]) => (
+                <div key={nama}>
+                  <label className="text-xs text-muted-foreground block mb-1">{label}</label>
+                  <Input
+                    type="number"
+                    name={nama}
+                    min="0"
+                    step="any"
+                    value={labFees[nama] ?? 0}
+                    onChange={(e) => setLabFees({ ...labFees, [nama]: e.target.value })}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="border-t border-border pt-3">
+            <label className="text-xs font-semibold block mb-1">Total Tarif (ditagihkan ke pasien)</label>
+            <Input
+              type="number"
+              name="totalTariff"
+              min="0"
+              step="any"
+              value={labFees.totalTariff ?? 0}
+              onChange={(e) => setLabFees({ ...labFees, totalTariff: e.target.value })}
+              required
+            />
+            {(() => {
+              // total sengaja tidak dipaksa sama dengan komponen: di data Khanza
+              // ada baris yang memang berbeda, jadi ini cuma pengingat
+              const jumlah = ['doctorFee', 'staffFee', 'referrerFee', 'consumableFee',
+                'hospitalShare', 'ksoFee', 'managementFee']
+                .reduce((a, k) => a + Number(labFees[k] || 0), 0);
+              const selisih = jumlah - Number(labFees.totalTariff || 0);
+              return (
+                <div className="flex items-center justify-between mt-1.5">
+                  <span className="text-xs text-muted-foreground">
+                    Jumlah komponen: {formatRupiah(jumlah)}
+                    {selisih !== 0 && (
+                      <span className="text-amber-600"> (selisih {formatRupiah(Math.abs(selisih))})</span>
+                    )}
+                  </span>
+                  {selisih !== 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setLabFees({ ...labFees, totalTariff: jumlah })}
+                      className="text-xs text-primary hover:underline"
+                    >
+                      Samakan
+                    </button>
+                  )}
+                </div>
+              );
+            })()}
+          </div>
+
+          <div className="flex items-center gap-2 pt-1">
+            <input
+              type="checkbox"
+              id="labActive"
+              name="isActive"
+              defaultChecked={labModal.data ? labModal.data.isActive : true}
+              className="rounded"
+            />
+            <label htmlFor="labActive" className="text-sm">Pemeriksaan Aktif</label>
+          </div>
+
+          {labMutation.isError && (
+            <p className="text-xs text-destructive">
+              {labMutation.error?.response?.data?.message || 'Gagal menyimpan pemeriksaan'}
+            </p>
+          )}
+
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => setLabModal({ ...labModal, open: false })}>
+              Batal
+            </Button>
+            <Button type="submit" disabled={labMutation.isPending}>
+              {labMutation.isPending ? 'Menyimpan...' : 'Simpan'}
             </Button>
           </DialogFooter>
         </form>
