@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import {
   Box, Search, Plus, Sliders, AlertTriangle, Clock, RefreshCw,
-  FileText, ArrowUpRight, ArrowDownRight, Layers, History, ChevronRight,
+  FileText, ArrowUpRight, ArrowDownRight, Layers, History, ChevronRight, X,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,9 +11,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { ReceiveBatchModal } from './ReceiveBatchModal';
 import { StockAdjustmentModal } from './StockAdjustmentModal';
 import apiClient from '@/lib/api-client';
+import { useDebounce } from '@/hooks/useDebounce';
 
 export function DrugStocksTab() {
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, 350);
   const [dosageFilter, setDosageFilter] = useState('');
   const [criticalOnly, setCriticalOnly] = useState(false);
   const [showReceiveModal, setShowReceiveModal] = useState(false);
@@ -22,10 +24,10 @@ export function DrugStocksTab() {
 
   // ─── Query Katalog & Stok Obat ──────────────────────────────────────────────
   const { data: stocksData, isLoading, refetch, isFetching } = useQuery({
-    queryKey: ['pharmacy-stocks', searchTerm, dosageFilter, criticalOnly],
+    queryKey: ['pharmacy-stocks', debouncedSearchTerm, dosageFilter, criticalOnly],
     queryFn: async () => {
       const params = { limit: 200 };
-      if (searchTerm) params.search = searchTerm;
+      if (debouncedSearchTerm) params.search = debouncedSearchTerm;
       if (dosageFilter) params.dosageForm = dosageFilter;
       if (criticalOnly) params.criticalOnly = 'true';
       const res = await apiClient.get('/pharmacy/drugs', { params });
@@ -68,8 +70,17 @@ export function DrugStocksTab() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Cari nama / kode obat..."
-              className="pl-9 text-xs"
+              className="pl-9 pr-8 text-xs"
             />
+            {searchTerm && (
+              <button
+                type="button"
+                onClick={() => setSearchTerm('')}
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
 
           {/* Filter Bentuk Sediaan */}
@@ -170,13 +181,32 @@ export function DrugStocksTab() {
                       const isCritical = totalStock <= Number(d.minStock || 10);
                       const isSelected = selectedDrugForDetail?.id === d.id;
 
+                      // ── Expiry warning logic ─────────────────────────────
+                      let expiryStatus = null; // null | 'danger' | 'warning'
+                      if (d.nearestExpiry) {
+                        const now = new Date();
+                        const ed = new Date(d.nearestExpiry);
+                        const diffMs = ed - now;
+                        const diffDays = diffMs / (1000 * 60 * 60 * 24);
+                        if (diffDays <= 180) expiryStatus = 'danger';       // ≤ 6 bulan
+                        else if (diffDays <= 365) expiryStatus = 'warning'; // ≤ 1 tahun
+                      }
+
+                      // ── Row bg priority: selected > critical/expiry ──────
+                      let rowBg = '';
+                      if (isSelected) {
+                        rowBg = 'bg-primary/10';
+                      } else if (isCritical || expiryStatus === 'danger') {
+                        rowBg = 'bg-red-50 dark:bg-red-950/30';
+                      } else if (expiryStatus === 'warning') {
+                        rowBg = 'bg-amber-50 dark:bg-amber-950/25';
+                      }
+
                       return (
                         <TableRow
                           key={d.id}
                           onClick={() => setSelectedDrugForDetail(d)}
-                          className={`cursor-pointer transition-colors text-xs ${
-                            isSelected ? 'bg-primary/10 font-medium' : 'hover:bg-muted/30'
-                          }`}
+                          className={`cursor-pointer transition-colors text-xs ${rowBg} ${!isSelected ? 'hover:brightness-95' : ''}`}
                         >
                           <TableCell className="font-mono text-muted-foreground">{idx + 1}</TableCell>
                           <TableCell>
@@ -193,14 +223,28 @@ export function DrugStocksTab() {
                               {totalStock}
                             </span>{' '}
                             <span className="text-[10px] text-muted-foreground">{d.unitCode || 'TAB'}</span>
+                            {isCritical && (
+                              <AlertTriangle className="w-3 h-3 text-destructive inline ml-1" />
+                            )}
                           </TableCell>
                           <TableCell className="text-center font-mono text-muted-foreground">
                             {d.minStock || 10}
                           </TableCell>
                           <TableCell>
                             {d.nearestExpiry ? (
-                              <span className="text-[11px] font-mono text-muted-foreground">
+                              <span className={`text-[11px] font-mono font-semibold ${
+                                expiryStatus === 'danger'
+                                  ? 'text-destructive'
+                                  : expiryStatus === 'warning'
+                                  ? 'text-amber-600 dark:text-amber-400'
+                                  : 'text-muted-foreground'
+                              }`}>
                                 {d.nearestExpiry}
+                                {expiryStatus && (
+                                  <Clock className={`w-3 h-3 inline ml-1 ${
+                                    expiryStatus === 'danger' ? 'text-destructive' : 'text-amber-500'
+                                  }`} />
+                                )}
                               </span>
                             ) : (
                               <span className="text-muted-foreground/50 text-[10px]">—</span>
@@ -237,6 +281,23 @@ export function DrugStocksTab() {
                   )}
                 </TableBody>
               </Table>
+            </div>
+          </div>
+
+          {/* ── Legend / Keterangan Warna ───────────────────────────────── */}
+          <div className="flex flex-wrap items-center gap-3 px-3 py-2.5 bg-muted/30 border border-border rounded-xl text-[11px] text-muted-foreground">
+            <span className="font-semibold text-foreground text-xs">Keterangan warna:</span>
+            <div className="flex items-center gap-1.5">
+              <span className="inline-block w-3.5 h-3.5 rounded bg-red-200 dark:bg-red-900/60 border border-red-300/60 shrink-0" />
+              <span>Stok kritis (≤ stok minimum) <em>atau</em> ED ≤ 6 bulan</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="inline-block w-3.5 h-3.5 rounded bg-amber-100 dark:bg-amber-900/40 border border-amber-300/60 shrink-0" />
+              <span>ED antara 6 bulan — 1 tahun (perlu perhatian)</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="inline-block w-3.5 h-3.5 rounded bg-card border border-border shrink-0" />
+              <span>Stok normal & ED aman (&gt; 1 tahun)</span>
             </div>
           </div>
         </div>
@@ -300,25 +361,71 @@ export function DrugStocksTab() {
                 <p className="text-xs text-muted-foreground italic py-2">Belum ada data batch aktif.</p>
               ) : (
                 <div className="space-y-2">
-                  {drugDetail?.batches?.map((b) => (
-                    <div
-                      key={b.id}
-                      className="p-2.5 bg-muted/30 border border-border rounded-lg text-xs space-y-1"
-                    >
-                      <div className="flex justify-between items-center">
-                        <span className="font-mono font-bold text-foreground">
-                          {b.batchNumber || 'Tanpa No Batch'}
-                        </span>
-                        <Badge variant={b.currentQty > 0 ? 'outline' : 'destructive'} className="text-[10px]">
-                          Sisa: {b.currentQty}
-                        </Badge>
+                  {drugDetail?.batches?.map((b) => {
+                    let batchExpiryStatus = null;
+                    if (b.expiryDate) {
+                      const now = new Date();
+                      const ed = new Date(b.expiryDate);
+                      const diffDays = (ed - now) / (1000 * 60 * 60 * 24);
+                      if (diffDays <= 0) batchExpiryStatus = 'expired';
+                      else if (diffDays <= 180) batchExpiryStatus = 'danger';
+                      else if (diffDays <= 365) batchExpiryStatus = 'warning';
+                    }
+
+                    return (
+                      <div
+                        key={b.id}
+                        className={`p-2.5 rounded-lg text-xs space-y-1 border transition-colors ${
+                          batchExpiryStatus === 'expired' || batchExpiryStatus === 'danger'
+                            ? 'bg-red-50/70 dark:bg-red-950/25 border-red-200 dark:border-red-900/50'
+                            : batchExpiryStatus === 'warning'
+                            ? 'bg-amber-50/60 dark:bg-amber-950/20 border-amber-200 dark:border-amber-900/50'
+                            : 'bg-muted/30 border-border'
+                        }`}
+                      >
+                        <div className="flex justify-between items-center">
+                          <span className="font-mono font-bold text-foreground">
+                            {b.batchNumber || 'Tanpa No Batch'}
+                          </span>
+                          <div className="flex items-center gap-1.5">
+                            {batchExpiryStatus === 'expired' && (
+                              <Badge variant="destructive" className="text-[9px] py-0 px-1.5">
+                                Expired
+                              </Badge>
+                            )}
+                            {batchExpiryStatus === 'danger' && (
+                              <Badge variant="destructive" className="text-[9px] py-0 px-1.5">
+                                ED ≤ 6 bln
+                              </Badge>
+                            )}
+                            {batchExpiryStatus === 'warning' && (
+                              <Badge className="bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 text-[9px] py-0 px-1.5 hover:bg-amber-500/20">
+                                ED ≤ 1 thn
+                              </Badge>
+                            )}
+                            <Badge variant={b.currentQty > 0 ? 'outline' : 'destructive'} className="text-[10px]">
+                              Sisa: {b.currentQty}
+                            </Badge>
+                          </div>
+                        </div>
+                        <div className="flex justify-between text-[11px] text-muted-foreground">
+                          <span>
+                            Kedaluwarsa (ED):{' '}
+                            <strong className={
+                              batchExpiryStatus === 'expired' || batchExpiryStatus === 'danger'
+                                ? 'text-destructive'
+                                : batchExpiryStatus === 'warning'
+                                ? 'text-amber-600 dark:text-amber-400'
+                                : 'text-foreground'
+                            }>
+                              {b.expiryDate}
+                            </strong>
+                          </span>
+                          <span>Lokasi: {b.storageLocation || '—'}</span>
+                        </div>
                       </div>
-                      <div className="flex justify-between text-[11px] text-muted-foreground">
-                        <span>Kedaluwarsa (ED): <strong className="text-foreground">{b.expiryDate}</strong></span>
-                        <span>Lokasi: {b.storageLocation}</span>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>

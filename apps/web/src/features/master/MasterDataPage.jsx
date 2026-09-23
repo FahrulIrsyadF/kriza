@@ -17,10 +17,12 @@ import {
   Sparkles,
   Users,
   FlaskConical,
+  X,
 } from 'lucide-react';
 import apiClient from '@/lib/api-client';
 import AppLayout from '@/components/layout/AppLayout';
 import PatientsPage from '@/features/patients/PatientsPage';
+import { useDebounce } from '@/hooks/useDebounce';
 import { dialog } from '@/context/DialogContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -59,6 +61,8 @@ export default function MasterDataPage() {
   const setActiveTab = (tab) => setSearchParams({ tab });
 
   const [searchQuery, setSearchQuery] = useState('');
+  const debouncedSearchQuery = useDebounce(searchQuery, 400);
+  const activeSearchQuery = searchQuery === '' ? '' : debouncedSearchQuery;
   const queryClient = useQueryClient();
 
   // ─── Modal States ───────────────────────────────────────────────────────────
@@ -72,9 +76,9 @@ export default function MasterDataPage() {
 
   // ─── Queries ────────────────────────────────────────────────────────────────
   const { data: polyclinicsData, isLoading: loadingPolys } = useQuery({
-    queryKey: ['polyclinics', searchQuery],
+    queryKey: ['polyclinics', activeSearchQuery],
     queryFn: async () => {
-      const res = await apiClient.get('/master/polyclinics', { params: { search: searchQuery } });
+      const res = await apiClient.get('/master/polyclinics', { params: { search: activeSearchQuery } });
       return res.data.data.items;
     },
     enabled: activeTab === 'polyclinics' || activeTab === 'practitioners',
@@ -90,9 +94,9 @@ export default function MasterDataPage() {
   });
 
   const { data: practitionersData, isLoading: loadingPractitioners } = useQuery({
-    queryKey: ['practitioners', searchQuery],
+    queryKey: ['practitioners', activeSearchQuery],
     queryFn: async () => {
-      const res = await apiClient.get('/master/practitioners', { params: { search: searchQuery } });
+      const res = await apiClient.get('/master/practitioners', { params: { search: activeSearchQuery } });
       return res.data.data.items;
     },
     enabled: activeTab === 'practitioners',
@@ -108,19 +112,19 @@ export default function MasterDataPage() {
   });
 
   const { data: proceduresData, isLoading: loadingProcedures } = useQuery({
-    queryKey: ['procedures', searchQuery],
+    queryKey: ['procedures', activeSearchQuery],
     queryFn: async () => {
-      const res = await apiClient.get('/master/procedures', { params: { search: searchQuery } });
+      const res = await apiClient.get('/master/procedures', { params: { search: activeSearchQuery } });
       return res.data.data.items;
     },
     enabled: activeTab === 'procedures',
   });
 
   const { data: labData, isLoading: loadingLab } = useQuery({
-    queryKey: ['lab-procedures', searchQuery, labCategory],
+    queryKey: ['lab-procedures', activeSearchQuery, labCategory],
     queryFn: async () => {
       const res = await apiClient.get('/master/lab-procedures', {
-        params: { search: searchQuery, limit: 100, ...(labCategory ? { category: labCategory } : {}) },
+        params: { search: activeSearchQuery, limit: 100, ...(labCategory ? { category: labCategory } : {}) },
       });
       return res.data.data.items;
     },
@@ -128,18 +132,18 @@ export default function MasterDataPage() {
   });
 
   const { data: drugsData, isLoading: loadingDrugs } = useQuery({
-    queryKey: ['drugs', searchQuery],
+    queryKey: ['drugs', activeSearchQuery],
     queryFn: async () => {
-      const res = await apiClient.get('/master/drugs', { params: { search: searchQuery } });
+      const res = await apiClient.get('/master/drugs', { params: { search: activeSearchQuery } });
       return res.data.data.items;
     },
     enabled: activeTab === 'drugs',
   });
 
   const { data: icd10Data, isLoading: loadingIcd10 } = useQuery({
-    queryKey: ['icd10', searchQuery],
+    queryKey: ['icd10', activeSearchQuery],
     queryFn: async () => {
-      const res = await apiClient.get('/master/icd10', { params: { q: searchQuery, limit: 30 } });
+      const res = await apiClient.get('/master/icd10', { params: { q: activeSearchQuery, limit: 30 } });
       return res.data.data;
     },
     enabled: activeTab === 'icd10',
@@ -391,8 +395,17 @@ export default function MasterDataPage() {
                 }`}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9 bg-card"
+                className="pl-9 pr-8 bg-card"
               />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
             </div>
 
             {activeTab !== 'icd10' && (

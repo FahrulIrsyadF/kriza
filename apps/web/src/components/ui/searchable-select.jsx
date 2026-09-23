@@ -1,8 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { ChevronsUpDown, Check, Search, X } from 'lucide-react';
+import { useDebounce } from '@/hooks/useDebounce';
 
 /**
- * SearchableSelect (Combobox) component with instant live filtering.
+ * SearchableSelect (Combobox) component with debounced live filtering.
  * 
  * @param {Object} props
  * @param {Array<{ id?: string|number, value?: string|number, name?: string, label?: string }>} props.options
@@ -13,6 +14,7 @@ import { ChevronsUpDown, Check, Search, X } from 'lucide-react';
  * @param {boolean} [props.disabled=false]
  * @param {string} [props.className='']
  * @param {string} [props.emptyMessage='Tidak ada data ditemukan']
+ * @param {number} [props.debounceDelay=250]
  */
 export function SearchableSelect({
   options = [],
@@ -23,25 +25,36 @@ export function SearchableSelect({
   disabled = false,
   className = '',
   emptyMessage = 'Tidak ada data ditemukan',
+  debounceDelay = 250,
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const debouncedSearchTerm = useDebounce(searchTerm, debounceDelay);
+  const activeSearchTerm = searchTerm === '' ? '' : debouncedSearchTerm;
   const containerRef = useRef(null);
   const searchInputRef = useRef(null);
 
   // Normalize options to have standard { key, label, raw }
-  const normalizedOptions = options.map((opt) => {
-    const val = opt.id !== undefined ? opt.id : opt.value;
-    const label = opt.name !== undefined ? opt.name : opt.label || String(val);
-    return { value: val, label, raw: opt };
-  });
+  const normalizedOptions = useMemo(() => {
+    return options.map((opt) => {
+      const val = opt.id !== undefined ? opt.id : opt.value;
+      const label = opt.name !== undefined ? opt.name : opt.label || String(val);
+      return { value: val, label, raw: opt };
+    });
+  }, [options]);
 
-  const selectedOption = normalizedOptions.find((opt) => String(opt.value) === String(value));
+  const selectedOption = useMemo(() => {
+    return normalizedOptions.find((opt) => String(opt.value) === String(value));
+  }, [normalizedOptions, value]);
 
-  // Filter options based on search query
-  const filteredOptions = normalizedOptions.filter((opt) =>
-    opt.label.toLowerCase().includes(searchTerm.trim().toLowerCase())
-  );
+  // Filter options based on debounced search query
+  const filteredOptions = useMemo(() => {
+    const term = activeSearchTerm.trim().toLowerCase();
+    if (!term) return normalizedOptions;
+    return normalizedOptions.filter((opt) =>
+      opt.label.toLowerCase().includes(term)
+    );
+  }, [normalizedOptions, activeSearchTerm]);
 
   // Close dropdown on click outside
   useEffect(() => {
