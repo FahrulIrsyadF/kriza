@@ -42,9 +42,9 @@ const updateScheduleSchema = createScheduleSchema.partial();
 const createProcedureSchema = z.object({
   code: z.string().min(2).max(30).toUpperCase(),
   name: z.string().min(2).max(255),
-  category: z.string().min(2).max(50).default('Tindakan'),
-  polyclinicId: z.string().uuid().optional().nullable(),
-  description: z.string().optional().nullable(),
+  category: z.preprocess((val) => (!val ? 'Tindakan' : val), z.string().min(2).max(50).default('Tindakan')),
+  polyclinicId: z.preprocess((val) => (val === '' ? null : val), z.string().uuid().optional().nullable()),
+  description: z.preprocess((val) => (val === '' ? null : val), z.string().optional().nullable()),
   isActive: z.boolean().default(true),
   rates: z.array(
     z.object({

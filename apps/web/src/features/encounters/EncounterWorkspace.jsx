@@ -298,10 +298,10 @@ export function EncounterWorkspace({ encounterId, onBack }) {
     staleTime: 300000,
   });
 
-  // Query Master Procedures
+  // Query Master Procedures (limit dinaikkan agar seluruh master tindakan terambil)
   const { data: procedureList = [] } = useQuery({
     queryKey: ['master-procedures-all'],
-    queryFn: () => apiClient.get('/master/procedures', { params: { limit: 100 } }).then((r) => r.data.data.items),
+    queryFn: () => apiClient.get('/master/procedures', { params: { limit: 500 } }).then((r) => r.data.data.items),
     staleTime: 300000,
   });
 
@@ -512,11 +512,23 @@ export function EncounterWorkspace({ encounterId, onBack }) {
   });
 
   const addProcedureMutation = useMutation({
-    mutationFn: (data) => apiClient.post(`/encounters/${encounterId}/procedures`, data),
+    mutationFn: (data) =>
+      apiClient.post(`/encounters/${encounterId}/procedures`, {
+        ...data,
+        procedureId: data.procedureId || null,
+        procedureCode: data.procedureCode || null,
+        notes: data.notes || null,
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['encounter-detail', encounterId] });
       setProcInput({ procedureId: '', procedureCode: '', procedureName: '', quantity: 1, tariff: 0, notes: '' });
       flashSuccess('Tindakan medis berhasil ditambahkan');
+    },
+    onError: (err) => {
+      dialog.alert(err.response?.data?.message || err.message || 'Gagal menambahkan tindakan medis', {
+        title: 'Gagal Menambah Tindakan',
+        variant: 'danger',
+      });
     },
   });
 
@@ -524,6 +536,13 @@ export function EncounterWorkspace({ encounterId, onBack }) {
     mutationFn: (procId) => apiClient.delete(`/encounters/${encounterId}/procedures/${procId}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['encounter-detail', encounterId] });
+      flashSuccess('Tindakan medis berhasil dihapus');
+    },
+    onError: (err) => {
+      dialog.alert(err.response?.data?.message || err.message || 'Gagal menghapus tindakan medis', {
+        title: 'Gagal Menghapus Tindakan',
+        variant: 'danger',
+      });
     },
   });
 
@@ -744,15 +763,31 @@ export function EncounterWorkspace({ encounterId, onBack }) {
     raw: i,
   }));
 
-  // PERBAIKAN: Ambil tarif tindakan berdasarkan penjamin kunjungan (paymentMethod), fallback ke master pasien
-  const patientInsuranceType = (encounter?.paymentMethod || encounter?.patientInsuranceType || 'UMUM').toUpperCase();
-  const procedureOptions = procedureList.map((p) => {
-    const matchedRate =
-      (p.rates || []).find((r) => r.rateTypeCode?.toUpperCase() === patientInsuranceType) ||
-      (p.rates || []).find((r) => r.rateTypeCode?.toUpperCase() === 'UMUM') ||
-      p.rates?.[0];
+  // PERBAIKAN: Ambil tarif tindakan. Utamakan tarif penjamin jika bernilai > 0.
+  // Jika tarif penjamin bernilai 0 (seperti BPJS di master) atau belum ada, fallback ke tarif UMUM agar harga asli tindakan tetap tampil di dropdown.
+  const rawInsurance = (encounter?.paymentMethod || encounter?.patientInsuranceType || 'UMUM').toUpperCase();
+  const patientInsuranceType = rawInsurance === 'ASURANSI_SWASTA' ? 'ASURANSI' : rawInsurance;
 
-    const tariff = matchedRate ? Number(matchedRate.tariff || 0) : 0;
+  const procedureOptions = procedureList.map((p) => {
+    const rates = p.rates || [];
+    const matchedInsuranceRate = rates.find((r) => r.rateTypeCode?.toUpperCase() === patientInsuranceType);
+    const umumRate = rates.find((r) => r.rateTypeCode?.toUpperCase() === 'UMUM');
+    const firstRateWithTariff = rates.find((r) => Number(r.tariff || 0) > 0);
+
+    let tariff = 0;
+    if (matchedInsuranceRate && Number(matchedInsuranceRate.tariff || 0) > 0) {
+      tariff = Number(matchedInsuranceRate.tariff);
+    } else if (umumRate && Number(umumRate.tariff || 0) > 0) {
+      tariff = Number(umumRate.tariff);
+    } else if (firstRateWithTariff) {
+      tariff = Number(firstRateWithTariff.tariff);
+    } else if (matchedInsuranceRate) {
+      tariff = Number(matchedInsuranceRate.tariff || 0);
+    } else if (umumRate) {
+      tariff = Number(umumRate.tariff || 0);
+    } else if (rates[0]) {
+      tariff = Number(rates[0].tariff || 0);
+    }
 
     return {
       id: p.id,
@@ -989,7 +1024,6 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                       value={ttvForm.systolic}
                       disabled={isFinalized}
                       onChange={(e) => handleTtvChange('systolic', e.target.value)}
-                      placeholder="120"
                       className="text-xs h-9 font-mono font-bold"
                     />
                     <span className="text-[10px] text-muted-foreground font-semibold">mmHg</span>
@@ -1004,7 +1038,6 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                       value={ttvForm.diastolic}
                       disabled={isFinalized}
                       onChange={(e) => handleTtvChange('diastolic', e.target.value)}
-                      placeholder="80"
                       className="text-xs h-9 font-mono font-bold"
                     />
                     <span className="text-[10px] text-muted-foreground font-semibold">mmHg</span>
@@ -1019,7 +1052,6 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                       value={ttvForm.heartRate}
                       disabled={isFinalized}
                       onChange={(e) => handleTtvChange('heartRate', e.target.value)}
-                      placeholder="80"
                       className="text-xs h-9 font-mono"
                     />
                     <span className="text-[10px] text-muted-foreground font-semibold">x/m</span>
@@ -1034,7 +1066,6 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                       value={ttvForm.respiratoryRate}
                       disabled={isFinalized}
                       onChange={(e) => handleTtvChange('respiratoryRate', e.target.value)}
-                      placeholder="20"
                       className="text-xs h-9 font-mono"
                     />
                     <span className="text-[10px] text-muted-foreground font-semibold">x/m</span>
@@ -1050,7 +1081,6 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                       value={ttvForm.temperature}
                       disabled={isFinalized}
                       onChange={(e) => handleTtvChange('temperature', e.target.value)}
-                      placeholder="36.5"
                       className="text-xs h-9 font-mono"
                     />
                     <span className="text-[10px] text-muted-foreground font-semibold">°C</span>
@@ -1065,7 +1095,6 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                       value={ttvForm.oxygenSaturation}
                       disabled={isFinalized}
                       onChange={(e) => handleTtvChange('oxygenSaturation', e.target.value)}
-                      placeholder="98"
                       className="text-xs h-9 font-mono"
                     />
                     <span className="text-[10px] text-muted-foreground font-semibold">%</span>
@@ -1088,7 +1117,6 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                         value={ttvForm.weight}
                         disabled={isFinalized}
                         onChange={(e) => handleTtvChange('weight', e.target.value)}
-                        placeholder="60"
                         className="text-xs h-9 font-mono font-bold"
                       />
                       <span className="text-[10px] text-muted-foreground font-semibold">kg</span>
@@ -1104,7 +1132,6 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                         value={ttvForm.height}
                         disabled={isFinalized}
                         onChange={(e) => handleTtvChange('height', e.target.value)}
-                        placeholder="165"
                         className="text-xs h-9 font-mono font-bold"
                       />
                       <span className="text-[10px] text-muted-foreground font-semibold">cm</span>
@@ -1119,7 +1146,6 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                         value={ttvForm.waistCircumference}
                         disabled={isFinalized}
                         onChange={(e) => handleTtvChange('waistCircumference', e.target.value)}
-                        placeholder="75"
                         className="text-xs h-9 font-mono"
                       />
                       <span className="text-[10px] text-muted-foreground font-semibold">cm</span>

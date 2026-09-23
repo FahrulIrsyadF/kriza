@@ -80,6 +80,15 @@ export default function MasterDataPage() {
     enabled: activeTab === 'polyclinics' || activeTab === 'practitioners',
   });
 
+  const { data: allPolyclinics = [] } = useQuery({
+    queryKey: ['master-polyclinics-all'],
+    queryFn: async () => {
+      const res = await apiClient.get('/master/polyclinics', { params: { limit: 100 } });
+      return res.data.data.items;
+    },
+    staleTime: 300000,
+  });
+
   const { data: practitionersData, isLoading: loadingPractitioners } = useQuery({
     queryKey: ['practitioners', searchQuery],
     queryFn: async () => {
@@ -207,6 +216,27 @@ export default function MasterDataPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['procedures'] });
       setProcedureModal({ open: false, mode: 'create', data: null });
+      dialog.alert('Data tindakan & tarif berhasil disimpan', { title: 'Sukses', variant: 'success' });
+    },
+    onError: (err) => {
+      dialog.alert(err.response?.data?.message || err.message || 'Gagal menyimpan tindakan', {
+        title: 'Gagal Menyimpan Tindakan',
+        variant: 'danger',
+      });
+    },
+  });
+
+  const deleteProcedureMutation = useMutation({
+    mutationFn: (id) => apiClient.delete(`/master/procedures/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['procedures'] });
+      dialog.alert('Tindakan berhasil dinonaktifkan', { title: 'Sukses', variant: 'success' });
+    },
+    onError: (err) => {
+      dialog.alert(err.response?.data?.message || err.message || 'Gagal menonaktifkan tindakan', {
+        title: 'Gagal',
+        variant: 'danger',
+      });
     },
   });
 
@@ -731,13 +761,37 @@ export default function MasterDataPage() {
                             )}
                           </TableCell>
                           <TableCell className="text-right">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => setProcedureModal({ open: true, mode: 'edit', data: proc })}
-                            >
-                              <Edit2 className="w-3.5 h-3.5" />
-                            </Button>
+                            <div className="flex items-center justify-end gap-1">
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => setProcedureModal({ open: true, mode: 'edit', data: proc })}
+                                title="Ubah Tindakan"
+                              >
+                                <Edit2 className="w-3.5 h-3.5" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="text-destructive hover:bg-destructive/10"
+                                onClick={async () => {
+                                  const confirmed = await dialog.confirm(
+                                    `Yakin ingin menonaktifkan tindakan "${proc.name}" (${proc.code})?`,
+                                    {
+                                      title: 'Nonaktifkan Tindakan',
+                                      variant: 'danger',
+                                      confirmText: 'Ya, Nonaktifkan',
+                                    }
+                                  );
+                                  if (confirmed) {
+                                    deleteProcedureMutation.mutate(proc.id);
+                                  }
+                                }}
+                                title="Nonaktifkan Tindakan"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                              </Button>
+                            </div>
                           </TableCell>
                         </TableRow>
                       );
@@ -1240,6 +1294,167 @@ export default function MasterDataPage() {
             </Button>
             <Button type="submit" disabled={practitionerMutation.isPending}>
               {practitionerMutation.isPending ? 'Menyimpan...' : 'Simpan'}
+            </Button>
+          </DialogFooter>
+        </form>
+      </Dialog>
+
+      {/* ─── MODAL: TINDAKAN & TARIF ───────────────────────────────────────── */}
+      <Dialog open={procedureModal.open} onOpenChange={(open) => setProcedureModal({ ...procedureModal, open })}>
+        <DialogClose onClick={() => setProcedureModal({ ...procedureModal, open: false })} />
+        <DialogHeader>
+          <DialogTitle>
+            {procedureModal.mode === 'edit' ? 'Ubah Data Tindakan & Tarif' : 'Tambah Tindakan Baru'}
+          </DialogTitle>
+        </DialogHeader>
+        <form
+          key={procedureModal.data?.id || 'new-proc'}
+          onSubmit={(e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const rates = rateTypes.map((rt) => ({
+              rateTypeId: rt.id,
+              tariff: Number(formData.get(`tariff_${rt.id}`)) || 0,
+            }));
+
+            procedureMutation.mutate({
+              code: formData.get('code')?.trim().toUpperCase(),
+              name: formData.get('name')?.trim(),
+              category: formData.get('category')?.trim() || 'Tindakan Medis',
+              polyclinicId: formData.get('polyclinicId') || null,
+              description: formData.get('description')?.trim() || null,
+              isActive: formData.get('isActive') === 'on',
+              rates,
+            });
+          }}
+          className="space-y-4 my-2 max-h-[75vh] overflow-y-auto pr-1"
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label className="text-xs font-semibold block mb-1">Kode Tindakan *</label>
+              <Input
+                name="code"
+                defaultValue={procedureModal.data?.code || ''}
+                placeholder="PRC-UM-001"
+                className="font-mono text-xs uppercase"
+                required
+              />
+            </div>
+            <div>
+              <label className="text-xs font-semibold block mb-1">Kategori</label>
+              <Input
+                name="category"
+                defaultValue={procedureModal.data?.category || 'Tindakan Medis'}
+                placeholder="Tindakan Medis, Konsultasi, dll"
+                className="text-xs"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="text-xs font-semibold block mb-1">Nama Tindakan / Layanan *</label>
+            <Input
+              name="name"
+              defaultValue={procedureModal.data?.name || ''}
+              placeholder="Contoh: Jahit Luka Ringan (1-3 Jahitan)"
+              className="text-xs"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="text-xs font-semibold block mb-1">Poliklinik Unit</label>
+            <select
+              name="polyclinicId"
+              defaultValue={procedureModal.data?.polyclinicId || ''}
+              className="w-full h-10 px-3 rounded-lg border border-input bg-background text-xs"
+            >
+              <option value="">-- Berlaku untuk Semua Poli --</option>
+              {allPolyclinics.map((poly) => (
+                <option key={poly.id} value={poly.id}>
+                  {poly.name} ({poly.code})
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="text-xs font-semibold block mb-1">Deskripsi / Keterangan</label>
+            <Input
+              name="description"
+              defaultValue={procedureModal.data?.description || ''}
+              placeholder="Keterangan singkat prosedur tindakan..."
+              className="text-xs"
+            />
+          </div>
+
+          {/* Tarif Layanan Berdasarkan Penjamin */}
+          <div className="p-3.5 rounded-xl border border-border bg-muted/20 space-y-3">
+            <div className="flex items-center justify-between">
+              <p className="font-bold text-xs flex items-center gap-1.5 text-foreground">
+                <Activity className="w-3.5 h-3.5 text-primary" /> Tarif Layanan (Per Penjamin)
+              </p>
+              <span className="text-[10px] text-muted-foreground">Isi 0 jika ditanggung BPJS / gratis</span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {rateTypes.map((rt) => {
+                const existingRate = procedureModal.data?.rates?.find(
+                  (r) => r.rateTypeId === rt.id || r.rateTypeCode?.toUpperCase() === rt.code?.toUpperCase()
+                );
+                const defaultTariff = existingRate ? Number(existingRate.tariff || 0) : 0;
+
+                return (
+                  <div key={rt.id} className="p-2.5 rounded-lg border border-border bg-background space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-semibold text-foreground">{rt.name}</span>
+                      <Badge variant="outline" className="text-[10px] font-mono">{rt.code}</Badge>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xs font-semibold text-muted-foreground">Rp</span>
+                      <Input
+                        type="number"
+                        min="0"
+                        name={`tariff_${rt.id}`}
+                        defaultValue={defaultTariff}
+                        className="text-xs h-8 font-mono font-bold"
+                        required
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 pt-1">
+            <input
+              type="checkbox"
+              id="procIsActive"
+              name="isActive"
+              defaultChecked={procedureModal.data ? procedureModal.data.isActive !== false : true}
+              className="rounded border-input text-primary focus:ring-primary w-4 h-4 cursor-pointer"
+            />
+            <label htmlFor="procIsActive" className="text-xs font-semibold text-foreground cursor-pointer">
+              Tindakan Aktif (Dapat dipilih di menu ERM)
+            </label>
+          </div>
+
+          <DialogFooter>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setProcedureModal({ ...procedureModal, open: false })}
+            >
+              Batal
+            </Button>
+            <Button
+              type="submit"
+              disabled={procedureMutation.isPending}
+              className="gap-1.5 font-semibold"
+            >
+              {procedureMutation.isPending ? 'Menyimpan...' : 'Simpan Tindakan'}
             </Button>
           </DialogFooter>
         </form>

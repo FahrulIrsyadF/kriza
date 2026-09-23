@@ -59,12 +59,12 @@ const addDiagnosisSchema = z.object({
 
 // ─── 5. Add Procedure Schema ──────────────────────────────────────────────────
 const addProcedureSchema = z.object({
-  procedureId: z.string().uuid().nullable().optional(),
-  procedureCode: z.string().max(30).nullable().optional(),
+  procedureId: z.preprocess((val) => (val === '' ? null : val), z.string().uuid().nullable().optional()),
+  procedureCode: z.preprocess((val) => (val === '' ? null : val), z.string().max(30).nullable().optional()),
   procedureName: z.string().min(1, 'Nama tindakan wajib diisi').max(255),
   quantity: z.coerce.number().int().min(1).default(1),
   tariff: z.coerce.number().min(0).default(0),
-  notes: z.string().max(500).nullable().optional(),
+  notes: z.preprocess((val) => (val === '' ? null : val), z.string().max(500).nullable().optional()),
 });
 
 // ─── 6. Save Disposition & Referral Schema ────────────────────────────────────

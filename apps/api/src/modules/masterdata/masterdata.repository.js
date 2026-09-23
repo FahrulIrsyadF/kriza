@@ -11,7 +11,7 @@ const {
   icd10Codes,
   labProcedures,
 } = require('../../db/schema');
-const { eq, and, isNull, ilike, or, sql, desc, asc } = require('drizzle-orm');
+const { eq, and, isNull, ilike, or, sql, desc, asc, inArray } = require('drizzle-orm');
 
 // ─── 1. Polyclinics ───────────────────────────────────────────────────────────
 
@@ -242,7 +242,7 @@ async function getProcedures({ search, polyclinicId, category, isActive, page = 
       })
       .from(serviceRates)
       .innerJoin(rateTypes, eq(serviceRates.rateTypeId, rateTypes.id))
-      .where(sql`${serviceRates.procedureId} IN ${procedureIds}`);
+      .where(inArray(serviceRates.procedureId, procedureIds));
 
     for (const r of ratesData) {
       if (!ratesMap[r.procedureId]) ratesMap[r.procedureId] = [];
