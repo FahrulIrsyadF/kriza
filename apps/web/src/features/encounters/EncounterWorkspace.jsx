@@ -751,23 +751,79 @@ export function EncounterWorkspace({ encounterId, onBack }) {
   };
 
   const handleFinalize = async () => {
-    if (!soapForm.subjective || !soapForm.objective) {
-      dialog.alert('Subjektif (Anamnesis) dan Objektif (Pemeriksaan Fisik) wajib diisi sebelum finalisasi.', {
-        title: 'Validasi Rekam Medis',
-        variant: 'warning',
-      });
-      return;
-    }
-    if ((encounter?.diagnoses || []).length === 0) {
-      const proceedWithoutDiag = await dialog.confirm(
-        'Belum ada Diagnosa ICD-10 yang diinput untuk pasien ini. Apakah Anda yakin ingin melanjutkan finalisasi?',
+    // 1. Validasi TTV
+    const hasTtv =
+      ttvForm.systolic &&
+      ttvForm.diastolic &&
+      ttvForm.heartRate &&
+      ttvForm.temperature;
+
+    if (!hasTtv) {
+      if (activeTab !== 'soap') setActiveTab('soap');
+      dialog.alert(
+        'Tanda-Tanda Vital (TTV) wajib diisi lengkap (Tekanan Darah Sistol/Diastol, Nadi, dan Suhu Tubuh) sebelum finalisasi.',
         {
-          title: 'Peringatan Diagnosa Kosong',
+          title: 'Validasi TTV Belum Lengkap',
           variant: 'warning',
-          confirmText: 'Lanjutkan Tanpa Diagnosa',
         }
       );
-      if (!proceedWithoutDiag) return;
+      setTimeout(() => {
+        document.getElementById('section-ttv')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+      return;
+    }
+
+    // 2. Validasi SOAP (S, O, A, P wajib diisi semua)
+    if (
+      !soapForm.subjective?.trim() ||
+      !soapForm.objective?.trim() ||
+      !soapForm.assessment?.trim() ||
+      !soapForm.plan?.trim()
+    ) {
+      if (activeTab !== 'soap') setActiveTab('soap');
+      dialog.alert(
+        'Catatan SOAP klinis (Subjektif, Objektif, Asesmen, dan Planning) wajib diisi lengkap sebelum finalisasi.',
+        {
+          title: 'Validasi SOAP Belum Lengkap',
+          variant: 'warning',
+        }
+      );
+      setTimeout(() => {
+        document.getElementById('section-soap')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+      return;
+    }
+
+    // 3. Validasi Diagnosa ICD-10 (minimal 1)
+    if ((encounter?.diagnoses || []).length === 0) {
+      if (activeTab !== 'soap') setActiveTab('soap');
+      dialog.alert(
+        'Diagnosa medis (ICD-10) wajib diisi minimal 1 diagnosa sebelum finalisasi.',
+        {
+          title: 'Validasi Diagnosa Belum Ada',
+          variant: 'warning',
+        }
+      );
+      setTimeout(() => {
+        document.getElementById('section-diagnosa')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+      return;
+    }
+
+    // 4. Validasi Tindakan Medis (minimal 1)
+    if ((encounter?.procedures || []).length === 0) {
+      if (activeTab !== 'soap') setActiveTab('soap');
+      dialog.alert(
+        'Tindakan medis / pelayanan wajib diisi minimal 1 tindakan sebelum finalisasi.',
+        {
+          title: 'Validasi Tindakan Medis Belum Ada',
+          variant: 'warning',
+        }
+      );
+      setTimeout(() => {
+        document.getElementById('section-tindakan')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+      return;
     }
 
     const confirmed = await dialog.confirm(
@@ -780,8 +836,22 @@ export function EncounterWorkspace({ encounterId, onBack }) {
     );
 
     if (confirmed) {
-      handleSaveAllDraft();
-      finalizeMutation.mutate();
+      try {
+        await Promise.all([
+          saveTtvMutation.mutateAsync(ttvForm),
+          saveSoapMutation.mutateAsync(soapForm),
+        ]);
+        finalizeMutation.mutate();
+      } catch (err) {
+        dialog.alert(
+          'Gagal menyimpan data klinis sebelum finalisasi: ' +
+            (err.response?.data?.error?.message || err.response?.data?.message || err.message),
+          {
+            title: 'Gagal Finalisasi',
+            variant: 'danger',
+          }
+        );
+      }
     }
   };
 
@@ -892,25 +962,14 @@ export function EncounterWorkspace({ encounterId, onBack }) {
           </Button>
 
           {!isFinalized ? (
-            <>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleSaveAllDraft}
-                disabled={saveTtvMutation.isPending || saveSoapMutation.isPending}
-                className="gap-1.5 text-xs"
-              >
-                <Save className="w-3.5 h-3.5" /> Simpan Draft
-              </Button>
-              <Button
-                size="sm"
-                onClick={handleFinalize}
-                disabled={finalizeMutation.isPending}
-                className="gap-1.5 text-xs bg-green-600 hover:bg-green-700 text-white font-semibold shadow-sm"
-              >
-                <CheckCircle2 className="w-3.5 h-3.5" /> Finalisasi Rekam Medis
-              </Button>
-            </>
+            <Button
+              size="sm"
+              onClick={handleFinalize}
+              disabled={finalizeMutation.isPending}
+              className="gap-1.5 text-xs bg-green-600 hover:bg-green-700 text-white font-semibold shadow-sm"
+            >
+              <CheckCircle2 className="w-3.5 h-3.5" /> Finalisasi Rekam Medis
+            </Button>
           ) : (
             <Button
               variant="outline"
@@ -1045,17 +1104,6 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                 </span>
               </a>
             </div>
-
-            {!isFinalized && (
-              <Button
-                size="sm"
-                onClick={handleSaveClinicalData}
-                disabled={saveTtvMutation.isPending || saveSoapMutation.isPending}
-                className="h-7 text-xs gap-1.5 bg-primary text-primary-foreground font-semibold shadow-xs"
-              >
-                <Save className="w-3 h-3" /> Simpan Data Klinis (TTV & SOAP)
-              </Button>
-            )}
           </div>
 
           {/* ── BAGIAN 1: TANDA-TANDA VITAL (TTV) & ANTROPOMETRI ── */}
@@ -1068,11 +1116,6 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                     <Sparkles className="w-3 h-3" /> Auto-sync ke Objektif (O)
                   </Badge>
                 </span>
-                {!isFinalized && (
-                  <Button size="sm" onClick={() => saveTtvMutation.mutate(ttvForm)} disabled={saveTtvMutation.isPending} className="h-7 text-xs gap-1">
-                    <Save className="w-3 h-3" /> Simpan TTV
-                  </Button>
-                )}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-4 space-y-4">
@@ -1271,6 +1314,19 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                 />
               </div>
             </CardContent>
+            {!isFinalized && (
+              <CardFooter className="py-2.5 px-4 border-t border-border bg-muted/10 flex justify-end">
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={() => saveTtvMutation.mutate(ttvForm)}
+                  disabled={saveTtvMutation.isPending}
+                  className="gap-1.5 text-xs bg-primary text-primary-foreground font-semibold shadow-xs"
+                >
+                  <Save className="w-3.5 h-3.5" /> Simpan TTV & Status Gizi
+                </Button>
+              </CardFooter>
+            )}
           </Card>
 
           {/* ── BAGIAN 2: CATATAN REKAM MEDIS SOAP ── */}
@@ -1306,9 +1362,6 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                         <Sparkles className="w-2.5 h-2.5 mr-1" /> {p.label}
                       </Button>
                     ))}
-                    <Button size="sm" onClick={() => saveSoapMutation.mutate(soapForm)} disabled={saveSoapMutation.isPending} className="h-7 text-xs gap-1 ml-2">
-                      <Save className="w-3 h-3" /> Simpan SOAP
-                    </Button>
                   </div>
                 )}
               </div>
@@ -1446,6 +1499,19 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                 </div>
               </div>
             </CardContent>
+            {!isFinalized && (
+              <CardFooter className="py-2.5 px-4 border-t border-border bg-muted/10 flex justify-end">
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={() => saveSoapMutation.mutate(soapForm)}
+                  disabled={saveSoapMutation.isPending}
+                  className="gap-1.5 text-xs bg-primary text-primary-foreground font-semibold shadow-xs"
+                >
+                  <Save className="w-3.5 h-3.5" /> Simpan Catatan SOAP
+                </Button>
+              </CardFooter>
+            )}
           </Card>
 
           {/* ── BAGIAN 3: DIAGNOSA ICD-10 STANDARD ── */}
@@ -1738,6 +1804,54 @@ export function EncounterWorkspace({ encounterId, onBack }) {
               </div>
             </CardContent>
           </Card>
+
+          {/* ── BAR AKSI BAWAH: SIMPAN DATA KLINIS & FINALISASI ── */}
+          {!isFinalized && (
+            <div className="p-4 rounded-2xl border border-border bg-card shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div className="text-xs text-muted-foreground">
+                <p className="font-semibold text-foreground">Status Kelengkapan Data Rekam Medis (Syarat Finalisasi):</p>
+                <div className="flex flex-wrap items-center gap-2 mt-1">
+                  <span className={`inline-flex items-center gap-1 text-[11px] ${ttvForm.systolic && ttvForm.diastolic && ttvForm.heartRate && ttvForm.temperature ? 'text-green-600 font-bold' : 'text-amber-600 font-medium'}`}>
+                    {ttvForm.systolic && ttvForm.diastolic && ttvForm.heartRate && ttvForm.temperature ? '✓' : '•'} TTV Lengkap
+                  </span>
+                  <span>&bull;</span>
+                  <span className={`inline-flex items-center gap-1 text-[11px] ${soapForm.subjective?.trim() && soapForm.objective?.trim() && soapForm.assessment?.trim() && soapForm.plan?.trim() ? 'text-green-600 font-bold' : 'text-amber-600 font-medium'}`}>
+                    {soapForm.subjective?.trim() && soapForm.objective?.trim() && soapForm.assessment?.trim() && soapForm.plan?.trim() ? '✓' : '•'} SOAP Lengkap
+                  </span>
+                  <span>&bull;</span>
+                  <span className={`inline-flex items-center gap-1 text-[11px] ${(encounter.diagnoses || []).length > 0 ? 'text-green-600 font-bold' : 'text-amber-600 font-medium'}`}>
+                    {(encounter.diagnoses || []).length > 0 ? '✓' : '•'} Diagnosa ICD-10 ({(encounter.diagnoses || []).length})
+                  </span>
+                  <span>&bull;</span>
+                  <span className={`inline-flex items-center gap-1 text-[11px] ${(encounter.procedures || []).length > 0 ? 'text-green-600 font-bold' : 'text-amber-600 font-medium'}`}>
+                    {(encounter.procedures || []).length > 0 ? '✓' : '•'} Tindakan Medis ({(encounter.procedures || []).length})
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleSaveClinicalData}
+                  disabled={saveTtvMutation.isPending || saveSoapMutation.isPending}
+                  className="gap-1.5 text-xs font-semibold"
+                >
+                  <Save className="w-3.5 h-3.5" /> Simpan TTV & SOAP
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={handleFinalize}
+                  disabled={finalizeMutation.isPending}
+                  className="gap-1.5 text-xs bg-green-600 hover:bg-green-700 text-white font-semibold shadow-sm"
+                >
+                  <CheckCircle2 className="w-3.5 h-3.5" /> Finalisasi Rekam Medis
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

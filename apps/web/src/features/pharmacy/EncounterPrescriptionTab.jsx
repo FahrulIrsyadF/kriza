@@ -262,7 +262,7 @@ export function EncounterPrescriptionTab({ encounterId, isReadOnly }) {
               options={drugOptions}
               value={selectedDrugId}
               onChange={handleDrugSelect}
-              placeholder="Ketik nama obat (misal: Paracetamol, Amoxicillin, Ambroxol)..."
+              placeholder=""
             />
           </div>
 
@@ -284,7 +284,6 @@ export function EncounterPrescriptionTab({ encounterId, isReadOnly }) {
               <Input
                 value={signa}
                 onChange={(e) => setSigna(e.target.value)}
-                placeholder="Contoh: 3x1 tablet sesudah makan"
                 className="text-xs font-medium"
               />
             </div>
@@ -313,7 +312,6 @@ export function EncounterPrescriptionTab({ encounterId, isReadOnly }) {
               <Input
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder="Catatan tambahan obat (misal: bila mual, sebelum tidur)..."
                 className="text-xs"
               />
             </div>
@@ -398,7 +396,6 @@ export function EncounterPrescriptionTab({ encounterId, isReadOnly }) {
             <Input
               value={prescriptionNotes}
               onChange={(e) => setPrescriptionNotes(e.target.value)}
-              placeholder="Catatan umum resep untuk apoteker..."
               className="text-xs sm:w-80"
             />
 

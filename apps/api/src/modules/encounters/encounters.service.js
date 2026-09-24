@@ -346,9 +346,42 @@ async function saveDisposition(encounterId, data, { userId, ipAddress, userAgent
 async function finalizeEncounter(encounterId, { notes }, { userId, ipAddress, userAgent }) {
   const enc = await checkEncounterWritable(encounterId);
 
-  // Pastikan SOAP terisi
-  if (!enc.soapNotes || !enc.soapNotes.subjective || !enc.soapNotes.objective) {
-    const err = new Error('Rekam medis belum lengkap. Subjektif (Anamnesis) dan Objektif (Pemeriksaan Fisik) wajib diisi sebelum finalisasi.');
+  // 1. Pastikan TTV terisi lengkap (Sistol, Diastol, Nadi, Suhu)
+  if (
+    !enc.vitalSigns ||
+    !enc.vitalSigns.systolic ||
+    !enc.vitalSigns.diastolic ||
+    !enc.vitalSigns.heartRate ||
+    !enc.vitalSigns.temperature
+  ) {
+    const err = new Error('Tanda-Tanda Vital (TTV) wajib diisi lengkap (Tekanan Darah, Nadi, dan Suhu Tubuh) sebelum finalisasi.');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  // 2. Pastikan SOAP terisi lengkap (Subjektif, Objektif, Asesmen, Planning)
+  if (
+    !enc.soapNotes ||
+    !enc.soapNotes.subjective?.trim() ||
+    !enc.soapNotes.objective?.trim() ||
+    !enc.soapNotes.assessment?.trim() ||
+    !enc.soapNotes.plan?.trim()
+  ) {
+    const err = new Error('Catatan SOAP klinis (Subjektif, Objektif, Asesmen, dan Planning) wajib diisi lengkap sebelum finalisasi.');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  // 3. Pastikan Diagnosa ICD-10 terisi minimal 1
+  if (!enc.diagnoses || enc.diagnoses.length === 0) {
+    const err = new Error('Diagnosa medis (ICD-10) wajib diisi minimal 1 diagnosa sebelum finalisasi.');
+    err.statusCode = 400;
+    throw err;
+  }
+
+  // 4. Pastikan Tindakan Medis terisi minimal 1
+  if (!enc.procedures || enc.procedures.length === 0) {
+    const err = new Error('Tindakan medis / pelayanan wajib diisi minimal 1 tindakan sebelum finalisasi.');
     err.statusCode = 400;
     throw err;
   }
