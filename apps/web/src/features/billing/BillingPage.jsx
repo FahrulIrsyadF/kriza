@@ -4,7 +4,7 @@ import {
   Receipt, CreditCard, Banknote, QrCode, Search,
   Filter, CheckCircle2, Clock, AlertCircle, Printer,
   RefreshCw, FileText, ArrowRight, ShieldCheck, User,
-  Calendar, Layers, Sparkles
+  Calendar, Layers, Sparkles, RotateCw
 } from 'lucide-react';
 import AppLayout from '@/components/layout/AppLayout';
 import { Button } from '@/components/ui/button';
@@ -28,7 +28,7 @@ export default function BillingPage() {
   const [selectedInvoiceForPayment, setSelectedInvoiceForPayment] = useState(null);
   const [selectedInvoiceDetailId, setSelectedInvoiceDetailId] = useState(null);
   const [selectedPaymentReceipt, setSelectedPaymentReceipt] = useState(null);
-  const [isSyncing, setIsSyncing] = useState(false);
+  const [syncingRegId, setSyncingRegId] = useState(null);
 
   // ─── 1. Query Dashboard KPIs ────────────────────────────────────────────────
   const { data: statsData, refetch: refetchStats } = useQuery({
@@ -95,6 +95,40 @@ export default function BillingPage() {
     setSelectedInvoiceForPayment(null);
     setSelectedPaymentReceipt(receipt);
     handleRefresh();
+  };
+
+  // ─── Sinkronkan Tagihan dari Layanan Poli & Resep Farmasi ────────────────────
+  const handleSyncInvoice = async (registrationId, invoiceNumber) => {
+    if (!registrationId) {
+      dialog.alert('Data registrasi tidak ditemukan untuk sinkronisasi tagihan.', {
+        title: 'Sinkronisasi Gagal',
+        variant: 'danger',
+      });
+      return;
+    }
+
+    setSyncingRegId(registrationId);
+    try {
+      await apiClient.post(`/billing/invoices/sync/${registrationId}`);
+      await handleRefresh();
+      dialog.alert(
+        `Tagihan ${invoiceNumber ? `(${invoiceNumber})` : ''} berhasil disinkronkan dari tindakan medis poli dan resep obat farmasi terbaru.`,
+        {
+          title: 'Sinkronisasi Berhasil',
+          variant: 'success',
+        }
+      );
+    } catch (err) {
+      dialog.alert(
+        err.response?.data?.error?.message || 'Gagal menyinkronkan tagihan dari layanan poli/farmasi',
+        {
+          title: 'Gagal Sinkronisasi',
+          variant: 'danger',
+        }
+      );
+    } finally {
+      setSyncingRegId(null);
+    }
   };
 
   return (
@@ -380,6 +414,19 @@ export default function BillingPage() {
                         </td>
                         <td className="py-3 px-4 text-right">
                           <div className="flex items-center justify-end gap-1.5">
+                            {inv.status !== 'PAID' && inv.registrationId && (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => handleSyncInvoice(inv.registrationId, inv.invoiceNumber)}
+                                disabled={syncingRegId === inv.registrationId}
+                                className="h-8 px-2 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-950/50 border-blue-200 dark:border-blue-800"
+                                title="Sinkronkan ulang tagihan jika ada perubahan tindakan poli atau resep farmasi"
+                              >
+                                <RotateCw className={`w-3.5 h-3.5 ${syncingRegId === inv.registrationId ? 'animate-spin' : ''}`} />
+                                <span className="hidden lg:inline ml-1">Sinkron</span>
+                              </Button>
+                            )}
                             <Button
                               size="sm"
                               variant="ghost"
@@ -559,6 +606,7 @@ export default function BillingPage() {
           invoiceId={selectedInvoiceDetailId}
           onClose={() => setSelectedInvoiceDetailId(null)}
           onPay={(inv) => setSelectedInvoiceForPayment(inv)}
+          onSynced={handleRefresh}
           onPrintReceipt={async (pmt) => {
             try {
               const res = await apiClient.get(`/billing/payments/${pmt.id}`);

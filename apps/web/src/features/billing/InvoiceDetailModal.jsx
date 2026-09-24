@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   FileText, X, CheckCircle2, Clock, Printer, CreditCard,
-  User, Tag, AlertCircle, Percent, Plus, Trash2
+  User, Tag, AlertCircle, Percent, Plus, Trash2, RotateCw
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,12 +9,13 @@ import { formatRupiah } from '@/lib/utils';
 import apiClient from '@/lib/api-client';
 import { dialog } from '@/context/DialogContext';
 
-export function InvoiceDetailModal({ invoiceId, onClose, onPay, onPrintReceipt }) {
+export function InvoiceDetailModal({ invoiceId, onClose, onPay, onPrintReceipt, onSynced }) {
   const [invoice, setInvoice] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isEditingDiscount, setIsEditingDiscount] = useState(false);
   const [discountVal, setDiscountVal] = useState(0);
   const [savingDiscount, setSavingDiscount] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
   const [errorMsg, setErrorMsg] = useState(null);
 
   React.useEffect(() => {
@@ -49,6 +50,35 @@ export function InvoiceDetailModal({ invoiceId, onClose, onPay, onPrintReceipt }
       });
     } finally {
       setSavingDiscount(false);
+    }
+  };
+
+  const handleSync = async () => {
+    if (!invoice?.registrationId) {
+      dialog.alert('Data registrasi tidak ditemukan untuk sinkronisasi tagihan.', {
+        title: 'Gagal Sinkronisasi',
+        variant: 'danger',
+      });
+      return;
+    }
+
+    setIsSyncing(true);
+    try {
+      const res = await apiClient.post(`/billing/invoices/sync/${invoice.registrationId}`);
+      setInvoice(res.data.data);
+      setDiscountVal(parseFloat(res.data.data.discountAmount || '0'));
+      dialog.alert('Tagihan berhasil disinkronkan dari tindakan medis poli dan resep farmasi terbaru.', {
+        title: 'Sinkronisasi Berhasil',
+        variant: 'success',
+      });
+      onSynced?.();
+    } catch (err) {
+      dialog.alert('Gagal menyinkronkan tagihan: ' + (err.response?.data?.error?.message || err.message), {
+        title: 'Gagal Sinkronisasi',
+        variant: 'danger',
+      });
+    } finally {
+      setIsSyncing(false);
     }
   };
 
@@ -302,10 +332,25 @@ export function InvoiceDetailModal({ invoiceId, onClose, onPay, onPrintReceipt }
         </div>
 
         {/* Footer Actions */}
-        <div className="px-6 py-3 border-t border-border bg-muted/40 flex justify-between items-center">
-          <Button variant="outline" size="sm" onClick={onClose}>
-            Tutup
-          </Button>
+        <div className="px-6 py-3 border-t border-border bg-muted/40 flex flex-wrap justify-between items-center gap-2">
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={onClose}>
+              Tutup
+            </Button>
+            {invoice && invoice.status !== 'PAID' && invoice.registrationId && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleSync}
+                disabled={isSyncing}
+                className="gap-1.5 text-xs text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-950/50 border-blue-200 dark:border-blue-800"
+                title="Tarik ulang rincian tindakan medis poli dan resep obat farmasi terbaru"
+              >
+                <RotateCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
+                <span>Sinkronkan Tagihan</span>
+              </Button>
+            )}
+          </div>
           {invoice && invoice.status !== 'PAID' && (
             <Button
               size="sm"
