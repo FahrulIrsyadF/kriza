@@ -1,6 +1,6 @@
 const env = require('../../config/env');
-const { login, logout, getMe } = require('./auth.service');
-const { loginSchema } = require('./auth.schema');
+const { login, logout, getMe, changePassword } = require('./auth.service');
+const { loginSchema, changePasswordSchema } = require('./auth.schema');
 
 /**
  * Auth routes — prefix /api/v1/auth
@@ -81,6 +81,49 @@ async function authRoutes(app) {
       success: true,
       data: { user },
     });
+  });
+
+  // ─── PUT /auth/change-password ──────────────────────────────────────────────
+  app.put('/change-password', { preHandler: [app.authenticate] }, async (request, reply) => {
+    const parsed = changePasswordSchema.safeParse(request.body);
+    if (!parsed.success) {
+      return reply.status(400).send({
+        success: false,
+        error: {
+          code: 'VALIDATION_ERROR',
+          message: 'Input tidak valid',
+          details: parsed.error.flatten().fieldErrors,
+        },
+      });
+    }
+
+    const userId = request.user.sub;
+    const { currentPassword, newPassword } = parsed.data;
+    const ipAddress = request.ip;
+    const userAgent = request.headers['user-agent'] ?? null;
+
+    try {
+      const result = await changePassword({
+        userId,
+        currentPassword,
+        newPassword,
+        ipAddress,
+        userAgent,
+      });
+
+      return reply.send({
+        success: true,
+        data: result,
+      });
+    } catch (err) {
+      return reply.status(err.statusCode || 500).send({
+        success: false,
+        error: {
+          code: err.code || 'INTERNAL_ERROR',
+          message: err.message || 'Gagal mengubah password',
+        },
+      });
+    }
   });
 }
 

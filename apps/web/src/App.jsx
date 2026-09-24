@@ -9,6 +9,7 @@ import EncountersPage from '@/features/encounters/EncountersPage'
 import PharmacyPage from '@/features/pharmacy/PharmacyPage'
 import BillingPage from '@/features/billing/BillingPage'
 import ReportsPage from '@/features/reports/ReportsPage'
+import ProfilePage from '@/features/profile/ProfilePage'
 import NotFoundPage from '@/pages/NotFoundPage'
 
 function App() {
@@ -89,6 +90,16 @@ function App() {
         element={
           <ProtectedRoute requiredPermission="reports:read">
             <ReportsPage />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Profil Pengguna & Ganti Password (Semua user yang login) */}
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <ProfilePage />
           </ProtectedRoute>
         }
       />

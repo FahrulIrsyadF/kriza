@@ -4,6 +4,8 @@ const {
   getUserRolesAndPermissions,
   findUserById,
   getUserPractitioner,
+  findUserAuthById,
+  updateUserPassword,
 } = require('./auth.repository');
 const { logAudit } = require('../../shared/utils/audit');
 const { getNextMidnight, getSecondsUntilMidnight } = require('../../shared/utils/token');
@@ -130,4 +132,66 @@ async function getMe(userId) {
   return { ...user, roles, permissions, practitioner };
 }
 
-module.exports = { login, logout, getMe };
+/**
+ * Ubah password user yang sedang login.
+ * @param {object} params
+ * @param {string} params.userId
+ * @param {string} params.currentPassword
+ * @param {string} params.newPassword
+ * @param {string} [params.ipAddress]
+ * @param {string} [params.userAgent]
+ */
+async function changePassword({ userId, currentPassword, newPassword, ipAddress, userAgent }) {
+  const user = await findUserAuthById(userId);
+  if (!user) {
+    const err = new Error('User tidak ditemukan atau akun sudah tidak aktif');
+    err.statusCode = 404;
+    throw err;
+  }
+
+  // 1. Verifikasi password saat ini
+  const isValid = await bcrypt.compare(currentPassword, user.passwordHash);
+  if (!isValid) {
+    await logAudit({
+      userId,
+      action: 'CHANGE_PASSWORD_FAILED',
+      entityType: 'auth',
+      entityId: userId,
+      newValues: { reason: 'wrong_current_password' },
+      ipAddress,
+      userAgent,
+    });
+    const err = new Error('Password saat ini salah');
+    err.statusCode = 400;
+    err.code = 'INVALID_CURRENT_PASSWORD';
+    throw err;
+  }
+
+  // 2. Cegah password baru sama dengan password lama
+  const isSame = await bcrypt.compare(newPassword, user.passwordHash);
+  if (isSame) {
+    const err = new Error('Password baru tidak boleh sama dengan password saat ini');
+    err.statusCode = 400;
+    err.code = 'SAME_AS_OLD_PASSWORD';
+    throw err;
+  }
+
+  // 3. Hash password baru (12 rounds)
+  const newHash = await bcrypt.hash(newPassword, 12);
+  await updateUserPassword(userId, newHash);
+
+  // 4. Log audit sukses
+  await logAudit({
+    userId,
+    action: 'CHANGE_PASSWORD_SUCCESS',
+    entityType: 'auth',
+    entityId: userId,
+    ipAddress,
+    userAgent,
+  });
+
+  return { message: 'Password berhasil diubah' };
+}
+
+module.exports = { login, logout, getMe, changePassword };
+

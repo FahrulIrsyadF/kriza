@@ -151,19 +151,29 @@ export default function AppLayout({ children, title, subtitle, actions }) {
               </span>
             </div>
 
-            {/* User Profile */}
+            {/* User Profile Link */}
             {user && (
-              <div className="flex items-center gap-2.5 border-l border-border pl-4">
-                <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center text-primary font-bold text-xs border border-primary/20">
+              <Link
+                to="/profile"
+                title="Buka Profil & Ganti Password"
+                className={`flex items-center gap-2.5 border-l border-border pl-4 py-1 pr-2 rounded-lg transition-all group ${
+                  location.pathname === '/profile'
+                    ? 'bg-primary/10 text-primary'
+                    : 'hover:bg-muted/70'
+                }`}
+              >
+                <div className="w-8 h-8 rounded-full bg-primary/15 flex items-center justify-center text-primary font-bold text-xs border border-primary/20 group-hover:scale-105 transition-transform">
                   {user.name?.charAt(0)?.toUpperCase()}
                 </div>
                 <div className="text-right hidden sm:block">
-                  <p className="text-xs font-semibold text-foreground leading-none">{user.name}</p>
+                  <p className="text-xs font-semibold text-foreground leading-none group-hover:text-primary transition-colors">
+                    {user.name}
+                  </p>
                   <p className="text-[10px] text-muted-foreground capitalize mt-0.5">
                     {user.roles?.[0] || 'Staff'}
                   </p>
                 </div>
-              </div>
+              </Link>
             )}
 
             {/* Logout Button */}

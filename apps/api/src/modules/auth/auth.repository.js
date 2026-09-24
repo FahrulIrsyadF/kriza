@@ -125,9 +125,56 @@ async function findUserById(userId) {
   return result[0] ?? null;
 }
 
+/**
+ * Cari user by ID lengkap dengan passwordHash untuk verifikasi kredensial.
+ * @param {string} userId
+ * @returns {Promise<object|null>}
+ */
+async function findUserAuthById(userId) {
+  const result = await db
+    .select({
+      id: users.id,
+      username: users.username,
+      name: users.name,
+      email: users.email,
+      passwordHash: users.passwordHash,
+      isActive: users.isActive,
+    })
+    .from(users)
+    .where(and(eq(users.id, userId), isNull(users.deletedAt), eq(users.isActive, true)))
+    .limit(1);
+
+  return result[0] ?? null;
+}
+
+/**
+ * Update password hash user.
+ * @param {string} userId
+ * @param {string} passwordHash
+ */
+async function updateUserPassword(userId, passwordHash) {
+  const [updated] = await db
+    .update(users)
+    .set({
+      passwordHash,
+      updatedAt: new Date(),
+    })
+    .where(eq(users.id, userId))
+    .returning({
+      id: users.id,
+      username: users.username,
+      updatedAt: users.updatedAt,
+    });
+
+  return updated;
+}
+
 module.exports = {
   findActiveUserByUsername,
   getUserRolesAndPermissions,
   findUserById,
+  findUserAuthById,
+  updateUserPassword,
   getUserPractitioner,
 };
+
