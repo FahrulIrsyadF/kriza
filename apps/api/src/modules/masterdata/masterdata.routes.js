@@ -212,8 +212,12 @@ async function masterDataRoutes(app) {
   // ─── 7. ICD-10 Search ──────────────────────────────────────────────────────
 
   app.get('/icd10', async (request, reply) => {
-    const { q, limit } = request.query;
-    const items = await service.searchIcd10({ query: q, limit: limit ? Number(limit) : 20 });
+    const { q, query, search, limit } = request.query;
+    const searchTerm = q || query || search;
+    const items = await service.searchIcd10({
+      query: searchTerm,
+      limit: limit ? Number(limit) : 40,
+    });
     return reply.send({ success: true, data: items });
   });
 }

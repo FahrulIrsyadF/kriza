@@ -63,6 +63,24 @@ function calculateBMI(weight, height) {
   return { bmi: bmiVal, category, color };
 }
 
+export function formatTtvPayload(form) {
+  if (!form) return form;
+  const parseNumOrNull = (v) => (v !== '' && v !== null && v !== undefined && !isNaN(Number(v)) ? Number(v) : null);
+  return {
+    ...form,
+    systolic: parseNumOrNull(form.systolic),
+    diastolic: parseNumOrNull(form.diastolic),
+    heartRate: parseNumOrNull(form.heartRate),
+    respiratoryRate: parseNumOrNull(form.respiratoryRate),
+    temperature: parseNumOrNull(form.temperature),
+    oxygenSaturation: parseNumOrNull(form.oxygenSaturation),
+    weight: parseNumOrNull(form.weight),
+    height: parseNumOrNull(form.height),
+    waistCircumference: parseNumOrNull(form.waistCircumference),
+    physicalExamNotes: form.physicalExamNotes?.trim() || null,
+  };
+}
+
 const CONSCIOUSNESS_LIST = ['Compos Mentis', 'Apatis', 'Somnolen', 'Sopor', 'Koma'];
 const TRIAGE_LIST = [
   { id: 'HIJAU', label: 'Hijau (Non-Gawat)', color: 'bg-green-500/15 text-green-700 border-green-300' },
@@ -293,15 +311,30 @@ export function EncounterWorkspace({ encounterId, onBack }) {
     enabled: !!encounterId,
   });
 
-  // Query Master ICD-10
-  const { data: icd10List = [] } = useQuery({
-    queryKey: ['master-icd10-all'],
+  // State remote search untuk ICD-10
+  const [icd10SearchQuery, setIcd10SearchQuery] = useState('');
+
+  // Query Master ICD-10 (Remote Search dengan Debounce)
+  const {
+    data: icd10List = [],
+    isLoading: isLoadingIcd10,
+    isFetching: isFetchingIcd10,
+  } = useQuery({
+    queryKey: ['master-icd10-search', icd10SearchQuery],
     queryFn: () =>
-      apiClient.get('/master/icd10', { params: { limit: 200 } }).then((r) => {
-        const d = r.data?.data;
-        return Array.isArray(d) ? d : (d?.items || []);
-      }),
-    staleTime: 300000,
+      apiClient
+        .get('/master/icd10', {
+          params: {
+            q: icd10SearchQuery.trim() || undefined,
+            limit: 40,
+          },
+        })
+        .then((r) => {
+          const d = r.data?.data;
+          return Array.isArray(d) ? d : (d?.items || []);
+        }),
+    staleTime: 60000,
+    placeholderData: (previousData) => previousData,
   });
 
   // Query Master Procedures (limit dinaikkan agar seluruh master tindakan terambil)
@@ -480,10 +513,16 @@ export function EncounterWorkspace({ encounterId, onBack }) {
 
   // ─── Mutations ────────────────────────────────────────────────────────────────
   const saveTtvMutation = useMutation({
-    mutationFn: (data) => apiClient.put(`/encounters/${encounterId}/vital-signs`, data),
+    mutationFn: (data) => apiClient.put(`/encounters/${encounterId}/vital-signs`, formatTtvPayload(data)),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['encounter-detail', encounterId] });
       flashSuccess('TTV & Status Gizi berhasil disimpan');
+    },
+    onError: (err) => {
+      dialog.alert(err.response?.data?.error?.message || err.response?.data?.message || err.message || 'Gagal menyimpan data TTV', {
+        title: 'Validasi TTV Gagal',
+        variant: 'danger',
+      });
     },
   });
 
@@ -492,6 +531,12 @@ export function EncounterWorkspace({ encounterId, onBack }) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['encounter-detail', encounterId] });
       flashSuccess('Catatan SOAP berhasil disimpan');
+    },
+    onError: (err) => {
+      dialog.alert(err.response?.data?.error?.message || err.response?.data?.message || err.message || 'Gagal menyimpan catatan SOAP', {
+        title: 'Validasi SOAP Gagal',
+        variant: 'danger',
+      });
     },
   });
 
@@ -696,10 +741,12 @@ export function EncounterWorkspace({ encounterId, onBack }) {
 
   // PERBAIKAN: Pemilihan Diagnosa ICD-10 otomatis masuk ke A (Asesmen) pada SOAP
   const handleSelectDiagnosis = (val, raw) => {
+    const rawData = raw?.raw || raw;
     const nextDiag = {
       ...diagInput,
+      icd10Id: rawData?.id || diagInput.icd10Id || '',
       icd10Code: val,
-      icd10Name: raw?.nameEn || raw?.name || val,
+      icd10Name: rawData?.nameEn || rawData?.name || raw?.name || val,
     };
     setDiagInput(nextDiag);
 
@@ -732,7 +779,7 @@ export function EncounterWorkspace({ encounterId, onBack }) {
   const handleSaveClinicalData = async () => {
     try {
       await Promise.all([
-        saveTtvMutation.mutateAsync(ttvForm),
+        saveTtvMutation.mutateAsync(formatTtvPayload(ttvForm)),
         saveSoapMutation.mutateAsync(soapForm),
       ]);
       flashSuccess('Pemeriksaan TTV & Catatan SOAP berhasil disimpan');
@@ -745,23 +792,23 @@ export function EncounterWorkspace({ encounterId, onBack }) {
   };
 
   const handleSaveAllDraft = () => {
-    saveTtvMutation.mutate(ttvForm);
+    saveTtvMutation.mutate(formatTtvPayload(ttvForm));
     saveSoapMutation.mutate(soapForm);
     saveDispositionMutation.mutate(dispositionForm);
   };
 
   const handleFinalize = async () => {
-    // 1. Validasi TTV
-    const hasTtv =
-      ttvForm.systolic &&
-      ttvForm.diastolic &&
-      ttvForm.heartRate &&
-      ttvForm.temperature;
+    // 1. Validasi TTV (Hanya Tensi, Nadi, dan Suhu yang wajib; BB & TB opsional)
+    const missingTtv = [];
+    if (!ttvForm.systolic) missingTtv.push('Tekanan Sistol');
+    if (!ttvForm.diastolic) missingTtv.push('Tekanan Diastol');
+    if (!ttvForm.heartRate) missingTtv.push('Denyut Nadi');
+    if (!ttvForm.temperature) missingTtv.push('Suhu Tubuh');
 
-    if (!hasTtv) {
+    if (missingTtv.length > 0) {
       if (activeTab !== 'soap') setActiveTab('soap');
       dialog.alert(
-        'Tanda-Tanda Vital (TTV) wajib diisi lengkap (Tekanan Darah Sistol/Diastol, Nadi, dan Suhu Tubuh) sebelum finalisasi.',
+        `Field TTV berikut wajib diisi sebelum finalisasi:\n• ${missingTtv.join('\n• ')}\n\n(Catatan: Berat Badan dan Tinggi Badan bersifat opsional / tidak wajib).`,
         {
           title: 'Validasi TTV Belum Lengkap',
           variant: 'warning',
@@ -774,15 +821,16 @@ export function EncounterWorkspace({ encounterId, onBack }) {
     }
 
     // 2. Validasi SOAP (S, O, A, P wajib diisi semua)
-    if (
-      !soapForm.subjective?.trim() ||
-      !soapForm.objective?.trim() ||
-      !soapForm.assessment?.trim() ||
-      !soapForm.plan?.trim()
-    ) {
+    const missingSoap = [];
+    if (!soapForm.subjective?.trim()) missingSoap.push('Subjektif (S) / Anamnesis');
+    if (!soapForm.objective?.trim()) missingSoap.push('Objektif (O) / Pemeriksaan Fisik');
+    if (!soapForm.assessment?.trim()) missingSoap.push('Asesmen (A) / Diagnosa Kerja');
+    if (!soapForm.plan?.trim()) missingSoap.push('Planning (P) / Rencana Terapi');
+
+    if (missingSoap.length > 0) {
       if (activeTab !== 'soap') setActiveTab('soap');
       dialog.alert(
-        'Catatan SOAP klinis (Subjektif, Objektif, Asesmen, dan Planning) wajib diisi lengkap sebelum finalisasi.',
+        `Field Catatan SOAP berikut wajib diisi lengkap sebelum finalisasi:\n• ${missingSoap.join('\n• ')}`,
         {
           title: 'Validasi SOAP Belum Lengkap',
           variant: 'warning',
@@ -798,7 +846,7 @@ export function EncounterWorkspace({ encounterId, onBack }) {
     if ((encounter?.diagnoses || []).length === 0) {
       if (activeTab !== 'soap') setActiveTab('soap');
       dialog.alert(
-        'Diagnosa medis (ICD-10) wajib diisi minimal 1 diagnosa sebelum finalisasi.',
+        'Belum ada Diagnosa ICD-10 yang diinput. Pasien wajib memiliki minimal 1 Diagnosa sebelum finalisasi.',
         {
           title: 'Validasi Diagnosa Belum Ada',
           variant: 'warning',
@@ -814,7 +862,7 @@ export function EncounterWorkspace({ encounterId, onBack }) {
     if ((encounter?.procedures || []).length === 0) {
       if (activeTab !== 'soap') setActiveTab('soap');
       dialog.alert(
-        'Tindakan medis / pelayanan wajib diisi minimal 1 tindakan sebelum finalisasi.',
+        'Belum ada Tindakan Medis / Pelayanan yang diinput. Pasien wajib memiliki minimal 1 Tindakan Medis (misal: Pemeriksaan & Konsultasi Dokter) sebelum finalisasi.',
         {
           title: 'Validasi Tindakan Medis Belum Ada',
           variant: 'warning',
@@ -838,7 +886,7 @@ export function EncounterWorkspace({ encounterId, onBack }) {
     if (confirmed) {
       try {
         await Promise.all([
-          saveTtvMutation.mutateAsync(ttvForm),
+          saveTtvMutation.mutateAsync(formatTtvPayload(ttvForm)),
           saveSoapMutation.mutateAsync(soapForm),
         ]);
         finalizeMutation.mutate();
@@ -1122,7 +1170,7 @@ export function EncounterWorkspace({ encounterId, onBack }) {
               {/* Grid TTV */}
               <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3">
                 <div>
-                  <label className="text-[11px] font-semibold block mb-1">Tekanan Darah (Sistol)</label>
+                  <label className="text-[11px] font-semibold block mb-1">Tekanan Darah (Sistol) *</label>
                   <div className="flex items-center gap-1">
                     <Input
                       type="number"
@@ -1136,7 +1184,7 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-semibold block mb-1">Tekanan Darah (Diastol)</label>
+                  <label className="text-[11px] font-semibold block mb-1">Tekanan Darah (Diastol) *</label>
                   <div className="flex items-center gap-1">
                     <Input
                       type="number"
@@ -1150,7 +1198,7 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-semibold block mb-1">Denyut Nadi</label>
+                  <label className="text-[11px] font-semibold block mb-1">Denyut Nadi *</label>
                   <div className="flex items-center gap-1">
                     <Input
                       type="number"
@@ -1178,7 +1226,7 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-semibold block mb-1">Suhu Tubuh</label>
+                  <label className="text-[11px] font-semibold block mb-1">Suhu Tubuh *</label>
                   <div className="flex items-center gap-1">
                     <Input
                       type="number"
@@ -1210,11 +1258,13 @@ export function EncounterWorkspace({ encounterId, onBack }) {
               {/* Antropometri & Auto-BMI */}
               <div className="p-3.5 rounded-xl border border-border bg-muted/20 space-y-3">
                 <p className="font-bold text-xs flex items-center gap-1.5 text-primary">
-                  <Scale className="w-4 h-4" /> Antropometri & Kalkulasi BMI Otomatis
+                  <Scale className="w-4 h-4" /> Antropometri & Kalkulasi BMI Otomatis <span className="text-[10px] text-muted-foreground font-normal">(Tidak Wajib / Opsional)</span>
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 items-end">
                   <div>
-                    <label className="text-[11px] font-semibold block mb-1">Berat Badan (BB)</label>
+                    <label className="text-[11px] font-semibold block mb-1">
+                      Berat Badan (BB) <span className="text-[10px] text-muted-foreground font-normal">(Opsional)</span>
+                    </label>
                     <div className="flex items-center gap-1">
                       <Input
                         type="number"
@@ -1229,7 +1279,9 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-semibold block mb-1">Tinggi Badan (TB)</label>
+                    <label className="text-[11px] font-semibold block mb-1">
+                      Tinggi Badan (TB) <span className="text-[10px] text-muted-foreground font-normal">(Opsional)</span>
+                    </label>
                     <div className="flex items-center gap-1">
                       <Input
                         type="number"
@@ -1244,10 +1296,13 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                   </div>
 
                   <div>
-                    <label className="text-[11px] font-semibold block mb-1">Lingkar Perut</label>
+                    <label className="text-[11px] font-semibold block mb-1">
+                      Lingkar Perut <span className="text-[10px] text-muted-foreground font-normal">(Opsional)</span>
+                    </label>
                     <div className="flex items-center gap-1">
                       <Input
                         type="number"
+                        step="0.5"
                         value={ttvForm.waistCircumference}
                         disabled={isFinalized}
                         onChange={(e) => handleTtvChange('waistCircumference', e.target.value)}
@@ -1544,8 +1599,16 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                         options={icd10Options}
                         value={diagInput.icd10Code}
                         onChange={handleSelectDiagnosis}
+                        onSearch={setIcd10SearchQuery}
+                        isLoading={isFetchingIcd10 || isLoadingIcd10}
+                        selectedLabel={
+                          diagInput.icd10Code
+                            ? `${diagInput.icd10Code} — ${diagInput.icd10Name}`
+                            : undefined
+                        }
                         placeholder="Ketik kode (misal A09, I10) atau nama diagnosa..."
-                        searchPlaceholder="Cari ICD-10..."
+                        searchPlaceholder="Ketik kode atau nama penyakit (ICD-10)..."
+                        debounceDelay={300}
                       />
                     </div>
 
@@ -1812,7 +1875,7 @@ export function EncounterWorkspace({ encounterId, onBack }) {
                 <p className="font-semibold text-foreground">Status Kelengkapan Data Rekam Medis (Syarat Finalisasi):</p>
                 <div className="flex flex-wrap items-center gap-2 mt-1">
                   <span className={`inline-flex items-center gap-1 text-[11px] ${ttvForm.systolic && ttvForm.diastolic && ttvForm.heartRate && ttvForm.temperature ? 'text-green-600 font-bold' : 'text-amber-600 font-medium'}`}>
-                    {ttvForm.systolic && ttvForm.diastolic && ttvForm.heartRate && ttvForm.temperature ? '✓' : '•'} TTV Lengkap
+                    {ttvForm.systolic && ttvForm.diastolic && ttvForm.heartRate && ttvForm.temperature ? '✓' : '•'} TTV Wajib (Tensi, Nadi, Suhu)
                   </span>
                   <span>&bull;</span>
                   <span className={`inline-flex items-center gap-1 text-[11px] ${soapForm.subjective?.trim() && soapForm.objective?.trim() && soapForm.assessment?.trim() && soapForm.plan?.trim() ? 'text-green-600 font-bold' : 'text-amber-600 font-medium'}`}>

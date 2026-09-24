@@ -149,11 +149,52 @@ function buildApp(opts = {}) {
     }
 
     if (error.name === 'ZodError') {
+      const FIELD_LABELS = {
+        systolic: 'Tekanan Darah (Sistol)',
+        diastolic: 'Tekanan Darah (Diastol)',
+        heartRate: 'Denyut Nadi',
+        respiratoryRate: 'Laju Nafas',
+        temperature: 'Suhu Tubuh',
+        oxygenSaturation: 'Saturasi Oksigen (SpO2)',
+        weight: 'Berat Badan (BB)',
+        height: 'Tinggi Badan (TB)',
+        waistCircumference: 'Lingkar Perut',
+        consciousness: 'Tingkat Kesadaran',
+        triage: 'Kategori Triase',
+        physicalExamNotes: 'Pemeriksaan Fisik',
+        subjective: 'Catatan Subjektif (S)',
+        objective: 'Catatan Objektif (O)',
+        assessment: 'Catatan Asesmen (A)',
+        plan: 'Catatan Planning (P)',
+        prognosis: 'Prognosis',
+        icd10Code: 'Kode Diagnosa ICD-10',
+        icd10Name: 'Nama Diagnosa',
+        diagnosisType: 'Tipe Diagnosa',
+        diagnosisCase: 'Kasus Diagnosa',
+        procedureId: 'ID Tindakan',
+        procedureCode: 'Kode Tindakan',
+        procedureName: 'Nama Tindakan',
+        quantity: 'Jumlah Tindakan/Obat',
+        tariff: 'Tarif',
+        notes: 'Catatan',
+        amendmentReason: 'Alasan Amandemen',
+      };
+
+      const messages = (error.issues || []).map((issue) => {
+        const fieldKey = issue.path[issue.path.length - 1];
+        const fieldLabel = FIELD_LABELS[fieldKey] || (fieldKey ? String(fieldKey) : '');
+        const msg = issue.message || 'Input tidak valid';
+        if (fieldLabel && !msg.toLowerCase().includes(fieldLabel.toLowerCase())) {
+          return `[${fieldLabel}] ${msg}`;
+        }
+        return msg;
+      });
+
       return reply.status(400).send({
         success: false,
         error: {
           code: 'VALIDATION_ERROR',
-          message: error.issues?.[0]?.message || 'Input tidak valid',
+          message: messages.join('; ') || 'Input tidak valid',
           details: error.issues,
         },
       });
