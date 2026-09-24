@@ -4,7 +4,7 @@ import {
   Activity, FileText, Stethoscope, Plus, Trash2, CheckCircle2,
   AlertTriangle, Lock, ShieldAlert, HeartPulse, Scale, Clock,
   ArrowRight, Printer, Share2, Building, UserCheck, RefreshCw,
-  Sparkles, Save, Edit3, CornerDownRight, Check, X, Pill,
+  Sparkles, Save, Edit3, CornerDownRight, Check, X, Pill, History,
 } from 'lucide-react';
 import { SearchableSelect } from '@/components/ui/searchable-select';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { ReferralLetterModal } from './ReferralLetterModal';
+import { AmendedHistoryModal } from './AmendedHistoryModal';
 import { EncounterPrescriptionTab } from '@/features/pharmacy/EncounterPrescriptionTab';
 import { dialog } from '@/context/DialogContext';
 import apiClient from '@/lib/api-client';
@@ -282,6 +283,7 @@ export function EncounterWorkspace({ encounterId, onBack }) {
   const [activeTab, setActiveTab] = useState('soap'); // 'soap' (TTV, SOAP, Diagnosa, Tindakan) | 'resep' | 'disposisi'
   const [showReferralPrint, setShowReferralPrint] = useState(false);
   const [referralPrintData, setReferralPrintData] = useState(null);
+  const [showAmendedModal, setShowAmendedModal] = useState(false);
   const [saveSuccessMsg, setSaveSuccessMsg] = useState('');
 
   // ─── Query Encounter Detail ──────────────────────────────────────────────────
@@ -927,6 +929,39 @@ export function EncounterWorkspace({ encounterId, onBack }) {
         <div className="p-3 rounded-xl bg-green-500/10 border border-green-500/30 text-green-700 text-xs font-semibold flex items-center gap-2 animate-in fade-in-0 duration-200">
           <CheckCircle2 className="w-4 h-4 shrink-0" />
           <span>{saveSuccessMsg}</span>
+        </div>
+      )}
+
+      {/* ─── AMENDED REVISION BANNER ────────────────────────────────────────── */}
+      {encounter.amendedFromId && (
+        <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-900 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+          <div className="flex items-start gap-2.5">
+            <History className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold text-xs text-amber-900">
+                  Rekam Medis Ini Merupakan Hasil Amandemen / Revisi
+                </span>
+                <Badge variant="outline" className="border-amber-400 bg-amber-100 text-amber-800 text-[10px] font-semibold">
+                  Versi Aktif
+                </Badge>
+              </div>
+              {encounter.amendmentReason && (
+                <p className="text-xs text-amber-800/90 mt-0.5">
+                  <span className="font-medium">Alasan Amandemen:</span> "{encounter.amendmentReason}"
+                </p>
+              )}
+            </div>
+          </div>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => setShowAmendedModal(true)}
+            className="text-xs font-semibold border-amber-300 bg-amber-100 hover:bg-amber-200 text-amber-900 shrink-0 gap-1.5"
+          >
+            <History className="w-3.5 h-3.5" /> Lihat Arsip Sebelum Revisi
+          </Button>
         </div>
       )}
 
@@ -1983,6 +2018,15 @@ export function EncounterWorkspace({ encounterId, onBack }) {
           isOpen={showReferralPrint}
           onClose={() => setShowReferralPrint(false)}
           referralData={referralPrintData}
+        />
+      )}
+
+      {/* ─── MODAL AMANDEMEN ARSIP SEBELUM REVISI ──────────────────────────── */}
+      {encounter.amendedFromId && (
+        <AmendedHistoryModal
+          isOpen={showAmendedModal}
+          onClose={() => setShowAmendedModal(false)}
+          encounterId={encounter.amendedFromId}
         />
       )}
     </div>

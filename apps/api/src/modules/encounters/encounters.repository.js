@@ -15,7 +15,7 @@ const {
   procedures,
   users,
 } = require('../../db/schema');
-const { eq, and, desc, asc, ilike, or, sql } = require('drizzle-orm');
+const { eq, ne, and, desc, asc, ilike, or, sql } = require('drizzle-orm');
 
 // ─── 1. Get Doctor Queue (Pasien Hari Ini untuk Dokter / Poli) ────────────────
 async function getDoctorQueue({ polyclinicId, practitionerId, date } = {}) {
@@ -71,13 +71,21 @@ async function getDoctorQueue({ polyclinicId, practitionerId, date } = {}) {
       encounterId: encounters.id,
       encounterStatus: encounters.status,
       encounterStartTime: encounters.startTime,
+      encounterAmendedFromId: encounters.amendedFromId,
+      encounterAmendmentReason: encounters.amendmentReason,
     })
     .from(registrations)
     .leftJoin(patients, eq(registrations.patientId, patients.id))
     .leftJoin(polyclinics, eq(registrations.polyclinicId, polyclinics.id))
     .leftJoin(practitioners, eq(registrations.practitionerId, practitioners.id))
     .leftJoin(queues, eq(registrations.id, queues.registrationId))
-    .leftJoin(encounters, eq(registrations.id, encounters.registrationId))
+    .leftJoin(
+      encounters,
+      and(
+        eq(registrations.id, encounters.registrationId),
+        ne(encounters.status, 'AMENDED')
+      )
+    )
     .where(and(...conditions))
     .orderBy(asc(queues.queueSequence), asc(registrations.createdAt));
 
@@ -178,7 +186,13 @@ async function findEncounterByRegistrationId(registrationId) {
   const rows = await db
     .select()
     .from(encounters)
-    .where(eq(encounters.registrationId, registrationId))
+    .where(
+      and(
+        eq(encounters.registrationId, registrationId),
+        ne(encounters.status, 'AMENDED')
+      )
+    )
+    .orderBy(desc(encounters.createdAt))
     .limit(1);
   return rows[0] || null;
 }

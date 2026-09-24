@@ -333,18 +333,25 @@ export default function EncountersPage() {
                           </TableCell>
 
                           <TableCell>
-                            {item.status === 'MENUNGGU' && (
-                              <Badge variant="warning" className="text-[10px]">Menunggu</Badge>
-                            )}
-                            {item.status === 'DIPANGGIL' && (
-                              <Badge variant="info" className="text-[10px]">Dipanggil</Badge>
-                            )}
-                            {item.status === 'DIPERIKSA' && (
-                              <Badge variant="purple" className="text-[10px] animate-pulse">Sedang Diperiksa</Badge>
-                            )}
-                            {item.status === 'SELESAI' && (
-                              <Badge variant="success" className="text-[10px]">Selesai</Badge>
-                            )}
+                            <div className="flex flex-col gap-1 items-start">
+                              {item.status === 'MENUNGGU' && (
+                                <Badge variant="warning" className="text-[10px]">Menunggu</Badge>
+                              )}
+                              {item.status === 'DIPANGGIL' && (
+                                <Badge variant="info" className="text-[10px]">Dipanggil</Badge>
+                              )}
+                              {item.status === 'DIPERIKSA' && (
+                                <Badge variant="purple" className="text-[10px] animate-pulse">Sedang Diperiksa</Badge>
+                              )}
+                              {item.status === 'SELESAI' && (
+                                <Badge variant="success" className="text-[10px]">Selesai</Badge>
+                              )}
+                              {item.encounterAmendedFromId && (
+                                <Badge variant="outline" className="text-[9px] border-amber-400 bg-amber-50 text-amber-800 font-semibold px-1.5 py-0">
+                                  Revisi
+                                </Badge>
+                              )}
+                            </div>
                           </TableCell>
 
                           <TableCell className="text-right">

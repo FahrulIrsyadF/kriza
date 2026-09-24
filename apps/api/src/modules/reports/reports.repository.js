@@ -18,7 +18,7 @@ const {
   prescriptionItems,
   users,
 } = require('../../db/schema');
-const { sql, eq, and, or, gte, lte, desc, asc, count } = require('drizzle-orm');
+const { sql, eq, ne, and, or, gte, lte, desc, asc, count } = require('drizzle-orm');
 
 // ─── 1. Overview KPI Ringkasan Eksekutif ─────────────────────────────────────
 async function getOverviewStats({ startDate, endDate }) {
@@ -543,7 +543,13 @@ async function getBpjsSummaryReport({
       referredInternal: sql`COUNT(CASE WHEN ${encounterReferrals.referralType} = 'INTERNAL' THEN 1 END)`,
     })
     .from(registrations)
-    .leftJoin(encounters, eq(registrations.id, encounters.registrationId))
+    .leftJoin(
+      encounters,
+      and(
+        eq(registrations.id, encounters.registrationId),
+        ne(encounters.status, 'AMENDED')
+      )
+    )
     .leftJoin(encounterReferrals, eq(encounters.id, encounterReferrals.encounterId))
     .where(whereClause);
 
@@ -588,7 +594,13 @@ async function getBpjsSummaryReport({
     .innerJoin(patients, eq(registrations.patientId, patients.id))
     .innerJoin(polyclinics, eq(registrations.polyclinicId, polyclinics.id))
     .leftJoin(practitioners, eq(registrations.practitionerId, practitioners.id))
-    .leftJoin(encounters, eq(registrations.id, encounters.registrationId))
+    .leftJoin(
+      encounters,
+      and(
+        eq(registrations.id, encounters.registrationId),
+        ne(encounters.status, 'AMENDED')
+      )
+    )
     .leftJoin(encounterReferrals, eq(encounters.id, encounterReferrals.encounterId))
     .where(whereClause)
     .orderBy(desc(registrations.registrationDate), desc(registrations.createdAt))
