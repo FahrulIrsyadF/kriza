@@ -595,6 +595,67 @@ export function EncounterWorkspace({ encounterId, onBack }) {
     setTimeout(() => setSaveSuccessMsg(''), 4000);
   };
 
+  // ─── Memoized Select Options (Harus diletakkan di top-level sebelum early return) ───
+  const icd10Options = useMemo(() => {
+    return icd10List.map((i) => ({
+      id: i.code,
+      name: `${i.code} — ${i.nameEn}${i.nameId ? ` (${i.nameId})` : ''}`,
+      raw: i,
+    }));
+  }, [icd10List]);
+
+  // Ambil tarif tindakan. Utamakan tarif penjamin jika bernilai > 0.
+  // Jika tarif penjamin bernilai 0 atau belum ada, fallback ke tarif UMUM agar harga asli tindakan tetap tampil.
+  const rawInsurance = (encounter?.paymentMethod || encounter?.patientInsuranceType || 'UMUM').toUpperCase();
+  const patientInsuranceType = rawInsurance === 'ASURANSI_SWASTA' ? 'ASURANSI' : rawInsurance;
+
+  const procedureOptions = useMemo(() => {
+    return procedureList.map((p) => {
+      const rates = p.rates || [];
+      const matchedInsuranceRate = rates.find((r) => r.rateTypeCode?.toUpperCase() === patientInsuranceType);
+      const umumRate = rates.find((r) => r.rateTypeCode?.toUpperCase() === 'UMUM');
+      const firstRateWithTariff = rates.find((r) => Number(r.tariff || 0) > 0);
+
+      let tariff = 0;
+      if (matchedInsuranceRate && Number(matchedInsuranceRate.tariff || 0) > 0) {
+        tariff = Number(matchedInsuranceRate.tariff);
+      } else if (umumRate && Number(umumRate.tariff || 0) > 0) {
+        tariff = Number(umumRate.tariff);
+      } else if (firstRateWithTariff) {
+        tariff = Number(firstRateWithTariff.tariff);
+      } else if (matchedInsuranceRate) {
+        tariff = Number(matchedInsuranceRate.tariff || 0);
+      } else if (umumRate) {
+        tariff = Number(umumRate.tariff || 0);
+      } else if (rates[0]) {
+        tariff = Number(rates[0].tariff || 0);
+      }
+
+      return {
+        id: p.id,
+        code: p.code,
+        name: `${p.code ? p.code + ' - ' : ''}${p.name} (Rp ${tariff.toLocaleString('id-ID')})`,
+        procedureName: p.name,
+        tariff,
+        raw: {
+          ...p,
+          tariff,
+        },
+      };
+    });
+  }, [procedureList, patientInsuranceType]);
+
+  const polyclinicOptions = useMemo(() => {
+    return polyclinicList.map((p) => ({ id: p.id, name: p.name }));
+  }, [polyclinicList]);
+
+  const practitionerOptions = useMemo(() => {
+    return practitionerList.map((p) => ({
+      id: p.id,
+      name: `${p.title ? p.title + ' ' : ''}${p.name}`,
+    }));
+  }, [practitionerList]);
+
   // ─── Handlers & Auto-Sync ─────────────────────────────────────────────────────
   // PERBAIKAN: Input TTV otomatis masuk ke O (Objektif) pada SOAP dengan smart merge
   const handleTtvChange = (field, value) => {
@@ -773,65 +834,6 @@ export function EncounterWorkspace({ encounterId, onBack }) {
   const isAmended = encounter.status === 'AMENDED';
   const bmiInfo = calculateBMI(ttvForm.weight, ttvForm.height);
 
-  const icd10Options = useMemo(() => {
-    return icd10List.map((i) => ({
-      id: i.code,
-      name: `${i.code} — ${i.nameEn} ${i.nameId ? `(${i.nameId})` : ''}`,
-      raw: i,
-    }));
-  }, [icd10List]);
-
-  // PERBAIKAN: Ambil tarif tindakan. Utamakan tarif penjamin jika bernilai > 0.
-  // Jika tarif penjamin bernilai 0 (seperti BPJS di master) atau belum ada, fallback ke tarif UMUM agar harga asli tindakan tetap tampil di dropdown.
-  const rawInsurance = (encounter?.paymentMethod || encounter?.patientInsuranceType || 'UMUM').toUpperCase();
-  const patientInsuranceType = rawInsurance === 'ASURANSI_SWASTA' ? 'ASURANSI' : rawInsurance;
-
-  const procedureOptions = useMemo(() => {
-    return procedureList.map((p) => {
-      const rates = p.rates || [];
-      const matchedInsuranceRate = rates.find((r) => r.rateTypeCode?.toUpperCase() === patientInsuranceType);
-      const umumRate = rates.find((r) => r.rateTypeCode?.toUpperCase() === 'UMUM');
-      const firstRateWithTariff = rates.find((r) => Number(r.tariff || 0) > 0);
-
-      let tariff = 0;
-      if (matchedInsuranceRate && Number(matchedInsuranceRate.tariff || 0) > 0) {
-        tariff = Number(matchedInsuranceRate.tariff);
-      } else if (umumRate && Number(umumRate.tariff || 0) > 0) {
-        tariff = Number(umumRate.tariff);
-      } else if (firstRateWithTariff) {
-        tariff = Number(firstRateWithTariff.tariff);
-      } else if (matchedInsuranceRate) {
-        tariff = Number(matchedInsuranceRate.tariff || 0);
-      } else if (umumRate) {
-        tariff = Number(umumRate.tariff || 0);
-      } else if (rates[0]) {
-        tariff = Number(rates[0].tariff || 0);
-      }
-
-      return {
-        id: p.id,
-        code: p.code,
-        name: `${p.code ? p.code + ' - ' : ''}${p.name} (Rp ${tariff.toLocaleString('id-ID')})`,
-        procedureName: p.name,
-        tariff,
-        raw: {
-          ...p,
-          tariff,
-        },
-      };
-    });
-  }, [procedureList, patientInsuranceType]);
-
-  const polyclinicOptions = useMemo(() => {
-    return polyclinicList.map((p) => ({ id: p.id, name: p.name }));
-  }, [polyclinicList]);
-
-  const practitionerOptions = useMemo(() => {
-    return practitionerList.map((p) => ({
-      id: p.id,
-      name: `${p.title ? p.title + ' ' : ''}${p.name}`,
-    }));
-  }, [practitionerList]);
 
   return (
     <div className="space-y-4">
