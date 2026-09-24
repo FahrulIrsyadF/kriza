@@ -98,7 +98,7 @@ const updateDrugSchema = createDrugSchema.partial();
 // ─── Query Params Filter Schema ──────────────────────────────────────────────
 const listQuerySchema = z.object({
   page: z.coerce.number().int().positive().default(1),
-  limit: z.coerce.number().int().positive().max(100).default(20),
+  limit: z.coerce.number().int().positive().max(1000).default(20),
   search: z.string().optional(),
   polyclinicId: z.string().uuid().optional(),
   category: z.string().optional(),

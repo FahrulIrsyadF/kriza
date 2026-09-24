@@ -294,28 +294,44 @@ export function EncounterWorkspace({ encounterId, onBack }) {
   // Query Master ICD-10
   const { data: icd10List = [] } = useQuery({
     queryKey: ['master-icd10-all'],
-    queryFn: () => apiClient.get('/master/icd10', { params: { limit: 200 } }).then((r) => r.data.data.items),
+    queryFn: () =>
+      apiClient.get('/master/icd10', { params: { limit: 200 } }).then((r) => {
+        const d = r.data?.data;
+        return Array.isArray(d) ? d : (d?.items || []);
+      }),
     staleTime: 300000,
   });
 
   // Query Master Procedures (limit dinaikkan agar seluruh master tindakan terambil)
   const { data: procedureList = [] } = useQuery({
     queryKey: ['master-procedures-all'],
-    queryFn: () => apiClient.get('/master/procedures', { params: { limit: 500 } }).then((r) => r.data.data.items),
+    queryFn: () =>
+      apiClient.get('/master/procedures', { params: { limit: 500 } }).then((r) => {
+        const d = r.data?.data;
+        return Array.isArray(d) ? d : (d?.items || []);
+      }),
     staleTime: 300000,
   });
 
   // Query Master Poliklinik (untuk rujukan internal)
   const { data: polyclinicList = [] } = useQuery({
     queryKey: ['master-polyclinics-all'],
-    queryFn: () => apiClient.get('/master/polyclinics', { params: { limit: 50 } }).then((r) => r.data.data.items),
+    queryFn: () =>
+      apiClient.get('/master/polyclinics', { params: { limit: 50 } }).then((r) => {
+        const d = r.data?.data;
+        return Array.isArray(d) ? d : (d?.items || []);
+      }),
     staleTime: 300000,
   });
 
   // Query Master Dokter (untuk rujukan internal)
   const { data: practitionerList = [] } = useQuery({
     queryKey: ['master-practitioners-all'],
-    queryFn: () => apiClient.get('/master/practitioners', { params: { limit: 50 } }).then((r) => r.data.data.items),
+    queryFn: () =>
+      apiClient.get('/master/practitioners', { params: { limit: 50 } }).then((r) => {
+        const d = r.data?.data;
+        return Array.isArray(d) ? d : (d?.items || []);
+      }),
     staleTime: 300000,
   });
 
@@ -525,7 +541,7 @@ export function EncounterWorkspace({ encounterId, onBack }) {
       flashSuccess('Tindakan medis berhasil ditambahkan');
     },
     onError: (err) => {
-      dialog.alert(err.response?.data?.message || err.message || 'Gagal menambahkan tindakan medis', {
+      dialog.alert(err.response?.data?.error?.message || err.response?.data?.message || err.message || 'Gagal menambahkan tindakan medis', {
         title: 'Gagal Menambah Tindakan',
         variant: 'danger',
       });
@@ -539,7 +555,7 @@ export function EncounterWorkspace({ encounterId, onBack }) {
       flashSuccess('Tindakan medis berhasil dihapus');
     },
     onError: (err) => {
-      dialog.alert(err.response?.data?.message || err.message || 'Gagal menghapus tindakan medis', {
+      dialog.alert(err.response?.data?.error?.message || err.response?.data?.message || err.message || 'Gagal menghapus tindakan medis', {
         title: 'Gagal Menghapus Tindakan',
         variant: 'danger',
       });

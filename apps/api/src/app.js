@@ -148,6 +148,17 @@ function buildApp(opts = {}) {
       });
     }
 
+    if (error.name === 'ZodError') {
+      return reply.status(400).send({
+        success: false,
+        error: {
+          code: 'VALIDATION_ERROR',
+          message: error.issues?.[0]?.message || 'Input tidak valid',
+          details: error.issues,
+        },
+      });
+    }
+
     if (error.statusCode) {
       return reply.status(error.statusCode).send({
         success: false,
