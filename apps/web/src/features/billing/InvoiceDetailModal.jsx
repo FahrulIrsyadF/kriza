@@ -64,7 +64,7 @@ export function InvoiceDetailModal({ invoiceId, onClose, onPay, onPrintReceipt, 
 
     setIsSyncing(true);
     try {
-      const res = await apiClient.post(`/billing/invoices/sync/${invoice.registrationId}`);
+      const res = await apiClient.post(`/billing/invoices/sync/${invoice.registrationId}`, {});
       setInvoice(res.data.data);
       setDiscountVal(parseFloat(res.data.data.discountAmount || '0'));
       dialog.alert('Tagihan berhasil disinkronkan dari tindakan medis poli dan resep farmasi terbaru.', {

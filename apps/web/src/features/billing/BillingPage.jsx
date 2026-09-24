@@ -109,7 +109,7 @@ export default function BillingPage() {
 
     setSyncingRegId(registrationId);
     try {
-      await apiClient.post(`/billing/invoices/sync/${registrationId}`);
+      await apiClient.post(`/billing/invoices/sync/${registrationId}`, {});
       await handleRefresh();
       dialog.alert(
         `Tagihan ${invoiceNumber ? `(${invoiceNumber})` : ''} berhasil disinkronkan dari tindakan medis poli dan resep obat farmasi terbaru.`,
