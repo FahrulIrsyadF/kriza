@@ -12,7 +12,7 @@ const {
   patients,
   polyclinics,
 } = require('../../db/schema');
-const { eq, and, sql } = require('drizzle-orm');
+const { eq, and, ne, desc, or, sql } = require('drizzle-orm');
 const { logAudit } = require('../../shared/utils/audit');
 
 // ─── 1. Dashboard Stats ────────────────────────────────────────────────────────
@@ -67,14 +67,21 @@ async function generateOrSyncInvoice(registrationId, { userId, ipAddress, userAg
       return existingInvoice; // Sudah lunas, tidak boleh dioverwrite
     }
 
-    // 3. Ambil data encounter jika ada
+    // 3. Ambil data encounter aktif / terbaru (abaikan versi lama yang AMENDED)
     const encRows = await tx
       .select({
         id: encounters.id,
         status: encounters.status,
+        amendedFromId: encounters.amendedFromId,
       })
       .from(encounters)
-      .where(eq(encounters.registrationId, registrationId))
+      .where(
+        and(
+          eq(encounters.registrationId, registrationId),
+          ne(encounters.status, 'AMENDED')
+        )
+      )
+      .orderBy(desc(encounters.createdAt))
       .limit(1);
 
     const encounter = encRows[0] || null;
@@ -111,10 +118,14 @@ async function generateOrSyncInvoice(registrationId, { userId, ipAddress, userAg
       }
 
       // 5. Kumpulkan item obat dari prescriptions dan prescription_items
+      const prescCondition = encounter.amendedFromId
+        ? or(eq(prescriptions.encounterId, encounter.id), eq(prescriptions.encounterId, encounter.amendedFromId))
+        : eq(prescriptions.encounterId, encounter.id);
+
       const prescRows = await tx
         .select({ id: prescriptions.id })
         .from(prescriptions)
-        .where(eq(prescriptions.encounterId, encounter.id));
+        .where(prescCondition);
 
       for (const p of prescRows) {
         const drugItems = await tx
