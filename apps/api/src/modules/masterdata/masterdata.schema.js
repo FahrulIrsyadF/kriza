@@ -80,7 +80,7 @@ const updateLabProcedureSchema = createLabProcedureSchema.partial();
 
 // ─── Drug Schemas ────────────────────────────────────────────────────────────
 const createDrugSchema = z.object({
-  code: z.string().min(2).max(50).toUpperCase(),
+  code: z.string().min(2).max(50).toUpperCase().optional(),
   name: z.string().min(2).max(255),
   genericName: z.string().max(255).optional().nullable(),
   category: z.string().min(2).max(50).default('Obat Bebas'),

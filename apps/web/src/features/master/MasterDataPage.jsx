@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
@@ -18,6 +18,8 @@ import {
   Users,
   FlaskConical,
   X,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import apiClient from '@/lib/api-client';
 import AppLayout from '@/components/layout/AppLayout';
@@ -74,6 +76,106 @@ export default function MasterDataPage() {
   const [labModal, setLabModal] = useState({ open: false, mode: 'create', data: null });
   const [labFees, setLabFees] = useState({});
 
+  // ─── Pagination States (Drugs, Procedures, Lab) ───────────────────────────
+  const [drugsPage, setDrugsPage] = useState(() => {
+    const p = parseInt(searchParams.get('page') || '1', 10);
+    return isNaN(p) || p < 1 ? 1 : p;
+  });
+  const [drugsLimit, setDrugsLimit] = useState(20);
+
+  const [proceduresPage, setProceduresPage] = useState(() => {
+    const p = parseInt(searchParams.get('page') || '1', 10);
+    return isNaN(p) || p < 1 ? 1 : p;
+  });
+  const [proceduresLimit, setProceduresLimit] = useState(20);
+
+  const [labPage, setLabPage] = useState(() => {
+    const p = parseInt(searchParams.get('page') || '1', 10);
+    return isNaN(p) || p < 1 ? 1 : p;
+  });
+  const [labLimit, setLabLimit] = useState(20);
+
+  // Reset page saat pencarian atau filter kategori lab berubah
+  useEffect(() => {
+    setDrugsPage(1);
+    setProceduresPage(1);
+    setLabPage(1);
+  }, [activeSearchQuery, labCategory]);
+
+  // Sinkronisasi page dari searchParams saat aktif di tab terkait
+  useEffect(() => {
+    const p = parseInt(searchParams.get('page') || '1', 10);
+    const validPage = isNaN(p) || p < 1 ? 1 : p;
+    if (activeTab === 'drugs') setDrugsPage(validPage);
+    if (activeTab === 'procedures') setProceduresPage(validPage);
+    if (activeTab === 'lab') setLabPage(validPage);
+  }, [activeTab, searchParams]);
+
+  const handleDrugsPageChange = (newPage) => {
+    const pageVal = typeof newPage === 'function' ? newPage(drugsPage) : newPage;
+    setDrugsPage(pageVal);
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (pageVal > 1) {
+        next.set('page', String(pageVal));
+      } else {
+        next.delete('page');
+      }
+      return next;
+    }, { replace: true });
+  };
+
+  const handleProceduresPageChange = (newPage) => {
+    const pageVal = typeof newPage === 'function' ? newPage(proceduresPage) : newPage;
+    setProceduresPage(pageVal);
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (pageVal > 1) {
+        next.set('page', String(pageVal));
+      } else {
+        next.delete('page');
+      }
+      return next;
+    }, { replace: true });
+  };
+
+  const handleLabPageChange = (newPage) => {
+    const pageVal = typeof newPage === 'function' ? newPage(labPage) : newPage;
+    setLabPage(pageVal);
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (pageVal > 1) {
+        next.set('page', String(pageVal));
+      } else {
+        next.delete('page');
+      }
+      return next;
+    }, { replace: true });
+  };
+
+  // ─── Next Drug Code Query & Handler ─────────────────────────────────────────
+  const { data: nextDrugCode } = useQuery({
+    queryKey: ['next-drug-code'],
+    queryFn: async () => {
+      const res = await apiClient.get('/master/drugs/next-code');
+      return res.data.data.nextCode;
+    },
+    enabled: activeTab === 'drugs',
+  });
+
+  const handleOpenCreateDrugModal = async () => {
+    let code = nextDrugCode;
+    if (!code) {
+      try {
+        const res = await apiClient.get('/master/drugs/next-code');
+        code = res.data.data.nextCode;
+      } catch (err) {
+        console.error('Gagal mengambil kode obat berikutnya:', err);
+      }
+    }
+    setDrugModal({ open: true, mode: 'create', data: { code: code || '' } });
+  };
+
   // ─── Queries ────────────────────────────────────────────────────────────────
   const { data: polyclinicsData, isLoading: loadingPolys } = useQuery({
     queryKey: ['polyclinics', activeSearchQuery],
@@ -111,34 +213,78 @@ export default function MasterDataPage() {
     enabled: activeTab === 'practitioners',
   });
 
-  const { data: proceduresData, isLoading: loadingProcedures } = useQuery({
-    queryKey: ['procedures', activeSearchQuery],
+  const { data: proceduresResponse, isLoading: loadingProcedures, isFetching: fetchingProcedures } = useQuery({
+    queryKey: ['procedures', activeSearchQuery, proceduresPage, proceduresLimit],
     queryFn: async () => {
-      const res = await apiClient.get('/master/procedures', { params: { search: activeSearchQuery } });
-      return res.data.data.items;
+      const res = await apiClient.get('/master/procedures', {
+        params: {
+          search: activeSearchQuery,
+          page: proceduresPage,
+          limit: proceduresLimit,
+        },
+      });
+      return res.data.data;
     },
     enabled: activeTab === 'procedures',
+    placeholderData: (previousData) => previousData,
   });
 
-  const { data: labData, isLoading: loadingLab } = useQuery({
-    queryKey: ['lab-procedures', activeSearchQuery, labCategory],
+  const proceduresData = proceduresResponse?.items || [];
+  const proceduresPagination = proceduresResponse?.pagination || {
+    page: proceduresPage,
+    limit: proceduresLimit,
+    total: 0,
+    totalPages: 1,
+  };
+
+  const { data: labResponse, isLoading: loadingLab, isFetching: fetchingLab } = useQuery({
+    queryKey: ['lab-procedures', activeSearchQuery, labCategory, labPage, labLimit],
     queryFn: async () => {
       const res = await apiClient.get('/master/lab-procedures', {
-        params: { search: activeSearchQuery, limit: 100, ...(labCategory ? { category: labCategory } : {}) },
+        params: {
+          search: activeSearchQuery,
+          page: labPage,
+          limit: labLimit,
+          ...(labCategory ? { category: labCategory } : {}),
+        },
       });
-      return res.data.data.items;
+      return res.data.data;
     },
     enabled: activeTab === 'lab',
+    placeholderData: (previousData) => previousData,
   });
 
-  const { data: drugsData, isLoading: loadingDrugs } = useQuery({
-    queryKey: ['drugs', activeSearchQuery],
+  const labData = labResponse?.items || [];
+  const labPagination = labResponse?.pagination || {
+    page: labPage,
+    limit: labLimit,
+    total: 0,
+    totalPages: 1,
+  };
+
+  const { data: drugsResponse, isLoading: loadingDrugs, isFetching: fetchingDrugs } = useQuery({
+    queryKey: ['drugs', activeSearchQuery, drugsPage, drugsLimit],
     queryFn: async () => {
-      const res = await apiClient.get('/master/drugs', { params: { search: activeSearchQuery } });
-      return res.data.data.items;
+      const res = await apiClient.get('/master/drugs', {
+        params: {
+          search: activeSearchQuery,
+          page: drugsPage,
+          limit: drugsLimit,
+        },
+      });
+      return res.data.data;
     },
     enabled: activeTab === 'drugs',
+    placeholderData: (previousData) => previousData,
   });
+
+  const drugsData = drugsResponse?.items || [];
+  const drugsPagination = drugsResponse?.pagination || {
+    page: drugsPage,
+    limit: drugsLimit,
+    total: 0,
+    totalPages: 1,
+  };
 
   const { data: icd10Data, isLoading: loadingIcd10 } = useQuery({
     queryKey: ['icd10', activeSearchQuery],
@@ -206,6 +352,7 @@ export default function MasterDataPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['drugs'] });
+      queryClient.invalidateQueries({ queryKey: ['next-drug-code'] });
       setDrugModal({ open: false, mode: 'create', data: null });
     },
   });
@@ -414,7 +561,7 @@ export default function MasterDataPage() {
                   if (activeTab === 'polyclinics') setPolyModal({ open: true, mode: 'create', data: null });
                   if (activeTab === 'practitioners') setPractitionerModal({ open: true, mode: 'create', data: null });
                   if (activeTab === 'procedures') setProcedureModal({ open: true, mode: 'create', data: null });
-                  if (activeTab === 'drugs') setDrugModal({ open: true, mode: 'create', data: null });
+                  if (activeTab === 'drugs') handleOpenCreateDrugModal();
                   if (activeTab === 'lab') { setLabFees({}); setLabModal({ open: true, mode: 'create', data: null }); }
                 }}
                 className="w-full sm:w-auto gap-2"
@@ -756,7 +903,7 @@ export default function MasterDataPage() {
                       const tarifUmum = proc.rates?.find((r) => r.rateTypeCode === 'UMUM')?.tariff || 0;
                       const tarifBpjs = proc.rates?.find((r) => r.rateTypeCode === 'BPJS')?.tariff || 0;
                       return (
-                        <TableRow key={proc.id}>
+                        <TableRow key={proc.id} className={fetchingProcedures ? 'opacity-60 transition-opacity' : 'transition-opacity'}>
                           <TableCell className="font-mono text-xs">{proc.code}</TableCell>
                           <TableCell className="font-medium">{proc.name}</TableCell>
                           <TableCell>
@@ -813,6 +960,72 @@ export default function MasterDataPage() {
                 </TableBody>
               </Table>
             </CardContent>
+
+            {/* Pagination Controls */}
+            {proceduresPagination.total > 0 && (
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 border-t border-border bg-muted/10 text-xs text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-4">
+                  <span>
+                    Menampilkan{' '}
+                    <span className="font-medium text-foreground">
+                      {(proceduresPagination.page - 1) * proceduresPagination.limit + 1}
+                    </span>
+                    -
+                    <span className="font-medium text-foreground">
+                      {Math.min(proceduresPagination.page * proceduresPagination.limit, proceduresPagination.total)}
+                    </span>{' '}
+                    dari{' '}
+                    <span className="font-medium text-foreground">
+                      {proceduresPagination.total}
+                    </span>{' '}
+                    tindakan
+                  </span>
+
+                  <div className="flex items-center gap-1.5 text-xs">
+                    <span>Per halaman:</span>
+                    <select
+                      value={proceduresLimit}
+                      onChange={(e) => {
+                        setProceduresLimit(Number(e.target.value));
+                        handleProceduresPageChange(1);
+                      }}
+                      className="h-7 rounded-md border border-input bg-background px-2 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    >
+                      <option value={10}>10</option>
+                      <option value={20}>20</option>
+                      <option value={50}>50</option>
+                      <option value={100}>100</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                  <Button
+                    variant="outline"
+                    size="xs"
+                    disabled={proceduresPagination.page <= 1 || fetchingProcedures}
+                    onClick={() => handleProceduresPageChange((p) => Math.max(1, p - 1))}
+                    className="h-7 gap-1 px-2.5"
+                  >
+                    <ChevronLeft className="w-3.5 h-3.5" />
+                    <span>Sebelumnya</span>
+                  </Button>
+                  <span className="px-2 font-medium text-foreground">
+                    Halaman {proceduresPagination.page} dari {proceduresPagination.totalPages || 1}
+                  </span>
+                  <Button
+                    variant="outline"
+                    size="xs"
+                    disabled={proceduresPagination.page >= proceduresPagination.totalPages || fetchingProcedures}
+                    onClick={() => handleProceduresPageChange((p) => p + 1)}
+                    className="h-7 gap-1 px-2.5"
+                  >
+                    <span>Selanjutnya</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </Button>
+                </div>
+              </div>
+            )}
           </Card>
         )}
 
@@ -876,7 +1089,7 @@ export default function MasterDataPage() {
                     </TableRow>
                   ) : (
                     labData?.map((lab) => (
-                      <TableRow key={lab.id} className={lab.isActive ? '' : 'opacity-50'}>
+                      <TableRow key={lab.id} className={`${lab.isActive ? '' : 'opacity-50'} ${fetchingLab ? 'opacity-60 transition-opacity' : 'transition-opacity'}`}>
                         <TableCell className="font-mono text-xs">{lab.code}</TableCell>
                         <TableCell className="font-medium">
                           {lab.name}
@@ -910,6 +1123,72 @@ export default function MasterDataPage() {
                 </TableBody>
               </Table>
             </CardContent>
+
+            {/* Pagination Controls */}
+            {labPagination.total > 0 && (
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 border-t border-border bg-muted/10 text-xs text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-4">
+                  <span>
+                    Menampilkan{' '}
+                    <span className="font-medium text-foreground">
+                      {(labPagination.page - 1) * labPagination.limit + 1}
+                    </span>
+                    -
+                    <span className="font-medium text-foreground">
+                      {Math.min(labPagination.page * labPagination.limit, labPagination.total)}
+                    </span>{' '}
+                    dari{' '}
+                    <span className="font-medium text-foreground">
+                      {labPagination.total}
+                    </span>{' '}
+                    pemeriksaan
+                  </span>
+
+                  <div className="flex items-center gap-1.5 text-xs">
+                    <span>Per halaman:</span>
+                    <select
+                      value={labLimit}
+                      onChange={(e) => {
+                        setLabLimit(Number(e.target.value));
+                        handleLabPageChange(1);
+                      }}
+                      className="h-7 rounded-md border border-input bg-background px-2 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    >
+                      <option value={10}>10</option>
+                      <option value={20}>20</option>
+                      <option value={50}>50</option>
+                      <option value={100}>100</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                  <Button
+                    variant="outline"
+                    size="xs"
+                    disabled={labPagination.page <= 1 || fetchingLab}
+                    onClick={() => handleLabPageChange((p) => Math.max(1, p - 1))}
+                    className="h-7 gap-1 px-2.5"
+                  >
+                    <ChevronLeft className="w-3.5 h-3.5" />
+                    <span>Sebelumnya</span>
+                  </Button>
+                  <span className="px-2 font-medium text-foreground">
+                    Halaman {labPagination.page} dari {labPagination.totalPages || 1}
+                  </span>
+                  <Button
+                    variant="outline"
+                    size="xs"
+                    disabled={labPagination.page >= labPagination.totalPages || fetchingLab}
+                    onClick={() => handleLabPageChange((p) => p + 1)}
+                    className="h-7 gap-1 px-2.5"
+                  >
+                    <span>Selanjutnya</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </Button>
+                </div>
+              </div>
+            )}
           </Card>
         )}
 
@@ -985,6 +1264,72 @@ export default function MasterDataPage() {
                 </TableBody>
               </Table>
             </CardContent>
+
+            {/* Pagination Controls */}
+            {drugsPagination.total > 0 && (
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 border-t border-border bg-muted/10 text-xs text-muted-foreground">
+                <div className="flex flex-wrap items-center gap-4">
+                  <span>
+                    Menampilkan{' '}
+                    <span className="font-medium text-foreground">
+                      {(drugsPagination.page - 1) * drugsPagination.limit + 1}
+                    </span>
+                    -
+                    <span className="font-medium text-foreground">
+                      {Math.min(drugsPagination.page * drugsPagination.limit, drugsPagination.total)}
+                    </span>{' '}
+                    dari{' '}
+                    <span className="font-medium text-foreground">
+                      {drugsPagination.total}
+                    </span>{' '}
+                    obat
+                  </span>
+
+                  <div className="flex items-center gap-1.5 text-xs">
+                    <span>Per halaman:</span>
+                    <select
+                      value={drugsLimit}
+                      onChange={(e) => {
+                        setDrugsLimit(Number(e.target.value));
+                        handleDrugsPageChange(1);
+                      }}
+                      className="h-7 rounded-md border border-input bg-background px-2 text-xs focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                    >
+                      <option value={10}>10</option>
+                      <option value={20}>20</option>
+                      <option value={50}>50</option>
+                      <option value={100}>100</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                  <Button
+                    variant="outline"
+                    size="xs"
+                    disabled={drugsPagination.page <= 1 || fetchingDrugs}
+                    onClick={() => handleDrugsPageChange((p) => Math.max(1, p - 1))}
+                    className="h-7 gap-1 px-2.5"
+                  >
+                    <ChevronLeft className="w-3.5 h-3.5" />
+                    <span>Sebelumnya</span>
+                  </Button>
+                  <span className="px-2 font-medium text-foreground">
+                    Halaman {drugsPagination.page} dari {drugsPagination.totalPages || 1}
+                  </span>
+                  <Button
+                    variant="outline"
+                    size="xs"
+                    disabled={drugsPagination.page >= drugsPagination.totalPages || fetchingDrugs}
+                    onClick={() => handleDrugsPageChange((p) => p + 1)}
+                    className="h-7 gap-1 px-2.5"
+                  >
+                    <span>Selanjutnya</span>
+                    <ChevronRight className="w-3.5 h-3.5" />
+                  </Button>
+                </div>
+              </div>
+            )}
           </Card>
         )}
 
@@ -1056,15 +1401,15 @@ export default function MasterDataPage() {
         >
           <div>
             <label className="text-xs font-semibold block mb-1">Kode Poliklinik</label>
-            <Input name="code" defaultValue={polyModal.data?.code || ''} placeholder="POLI-CONTOH" required uppercase />
+            <Input name="code" defaultValue={polyModal.data?.code || ''} required uppercase />
           </div>
           <div>
             <label className="text-xs font-semibold block mb-1">Nama Poliklinik</label>
-            <Input name="name" defaultValue={polyModal.data?.name || ''} placeholder="Poli Kebidanan" required />
+            <Input name="name" defaultValue={polyModal.data?.name || ''} required />
           </div>
           <div>
             <label className="text-xs font-semibold block mb-1">Deskripsi</label>
-            <Input name="description" defaultValue={polyModal.data?.description || ''} placeholder="Pelayanan..." />
+            <Input name="description" defaultValue={polyModal.data?.description || ''} />
           </div>
           <div className="flex items-center gap-2 pt-2">
             <input
@@ -1122,7 +1467,7 @@ export default function MasterDataPage() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-xs font-semibold block mb-1">Kode Pemeriksaan</label>
-              <Input name="code" defaultValue={labModal.data?.code || ''} placeholder="100-RJ" required />
+              <Input name="code" defaultValue={labModal.data?.code || ''} required />
             </div>
             <div>
               <label className="text-xs font-semibold block mb-1">Kategori</label>
@@ -1140,7 +1485,7 @@ export default function MasterDataPage() {
 
           <div>
             <label className="text-xs font-semibold block mb-1">Nama Pemeriksaan</label>
-            <Input name="name" defaultValue={labModal.data?.name || ''} placeholder="Hematologi Darah Rutin" required />
+            <Input name="name" defaultValue={labModal.data?.name || ''} required />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -1282,16 +1627,16 @@ export default function MasterDataPage() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-xs font-semibold block mb-1">Kode</label>
-              <Input name="code" defaultValue={practitionerModal.data?.code || ''} placeholder="DR-004" required />
+              <Input name="code" defaultValue={practitionerModal.data?.code || ''} required />
             </div>
             <div>
               <label className="text-xs font-semibold block mb-1">Gelar (dr./drg./dll)</label>
-              <Input name="title" defaultValue={practitionerModal.data?.title || 'dr.'} placeholder="dr." />
+              <Input name="title" defaultValue={practitionerModal.data?.title || 'dr.'} />
             </div>
           </div>
           <div>
             <label className="text-xs font-semibold block mb-1">Nama Lengkap</label>
-            <Input name="name" defaultValue={practitionerModal.data?.name || ''} placeholder="dr. Budi Santoso" required />
+            <Input name="name" defaultValue={practitionerModal.data?.name || ''} required />
           </div>
           <div>
             <label className="text-xs font-semibold block mb-1">Spesialisasi</label>
@@ -1299,7 +1644,7 @@ export default function MasterDataPage() {
           </div>
           <div>
             <label className="text-xs font-semibold block mb-1">Nomor SIP</label>
-            <Input name="sip" defaultValue={practitionerModal.data?.sip || ''} placeholder="503/SIP/..." />
+            <Input name="sip" defaultValue={practitionerModal.data?.sip || ''} />
           </div>
           <DialogFooter>
             <Button type="button" variant="outline" onClick={() => setPractitionerModal({ ...practitionerModal, open: false })}>
@@ -1348,7 +1693,6 @@ export default function MasterDataPage() {
               <Input
                 name="code"
                 defaultValue={procedureModal.data?.code || ''}
-                placeholder="PRC-UM-001"
                 className="font-mono text-xs uppercase"
                 required
               />
@@ -1358,7 +1702,6 @@ export default function MasterDataPage() {
               <Input
                 name="category"
                 defaultValue={procedureModal.data?.category || 'Tindakan Medis'}
-                placeholder="Tindakan Medis, Konsultasi, dll"
                 className="text-xs"
                 required
               />
@@ -1370,7 +1713,6 @@ export default function MasterDataPage() {
             <Input
               name="name"
               defaultValue={procedureModal.data?.name || ''}
-              placeholder="Contoh: Jahit Luka Ringan (1-3 Jahitan)"
               className="text-xs"
               required
             />
@@ -1500,7 +1842,12 @@ export default function MasterDataPage() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-xs font-semibold block mb-1">Kode Obat</label>
-              <Input name="code" defaultValue={drugModal.data?.code || ''} placeholder="OBT-011" required />
+              <Input
+                key={drugModal.open ? (drugModal.data?.code || 'new-drug') : 'closed'}
+                name="code"
+                defaultValue={drugModal.data?.code || ''}
+                required
+              />
             </div>
             <div>
               <label className="text-xs font-semibold block mb-1">Satuan</label>
@@ -1518,11 +1865,11 @@ export default function MasterDataPage() {
           </div>
           <div>
             <label className="text-xs font-semibold block mb-1">Nama Dagang Obat</label>
-            <Input name="name" defaultValue={drugModal.data?.name || ''} placeholder="Amoxicillin 500 mg" required />
+            <Input name="name" defaultValue={drugModal.data?.name || ''} required />
           </div>
           <div>
             <label className="text-xs font-semibold block mb-1">Nama Generik</label>
-            <Input name="genericName" defaultValue={drugModal.data?.genericName || ''} placeholder="Amoxicillin Trihydrate" />
+            <Input name="genericName" defaultValue={drugModal.data?.genericName || ''} />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>

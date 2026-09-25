@@ -518,11 +518,29 @@ async function getDrugById(id) {
   return result[0] || null;
 }
 
+async function getNextDrugCode() {
+  const result = await db.execute(
+    sql`SELECT MAX(CAST(SUBSTRING(code FROM 5) AS INTEGER)) AS max_code
+        FROM drugs
+        WHERE code ~ '^OBT-[0-9]+$'`
+  );
+
+  const maxCode = result.rows?.[0]?.max_code ?? result[0]?.max_code ?? null;
+  const nextSeq = maxCode ? parseInt(maxCode, 10) + 1 : 1;
+  return `OBT-${String(nextSeq).padStart(3, '0')}`;
+}
+
 async function createDrug(data) {
+  let code = data.code;
+  if (!code) {
+    code = await getNextDrugCode();
+  }
+
   const [created] = await db
     .insert(drugs)
     .values({
       ...data,
+      code,
       basePrice: String(data.basePrice || 0),
       sellingPrice: String(data.sellingPrice || 0),
     })
@@ -599,6 +617,7 @@ module.exports = {
   getDrugUnits,
   getDrugs,
   getDrugById,
+  getNextDrugCode,
   createDrug,
   updateDrug,
   deleteDrug,

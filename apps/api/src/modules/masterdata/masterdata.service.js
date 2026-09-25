@@ -329,6 +329,10 @@ async function findDrug(id) {
   return item;
 }
 
+async function getNextDrugCode() {
+  return repo.getNextDrugCode();
+}
+
 async function addDrug(data, { userId, ipAddress, userAgent }) {
   const created = await repo.createDrug(data);
   await logAudit({
@@ -409,6 +413,7 @@ module.exports = {
   listDrugUnits,
   listDrugs,
   findDrug,
+  getNextDrugCode,
   addDrug,
   editDrug,
   removeDrug,

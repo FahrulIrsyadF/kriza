@@ -468,7 +468,7 @@ export default function PatientsPage({ embedded = false }) {
                             const val = e.target.value.replace(/\D/g, '').slice(0, 6);
                             setFormData({ ...formData, medicalRecordNumber: val });
                           }}
-                          placeholder="000001"
+                          placeholder="6 digit angka..."
                           maxLength={6}
                           pattern="\d{6}"
                           inputMode="numeric"
@@ -818,7 +818,7 @@ export default function PatientsPage({ embedded = false }) {
                         <Input
                           value={formData.phone}
                           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                          placeholder="08123456789"
+                          placeholder="Masukkan no. telepon..."
                           className="font-mono text-xs"
                         />
                       </div>
@@ -865,7 +865,7 @@ export default function PatientsPage({ embedded = false }) {
                       <Input
                         value={formData.allergiesNotes}
                         onChange={(e) => setFormData({ ...formData, allergiesNotes: e.target.value })}
-                        placeholder="Contoh: Alergi Amoxicillin, Seafood..."
+                        placeholder="Catatan alergi obat / makanan..."
                         className="text-xs border-amber-500/30 bg-amber-500/5 text-amber-900 dark:text-amber-200"
                       />
                     </div>
@@ -877,7 +877,7 @@ export default function PatientsPage({ embedded = false }) {
                       <Input
                         value={formData.chronicDiseasesNotes}
                         onChange={(e) => setFormData({ ...formData, chronicDiseasesNotes: e.target.value })}
-                        placeholder="Contoh: Hipertensi, Diabetes Mellitus..."
+                        placeholder="Catatan riwayat penyakit kronis..."
                         className="text-xs border-purple-500/30 bg-purple-500/5 text-purple-900 dark:text-purple-200"
                       />
                     </div>

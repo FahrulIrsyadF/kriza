@@ -187,6 +187,11 @@ async function masterDataRoutes(app) {
     return reply.send({ success: true, data: result });
   });
 
+  app.get('/drugs/next-code', async (request, reply) => {
+    const nextCode = await service.getNextDrugCode();
+    return reply.send({ success: true, data: { nextCode } });
+  });
+
   app.get('/drugs/:id', async (request, reply) => {
     const item = await service.findDrug(request.params.id);
     return reply.send({ success: true, data: item });
